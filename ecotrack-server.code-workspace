@@ -1,0 +1,27 @@
+{
+  "folders": [
+    { "name": "server", "path": "server" },
+    { "name": "shared-resources", "path": "shared-resources" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/target": true,
+      "**/.gradle": true
+    },
+    "editor.formatOnSave": true,
+    "[java]": {
+      "editor.defaultFormatter": "redhat.java"
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
+  },
+  "extensions": {
+    "recommendations": [
+      "redhat.java",
+      "vscjava.vscode-java-pack",
+      "vmware.vscode-boot-dev-pack",
+      "eamodio.gitlens",
+      "42crunch.vscode-openapi"
+    ]
+  }
+}

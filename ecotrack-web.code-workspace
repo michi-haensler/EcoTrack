@@ -1,0 +1,30 @@
+{
+  "folders": [
+    { "name": "admin-web", "path": "admin-web" },
+    { "name": "shared-resources", "path": "shared-resources" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/dist": true
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "eamodio.gitlens",
+      "42crunch.vscode-openapi",
+      "bradlc.vscode-tailwindcss"
+    ]
+  }
+}

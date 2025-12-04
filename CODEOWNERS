@@ -1,0 +1,33 @@
+# EcoTrack CODEOWNERS
+# 
+# Diese Datei definiert, wer für welchen Teil des Codes verantwortlich ist.
+# Code Owner werden automatisch als Reviewer zu Pull Requests hinzugefügt.
+
+# Default owners für alles im Repository
+* @ecotrack/core-team
+
+# Mobile App (React Native)
+/mobile/ @ecotrack/mobile-team
+
+# Admin Dashboard (React)
+/admin-web/ @ecotrack/web-team
+
+# Backend Server (Spring Boot)
+/server/ @ecotrack/backend-team
+
+# Shared Resources
+/shared-resources/api-contracts/ @ecotrack/api-team
+/shared-resources/design-tokens/ @ecotrack/design-team
+/shared-resources/docs/ @ecotrack/core-team
+
+# CI/CD & DevOps
+/.github/ @ecotrack/devops-team
+/docker-compose*.yml @ecotrack/devops-team
+**/Dockerfile @ecotrack/devops-team
+
+# Configuration
+/.vscode/ @ecotrack/core-team
+*.code-workspace @ecotrack/core-team
+
+# Documentation
+*.md @ecotrack/core-team

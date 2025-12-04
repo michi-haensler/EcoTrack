@@ -1,0 +1,1021 @@
+openapi: 3.0.3
+info:
+  title: EcoTrack API
+  description: |
+    API für die EcoTrack-Anwendung - eine Gamification-Plattform zur Förderung 
+    nachhaltiger Aktionen in Schulen.
+  version: 1.0.0
+  contact:
+    name: EcoTrack Team
+
+servers:
+  - url: http://localhost:8080/api
+    description: Development Server
+  - url: https://api.ecotrack.example.com
+    description: Production Server
+
+tags:
+  - name: Auth
+    description: Authentifizierung und Session-Management
+  - name: Users
+    description: Benutzerverwaltung
+  - name: EcoUsers
+    description: Fachliche Nutzerprofile
+  - name: Activities
+    description: Nachhaltige Aktionen erfassen
+  - name: Progress
+    description: Fortschritt und Gamification
+  - name: Leaderboard
+    description: Ranglisten
+  - name: Challenges
+    description: Klassen-Challenges
+  - name: Dashboard
+    description: Lehrer-Dashboard und Reporting
+
+paths:
+  # ============ Auth ============
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Neuen Benutzer registrieren
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Benutzer erfolgreich registriert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Ungültige Eingabedaten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Benutzer anmelden
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Erfolgreich angemeldet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Ungültige Anmeldedaten
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Benutzer abmelden
+      operationId: logoutUser
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Erfolgreich abgemeldet
+
+  # ============ EcoUsers ============
+  /eco-users/me:
+    get:
+      tags: [EcoUsers]
+      summary: Eigenes Profil abrufen
+      operationId: getMyProfile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Profil erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EcoUserProfile'
+
+  /eco-users/{ecoUserId}:
+    get:
+      tags: [EcoUsers]
+      summary: Profil eines EcoUsers abrufen
+      operationId: getEcoUserById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: ecoUserId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Profil erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EcoUserProfile'
+        '404':
+          description: EcoUser nicht gefunden
+
+  # ============ Activities ============
+  /activities:
+    get:
+      tags: [Activities]
+      summary: Eigene Aktivitäten abrufen
+      operationId: getMyActivities
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: category
+          in: query
+          schema:
+            $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Aktivitäten erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityPage'
+
+    post:
+      tags: [Activities]
+      summary: Neue Aktivität erfassen
+      operationId: createActivity
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActivityRequest'
+      responses:
+        '201':
+          description: Aktivität erfolgreich erfasst
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityEntry'
+        '400':
+          description: Ungültige Eingabedaten
+
+  /activities/catalog:
+    get:
+      tags: [Activities]
+      summary: Aktionskatalog abrufen
+      operationId: getActionCatalog
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: category
+          in: query
+          schema:
+            $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Katalog erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionDefinition'
+
+  # ============ Progress ============
+  /progress:
+    get:
+      tags: [Progress]
+      summary: Eigenen Fortschritt abrufen
+      operationId: getMyProgress
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Fortschritt erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressSnapshot'
+
+  /progress/points:
+    get:
+      tags: [Progress]
+      summary: Punktestand abrufen
+      operationId: getMyPoints
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Punktestand erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointsLedger'
+
+  # ============ Leaderboard ============
+  /leaderboard/class:
+    get:
+      tags: [Leaderboard]
+      summary: Klassenrangliste abrufen
+      operationId: getClassLeaderboard
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          schema:
+            $ref: '#/components/schemas/PeriodType'
+      responses:
+        '200':
+          description: Rangliste erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankingTable'
+
+  /leaderboard/school:
+    get:
+      tags: [Leaderboard]
+      summary: Schulrangliste abrufen
+      operationId: getSchoolLeaderboard
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: period
+          in: query
+          schema:
+            $ref: '#/components/schemas/PeriodType'
+      responses:
+        '200':
+          description: Rangliste erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankingTable'
+
+  # ============ Challenges ============
+  /challenges:
+    get:
+      tags: [Challenges]
+      summary: Challenges der eigenen Klasse abrufen
+      operationId: getMyChallenges
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/ChallengeStatus'
+      responses:
+        '200':
+          description: Challenges erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Challenge'
+
+    post:
+      tags: [Challenges]
+      summary: Neue Challenge anlegen (nur Lehrer)
+      operationId: createChallenge
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChallengeRequest'
+      responses:
+        '201':
+          description: Challenge erfolgreich angelegt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+        '403':
+          description: Nur Lehrer dürfen Challenges anlegen
+
+  /challenges/{challengeId}:
+    get:
+      tags: [Challenges]
+      summary: Challenge-Details abrufen
+      operationId: getChallengeById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Challenge erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeDetail'
+
+  /challenges/{challengeId}/progress:
+    get:
+      tags: [Challenges]
+      summary: Challenge-Fortschritt abrufen
+      operationId: getChallengeProgress
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: challengeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Fortschritt erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChallengeProgress'
+
+  # ============ Dashboard (Lehrer) ============
+  /dashboard/class/{classId}:
+    get:
+      tags: [Dashboard]
+      summary: Klassenübersicht für Lehrer
+      operationId: getClassDashboard
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: period
+          in: query
+          schema:
+            $ref: '#/components/schemas/PeriodType'
+      responses:
+        '200':
+          description: Dashboard erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSummary'
+        '403':
+          description: Keine Berechtigung für diese Klasse
+
+  # ============ Administration ============
+  /admin/users:
+    get:
+      tags: [Users]
+      summary: Alle Benutzer abrufen (Admin)
+      operationId: getAllUsers
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: role
+          in: query
+          schema:
+            $ref: '#/components/schemas/Role'
+      responses:
+        '200':
+          description: Benutzer erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPage'
+        '403':
+          description: Keine Admin-Berechtigung
+
+  /admin/classes:
+    get:
+      tags: [Users]
+      summary: Alle Klassen abrufen (Admin)
+      operationId: getAllClasses
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Klassen erfolgreich abgerufen
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Class'
+
+    post:
+      tags: [Users]
+      summary: Neue Klasse anlegen (Admin)
+      operationId: createClass
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClassRequest'
+      responses:
+        '201':
+          description: Klasse erfolgreich angelegt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # ============ Auth Schemas ============
+    RegisterRequest:
+      type: object
+      required: [email, password, firstName, lastName, role]
+      properties:
+        email:
+          type: string
+          format: email
+          example: anna@schule.at
+        password:
+          type: string
+          minLength: 8
+          example: SicheresPasswort123!
+        firstName:
+          type: string
+          example: Anna
+        lastName:
+          type: string
+          example: Müller
+        role:
+          $ref: '#/components/schemas/Role'
+        classId:
+          type: string
+          format: uuid
+          description: Erforderlich für Schüler
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresIn:
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserInfo'
+
+    UserInfo:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        ecoUserId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+
+    # ============ EcoUser Schemas ============
+    EcoUserProfile:
+      type: object
+      properties:
+        ecoUserId:
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/Name'
+        email:
+          type: string
+          format: email
+        classId:
+          type: string
+          format: uuid
+        className:
+          type: string
+        schoolId:
+          type: string
+          format: uuid
+        schoolName:
+          type: string
+        totalPoints:
+          type: integer
+        level:
+          $ref: '#/components/schemas/Level'
+        role:
+          $ref: '#/components/schemas/Role'
+
+    Name:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        displayName:
+          type: string
+
+    # ============ Activity Schemas ============
+    ActionDefinition:
+      type: object
+      properties:
+        actionDefinitionId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Fahrrad statt Auto
+        description:
+          type: string
+        category:
+          $ref: '#/components/schemas/Category'
+        unit:
+          $ref: '#/components/schemas/Unit'
+        basePoints:
+          type: integer
+          example: 10
+        active:
+          type: boolean
+
+    ActivityEntry:
+      type: object
+      properties:
+        activityEntryId:
+          type: string
+          format: uuid
+        actionDefinitionId:
+          type: string
+          format: uuid
+        actionName:
+          type: string
+        category:
+          $ref: '#/components/schemas/Category'
+        quantity:
+          type: number
+        unit:
+          $ref: '#/components/schemas/Unit'
+        points:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        source:
+          $ref: '#/components/schemas/ActivitySource'
+
+    CreateActivityRequest:
+      type: object
+      required: [actionDefinitionId, quantity]
+      properties:
+        actionDefinitionId:
+          type: string
+          format: uuid
+        quantity:
+          type: number
+          minimum: 0.01
+        date:
+          type: string
+          format: date
+          description: Datum der Aktion (default heute)
+
+    ActivityPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityEntry'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+    Category:
+      type: string
+      enum: [MOBILITAET, KONSUM, RECYCLING, ENERGIE, ERNAEHRUNG, SONSTIGES]
+
+    Unit:
+      type: string
+      enum: [STUECK, KM, MINUTEN, KG, LITER]
+
+    ActivitySource:
+      type: string
+      enum: [APP, WEB, IMPORT]
+
+    # ============ Progress Schemas ============
+    PointsLedger:
+      type: object
+      properties:
+        ecoUserId:
+          type: string
+          format: uuid
+        totalPoints:
+          type: integer
+        lastUpdated:
+          type: string
+          format: date-time
+
+    ProgressSnapshot:
+      type: object
+      properties:
+        ecoUserId:
+          type: string
+          format: uuid
+        totalPoints:
+          type: integer
+        currentLevel:
+          $ref: '#/components/schemas/Level'
+        pointsToNextLevel:
+          type: integer
+        progressPercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        milestones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Milestone'
+        treeVisualization:
+          $ref: '#/components/schemas/TreeVisualization'
+
+    Level:
+      type: string
+      enum: [SETZLING, JUNGBAUM, BAUM, ALTBAUM]
+
+    Milestone:
+      type: object
+      properties:
+        milestoneId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        requiredPoints:
+          type: integer
+        reached:
+          type: boolean
+        reachedAt:
+          type: string
+          format: date-time
+
+    TreeVisualization:
+      type: object
+      properties:
+        level:
+          $ref: '#/components/schemas/Level'
+        assetName:
+          type: string
+        growthPercentage:
+          type: number
+
+    # ============ Leaderboard Schemas ============
+    RankingTable:
+      type: object
+      properties:
+        scope:
+          type: string
+          enum: [CLASS, SCHOOL]
+        period:
+          $ref: '#/components/schemas/PeriodType'
+        generatedAt:
+          type: string
+          format: date-time
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankingRow'
+
+    RankingRow:
+      type: object
+      properties:
+        rank:
+          type: integer
+        ecoUserId:
+          type: string
+          format: uuid
+        displayName:
+          type: string
+        points:
+          type: integer
+        level:
+          $ref: '#/components/schemas/Level'
+        isCurrentUser:
+          type: boolean
+
+    PeriodType:
+      type: string
+      enum: [TOTAL, MONTH, WEEK]
+
+    # ============ Challenge Schemas ============
+    Challenge:
+      type: object
+      properties:
+        challengeId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/ChallengeStatus'
+        goal:
+          $ref: '#/components/schemas/ChallengeGoal'
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        classId:
+          type: string
+          format: uuid
+        className:
+          type: string
+        createdBy:
+          type: string
+          format: uuid
+
+    ChallengeDetail:
+      allOf:
+        - $ref: '#/components/schemas/Challenge'
+        - type: object
+          properties:
+            progress:
+              $ref: '#/components/schemas/ChallengeProgress'
+            participants:
+              type: integer
+
+    CreateChallengeRequest:
+      type: object
+      required: [title, goalValue, goalUnit, startDate, endDate, classId]
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        goalValue:
+          type: number
+          minimum: 1
+        goalUnit:
+          $ref: '#/components/schemas/GoalUnit'
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        classId:
+          type: string
+          format: uuid
+
+    ChallengeStatus:
+      type: string
+      enum: [DRAFT, ACTIVE, CLOSED]
+
+    ChallengeGoal:
+      type: object
+      properties:
+        targetValue:
+          type: number
+        unit:
+          $ref: '#/components/schemas/GoalUnit'
+
+    GoalUnit:
+      type: string
+      enum: [POINTS, ACTIONS]
+
+    ChallengeProgress:
+      type: object
+      properties:
+        challengeId:
+          type: string
+          format: uuid
+        currentValue:
+          type: number
+        targetValue:
+          type: number
+        percentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        completed:
+          type: boolean
+
+    # ============ Dashboard Schemas ============
+    ClassSummary:
+      type: object
+      properties:
+        classId:
+          type: string
+          format: uuid
+        className:
+          type: string
+        period:
+          $ref: '#/components/schemas/PeriodType'
+        totalPoints:
+          type: integer
+        totalActivities:
+          type: integer
+        activeStudents:
+          type: integer
+        totalStudents:
+          type: integer
+        activeChallenges:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChallengeSummary'
+        topActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionStats'
+        topStudents:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentSummary'
+
+    ChallengeSummary:
+      type: object
+      properties:
+        challengeId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        status:
+          $ref: '#/components/schemas/ChallengeStatus'
+        progressPercentage:
+          type: number
+        daysRemaining:
+          type: integer
+
+    ActionStats:
+      type: object
+      properties:
+        actionDefinitionId:
+          type: string
+          format: uuid
+        actionName:
+          type: string
+        count:
+          type: integer
+        totalPoints:
+          type: integer
+
+    StudentSummary:
+      type: object
+      properties:
+        ecoUserId:
+          type: string
+          format: uuid
+        displayName:
+          type: string
+        points:
+          type: integer
+        rank:
+          type: integer
+        level:
+          $ref: '#/components/schemas/Level'
+
+    # ============ Administration Schemas ============
+    Role:
+      type: string
+      enum: [SCHUELER, LEHRER, ADMIN]
+
+    UserStatus:
+      type: string
+      enum: [ACTIVE, DISABLED]
+
+    Class:
+      type: object
+      properties:
+        classId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        schoolId:
+          type: string
+          format: uuid
+        schoolName:
+          type: string
+        studentCount:
+          type: integer
+        teacherIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+
+    CreateClassRequest:
+      type: object
+      required: [name, schoolId]
+      properties:
+        name:
+          type: string
+        schoolId:
+          type: string
+          format: uuid
+
+    UserPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserInfo'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+    # ============ Error Schemas ============
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string

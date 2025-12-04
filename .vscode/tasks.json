@@ -1,0 +1,171 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "mobile: install",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "mobile: start",
+      "type": "shell",
+      "command": "npm start",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "mobile: android",
+      "type": "shell",
+      "command": "npm run android",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "mobile: ios",
+      "type": "shell",
+      "command": "npm run ios",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "mobile: lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "mobile: test",
+      "type": "shell",
+      "command": "npm test",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "mobile: generate-api",
+      "type": "shell",
+      "command": "npm run generate-api",
+      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "problemMatcher": []
+    },
+    {
+      "label": "web: install",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "web: dev",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "ready in"
+        }
+      }
+    },
+    {
+      "label": "web: build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "problemMatcher": ["$tsc"],
+      "group": "build"
+    },
+    {
+      "label": "web: lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "web: test",
+      "type": "shell",
+      "command": "npm test",
+      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "problemMatcher": []
+    },
+    {
+      "label": "web: generate-api",
+      "type": "shell",
+      "command": "npm run generate-api",
+      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "problemMatcher": []
+    },
+    {
+      "label": "server: mvn clean install",
+      "type": "shell",
+      "command": "mvn -B clean install",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": "$mvn",
+      "group": "build"
+    },
+    {
+      "label": "server: mvn verify",
+      "type": "shell",
+      "command": "mvn -B clean verify",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": "$mvn",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "server: run",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "server: test",
+      "type": "shell",
+      "command": "mvn test",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": "$mvn",
+      "group": "test"
+    },
+    {
+      "label": "docker: up",
+      "type": "shell",
+      "command": "docker-compose up -d",
+      "options": { "cwd": "${workspaceFolder}/infra" },
+      "problemMatcher": []
+    },
+    {
+      "label": "docker: down",
+      "type": "shell",
+      "command": "docker-compose down",
+      "options": { "cwd": "${workspaceFolder}/infra" },
+      "problemMatcher": []
+    },
+    {
+      "label": "docker: logs",
+      "type": "shell",
+      "command": "docker-compose logs -f",
+      "options": { "cwd": "${workspaceFolder}/infra" },
+      "problemMatcher": []
+    },
+    {
+      "label": "all: install dependencies",
+      "dependsOn": ["mobile: install", "web: install", "server: mvn clean install"],
+      "problemMatcher": []
+    }
+  ]
+}

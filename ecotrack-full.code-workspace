@@ -1,0 +1,61 @@
+{
+  "folders": [
+    { "name": "EcoTrack", "path": "." },
+    { "name": "mobile", "path": "mobile" },
+    { "name": "admin-web", "path": "admin-web" },
+    { "name": "server", "path": "server" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/node_modules": true,
+      "**/build": true,
+      "**/dist": true,
+      "**/target": true,
+      "**/.gradle": true,
+      "**/android/app/build": true,
+      "**/ios/Pods": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/build": true,
+      "**/dist": true,
+      "**/target": true,
+      "**/.gradle": true,
+      "**/android/app/build": true,
+      "**/ios/Pods": true
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[java]": {
+      "editor.defaultFormatter": "redhat.java"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "eslint.workingDirectories": [
+      { "directory": "admin-web", "changeProcessCWD": true },
+      { "directory": "mobile", "changeProcessCWD": true }
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "redhat.java",
+      "vscjava.vscode-java-pack",
+      "vmware.vscode-boot-dev-pack",
+      "msjsdiag.vscode-react-native",
+      "eamodio.gitlens",
+      "github.vscode-github-actions",
+      "ms-azuretools.vscode-docker",
+      "42crunch.vscode-openapi",
+      "bradlc.vscode-tailwindcss"
+    ]
+  }
+}

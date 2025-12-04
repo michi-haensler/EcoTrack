@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "mobile: React Native (Attach)",
+      "type": "reactnative",
+      "request": "attach",
+      "cwd": "${workspaceFolder}/mobile"
+    },
+    {
+      "name": "mobile: React Native Android",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "android",
+      "cwd": "${workspaceFolder}/mobile"
+    },
+    {
+      "name": "mobile: React Native iOS",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "ios",
+      "cwd": "${workspaceFolder}/mobile"
+    },
+    {
+      "name": "web: Vite Dev Server",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/admin-web/src",
+      "sourceMapPathOverrides": {
+        "webpack:///./src/*": "${webRoot}/*"
+      }
+    },
+    {
+      "name": "server: Spring Boot",
+      "type": "java",
+      "request": "launch",
+      "mainClass": "at.ecotrack.EcoTrackApplication",
+      "projectName": "server",
+      "cwd": "${workspaceFolder}/server",
+      "envFile": "${workspaceFolder}/server/.env"
+    },
+    {
+      "name": "server: Spring Boot (Debug)",
+      "type": "java",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack: Web + Server",
+      "configurations": [
+        "server: Spring Boot",
+        "web: Vite Dev Server"
+      ],
+      "stopAll": true
+    }
+  ]
+}

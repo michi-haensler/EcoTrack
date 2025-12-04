@@ -1,0 +1,24 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "redhat.java",
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-java-debug",
+    "vscjava.vscode-maven",
+    "vmware.vscode-boot-dev-pack",
+    "vmware.vscode-spring-boot",
+    "msjsdiag.vscode-react-native",
+    "eamodio.gitlens",
+    "github.vscode-github-actions",
+    "github.copilot",
+    "ms-azuretools.vscode-docker",
+    "42crunch.vscode-openapi",
+    "bradlc.vscode-tailwindcss",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree"
+  ],
+  "unwantedRecommendations": []
+}
