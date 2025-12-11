@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Diskussionen
+    url: https://github.com/michi-haensler/EcoTrack/discussions
+    about: Nutze Diskussionen für Fragen und Ideen
+  - name: 📖 Dokumentation
+    url: https://github.com/michi-haensler/EcoTrack/wiki
+    about: Schau in die Wiki für Anleitungen und Dokumentation
