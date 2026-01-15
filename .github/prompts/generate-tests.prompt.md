@@ -1,5 +1,4 @@
 ---
-agent: true
 title: "Generate Unit Tests"
 category: "Testing"
 description: "Generiert Unit Tests für Java Services oder TypeScript Components nach AAA-Pattern mit hoher Coverage"

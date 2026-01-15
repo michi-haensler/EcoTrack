@@ -1,5 +1,4 @@
 ---
-agent: false
 title: "Code Review"
 category: "Quality Assurance"
 description: "Führt ein umfassendes Code Review durch und prüft auf Code-Qualität, Architektur, Security, Performance und Testing"
