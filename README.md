@@ -1,6 +1,6 @@
 # EcoTrack 🌱
 
-# Team Aufteilung 
+## Team Aufteilung 
 
 - Backend: Karner, Radlinger, Hänsler (Scrum Master)
  
