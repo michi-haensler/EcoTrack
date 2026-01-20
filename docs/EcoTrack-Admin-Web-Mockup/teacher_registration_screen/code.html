@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoTrack Admin - Lehrer Registrierung</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b734b",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#111927",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Work Sans", sans-serif;
+        }
+        .form-input:focus {
+            border-color: #2b734b !important;
+            box-shadow: 0 0 0 1px #2b734b !important;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen">
+<div class="layout-container flex flex-col min-h-screen">
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-solid border-gray-200 dark:border-gray-800 bg-white dark:bg-background-dark px-6 md:px-10 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#131614] dark:text-white text-xl font-bold leading-tight tracking-tight">EcoTrack <span class="text-primary font-medium">Admin</span></h2>
+</div>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">Support</a>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
+<div class="w-full max-w-[520px] bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-8 md:p-10">
+<!-- Headline Section -->
+<div class="text-center mb-8">
+<h1 class="text-[#131614] dark:text-white text-[32px] font-bold leading-tight mb-3">Werde Teil der Community</h1>
+<p class="text-gray-600 dark:text-gray-400 text-base">Erstelle dein Konto, um Nachhaltigkeits-Challenges für deine Schule zu verwalten.</p>
+</div>
+<form class="space-y-5">
+<!-- Name Group -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">Vorname</span>
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 px-4 text-base" placeholder="Max" required="" type="text"/>
+</label>
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">Nachname</span>
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 px-4 text-base" placeholder="Mustermann" required="" type="text"/>
+</label>
+</div>
+<!-- Email -->
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">Offizielle E-Mail</span>
+<div class="relative group">
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 pl-11 pr-4 text-base" placeholder="name@schule.at" required="" type="email"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary">mail</span>
+</div>
+<p class="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">info</span>
+                            Muss auf @schule.at enden
+                        </p>
+</label>
+<!-- School Selection (Autocomplete Style) -->
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">Deine Schule</span>
+<div class="relative">
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 pl-11 pr-4 text-base" placeholder="Schulname suchen..." required="" type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">school</span>
+</div>
+</label>
+<!-- School Code -->
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">6-stelliger Schulcode</span>
+<div class="relative">
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 px-4 text-base tracking-[0.5em] font-mono text-center" maxlength="6" placeholder="000000" required="" type="text"/>
+</div>
+</label>
+<!-- Password -->
+<div class="space-y-4">
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">Passwort</span>
+<div class="relative">
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 pl-11 pr-4 text-base" placeholder="••••••••" required="" type="password"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">lock</span>
+</div>
+<!-- Strength Meter -->
+<div class="flex gap-1 mt-2 h-1.5">
+<div class="flex-1 bg-primary rounded-full"></div>
+<div class="flex-1 bg-primary rounded-full"></div>
+<div class="flex-1 bg-primary/20 rounded-full dark:bg-gray-700"></div>
+<div class="flex-1 bg-primary/20 rounded-full dark:bg-gray-700"></div>
+</div>
+<span class="text-[11px] text-primary font-medium mt-1">Sicherheit: Mittel</span>
+</label>
+<label class="flex flex-col">
+<span class="text-[#131614] dark:text-gray-200 text-sm font-medium pb-1.5">Passwort bestätigen</span>
+<div class="relative">
+<input class="form-input w-full rounded-lg text-[#131614] border border-[#dee3e0] bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white h-12 pl-11 pr-4 text-base" placeholder="••••••••" required="" type="password"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">shield</span>
+</div>
+</label>
+</div>
+<!-- Info Box -->
+<div class="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-lg p-4 flex gap-3 items-start">
+<span class="material-symbols-outlined text-primary text-xl">verified_user</span>
+<p class="text-sm text-[#131614] dark:text-gray-300 leading-relaxed">
+                            Deine Anfrage wird von einem Administrator geprüft. Nach der Freischaltung erhältst du eine Bestätigung per E-Mail.
+                        </p>
+</div>
+<!-- Primary CTA -->
+<button class="w-full bg-primary hover:bg-[#235d3d] text-white rounded-lg h-14 text-base font-bold transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mt-4" type="submit">
+<span>Registrierung beantragen</span>
+<span class="material-symbols-outlined">send</span>
+</button>
+</form>
+<!-- Footer Link -->
+<div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 text-center">
+<p class="text-gray-600 dark:text-gray-400 text-sm">
+                        Bereits registriert? 
+                        <a class="text-primary font-bold hover:underline ml-1" href="#">Zum Login</a>
+</p>
+</div>
+</div>
+<!-- Branding/Illustrative Element -->
+<div class="mt-8 flex items-center gap-8 opacity-40 grayscale pointer-events-none overflow-hidden">
+<img class="h-10 w-auto object-contain rounded" data-alt="Eco-friendly leaf pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFgSt-1vksphaniNUPGAwhDNlYTjL1kvB3S_d_o8MquH7foPtonvBig9wo1szG-n3cT2aeJg8ahrJ_9sUO02knn7Pblcx0e-FPgqJ1ytCRhPfL8uI8UqO1cPLey1WbkZIzvlq9FOPACPdxIshF1k79Ek_CateZU1ycZotZqdGSEIoJp5SHbpVkzA6kpo4GZli-lSbhLEpBUIQJaPlVbCXwBZZtgLVTZoL9Wx2SUh3nPFBgRXTiKmnyfMlHxdBj7PjxN4M4ok0lCS9t"/>
+<img class="h-10 w-auto object-contain rounded" data-alt="Forest landscape horizon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFuFyrlVNCqcHDqOJNyOi4Z8uU9U2m7LtuIwY7sIh4_WSpHOLOvUG2wyTSiqhlQeAVK7rcyNl-sB2OYl3Vl2gN6BTQ9o7xRNLjN1iNV30qKWjEl-cmaozJ4_ptoiBL0l6eM8kG8Q-KYv2WdDij8r_a30xu0pJVPDqc-drAagPfyOMp1y39_qp8vc8JJMbk1AdLsnIDcUvx4bnJg8dsvAsRQ2hFY_kQgzyJFK0Gvl08JZKS5gY6APe-k1_kCcm5awxIs30Ow5G_i6TV"/>
+<img class="h-10 w-auto object-contain rounded" data-alt="Green mountain tops" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP4XKy11DTe7UBW8o8IF7TA52ZTlesqb9c44dv_wYHAtjMBFfTbBtYxhDJbDLS8DF0BCYJfy842zcboaMMXHukqqzjfcb0RVO4BcRsqXGqyFmU8unZbV0lVymWaB2iocLeOurJuZKJYLtWWZcP7g-5vFOL515k3M7aUSJoosEl2U3OWv6g8VvXgr8ZfJBZwfBjG5DSkYTANWkG4QZh0nhaVvye3MjAX8j3Tj_liC6gxLZhvrlyaa6Y2nnm8fFh9buWyFluCuwE_Wt9"/>
+</div>
+</main>
+<!-- Footer -->
+<footer class="py-6 text-center text-xs text-gray-400 dark:text-gray-600">
+            © 2024 EcoTrack Admin. Alle Rechte vorbehalten. | <a class="hover:text-primary" href="#">Impressum</a> | <a class="hover:text-primary" href="#">Datenschutz</a>
+</footer>
+</div>
+</body></html>

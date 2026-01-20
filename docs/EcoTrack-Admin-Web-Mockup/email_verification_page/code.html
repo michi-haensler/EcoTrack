@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoTrack Admin - E-Mail Bestätigung</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b734b",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#111927",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen transition-colors duration-300">
+<div class="flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-10 py-3">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#131614] dark:text-white text-lg font-bold leading-tight tracking-tight font-display">EcoTrack Admin</h2>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal">
+<span>Login</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex items-center justify-center p-6">
+<div class="max-w-[480px] w-full bg-white dark:bg-gray-900 rounded-xl shadow-xl shadow-primary/5 border border-primary/10 overflow-hidden">
+<!-- Icon/Illustration Section -->
+<div class="pt-10 flex justify-center">
+<div class="relative">
+<div class="absolute inset-0 bg-primary/10 rounded-full blur-2xl"></div>
+<div class="relative bg-primary/5 w-24 h-24 rounded-full flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-5xl">
+                                mark_email_read
+                            </span>
+</div>
+</div>
+</div>
+<div class="px-8 pb-10 pt-6 flex flex-col items-center">
+<!-- Headline -->
+<h1 class="text-[#131614] dark:text-white text-2xl md:text-3xl font-bold leading-tight text-center font-display">
+                        Bestätige deine E-Mail
+                    </h1>
+<!-- Description -->
+<p class="text-gray-600 dark:text-gray-400 text-base font-normal leading-relaxed pt-4 text-center">
+                        Wir haben eine E-Mail an <span class="font-semibold text-primary">lehrer@umwelt-schule.de</span> gesendet. Bitte klicke auf den Link in der Nachricht, um dein Konto zu aktivieren.
+                    </p>
+<!-- Timer Section -->
+<div class="w-full mt-8">
+<div class="flex items-center justify-between gap-4 py-4 px-6 rounded-lg bg-background-light dark:bg-gray-800 border border-primary/5">
+<div class="flex flex-col">
+<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-500">Nächster Versuch in</span>
+<div class="flex items-center gap-1">
+<span class="text-xl font-bold text-primary tabular-nums">00</span>
+<span class="text-xl font-bold text-primary">:</span>
+<span class="text-xl font-bold text-primary tabular-nums">59</span>
+</div>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 rounded-lg cursor-not-allowed text-sm font-bold transition-all" disabled="">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+                                E-Mail erneut senden
+                            </button>
+</div>
+</div>
+<!-- Footer Links -->
+<div class="mt-10 flex flex-col items-center gap-4 w-full border-t border-gray-100 dark:border-gray-800 pt-6">
+<div class="flex flex-col sm:flex-row items-center gap-2 text-sm">
+<span class="text-gray-500">E-Mail-Adresse falsch?</span>
+<a class="text-primary font-semibold hover:underline flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                                Adresse ändern
+                            </a>
+</div>
+<a class="text-gray-500 hover:text-primary text-sm font-medium flex items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                            Zurück zum Login
+                        </a>
+</div>
+</div>
+</div>
+</main>
+<!-- Decorative Footer Element -->
+<div class="h-2 w-full bg-gradient-to-r from-primary/20 via-primary to-primary/20"></div>
+</div>
+</body></html>

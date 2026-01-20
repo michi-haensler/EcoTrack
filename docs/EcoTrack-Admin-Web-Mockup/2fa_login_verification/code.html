@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>2FA Login Verification - EcoTrack Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2b734b",
+              "background-light": "#f9fafa",
+              "background-dark": "#111927",
+            },
+            fontFamily: {
+              "display": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+        /* Custom subtle glass effect for the card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass-card {
+            background: rgba(17, 25, 39, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display">
+<!-- Header / Navbar -->
+<header class="w-full flex items-center justify-between border-b border-solid border-[#e5e7eb] dark:border-[#2d3748] px-6 lg:px-10 py-4 bg-white dark:bg-background-dark">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary/10 rounded-lg">
+<svg class="size-6 text-primary" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#131614] dark:text-white text-lg font-bold leading-tight tracking-tight">EcoTrack Admin</h2>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f1f3f2] dark:bg-[#1f2937] text-[#131614] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center px-4 py-12">
+<div class="w-full max-w-[480px]">
+<!-- Branding/Security Icon -->
+<div class="flex justify-center mb-8">
+<div class="relative">
+<div class="absolute -inset-1 bg-primary/20 rounded-full blur-md"></div>
+<div class="relative bg-white dark:bg-[#1f2937] p-4 rounded-full shadow-sm border border-primary/10">
+<span class="material-symbols-outlined text-primary text-[40px]">shield_person</span>
+</div>
+</div>
+</div>
+<!-- Verification Card -->
+<div class="glass-card shadow-xl rounded-xl p-8 lg:p-10 text-center">
+<h1 class="text-[#131614] dark:text-white text-3xl font-bold leading-tight mb-2">Identität bestätigen</h1>
+<p class="text-[#64748b] dark:text-gray-400 text-base font-normal mb-8">
+                    Bitte geben Sie den 6-stelligen Code aus Ihrer Authenticator-App ein, um fortzufahren.
+                </p>
+<!-- 2FA Inputs -->
+<div class="flex justify-center mb-8">
+<fieldset class="flex gap-2 sm:gap-3">
+<input autofocus="" class="w-11 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold border-0 border-b-2 border-[#dee3e0] dark:border-gray-600 focus:border-primary focus:ring-0 bg-transparent text-[#131614] dark:text-white transition-all" inputmode="numeric" max="9" maxlength="1" min="0" onkeydown="if(event.key==='Backspace' &amp;&amp; this.value==='') this.previousElementSibling?.focus()" onkeyup="if(this.value.length==1) this.nextElementSibling?.focus()" pattern="\d*" type="text"/>
+<input class="w-11 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold border-0 border-b-2 border-[#dee3e0] dark:border-gray-600 focus:border-primary focus:ring-0 bg-transparent text-[#131614] dark:text-white transition-all" inputmode="numeric" max="9" maxlength="1" min="0" onkeydown="if(event.key==='Backspace' &amp;&amp; this.value==='') this.previousElementSibling?.focus()" onkeyup="if(this.value.length==1) this.nextElementSibling?.focus()" pattern="\d*" type="text"/>
+<input class="w-11 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold border-0 border-b-2 border-[#dee3e0] dark:border-gray-600 focus:border-primary focus:ring-0 bg-transparent text-[#131614] dark:text-white transition-all" inputmode="numeric" max="9" maxlength="1" min="0" onkeydown="if(event.key==='Backspace' &amp;&amp; this.value==='') this.previousElementSibling?.focus()" onkeyup="if(this.value.length==1) this.nextElementSibling?.focus()" pattern="\d*" type="text"/>
+<div class="flex items-center px-1 text-gray-300 dark:text-gray-600">—</div>
+<input class="w-11 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold border-0 border-b-2 border-[#dee3e0] dark:border-gray-600 focus:border-primary focus:ring-0 bg-transparent text-[#131614] dark:text-white transition-all" inputmode="numeric" max="9" maxlength="1" min="0" onkeydown="if(event.key==='Backspace' &amp;&amp; this.value==='') this.previousElementSibling?.focus()" onkeyup="if(this.value.length==1) this.nextElementSibling?.focus()" pattern="\d*" type="text"/>
+<input class="w-11 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold border-0 border-b-2 border-[#dee3e0] dark:border-gray-600 focus:border-primary focus:ring-0 bg-transparent text-[#131614] dark:text-white transition-all" inputmode="numeric" max="9" maxlength="1" min="0" onkeydown="if(event.key==='Backspace' &amp;&amp; this.value==='') this.previousElementSibling?.focus()" onkeyup="if(this.value.length==1) this.nextElementSibling?.focus()" pattern="\d*" type="text"/>
+<input class="w-11 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold border-0 border-b-2 border-[#dee3e0] dark:border-gray-600 focus:border-primary focus:ring-0 bg-transparent text-[#131614] dark:text-white transition-all" inputmode="numeric" max="9" maxlength="1" min="0" onkeydown="if(event.key==='Backspace' &amp;&amp; this.value==='') this.previousElementSibling?.focus()" pattern="\d*" type="text"/>
+</fieldset>
+</div>
+<!-- Timer -->
+<div class="mb-8">
+<div class="flex items-center justify-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-[18px]">schedule</span>
+<p class="text-[#131614] dark:text-white text-sm font-semibold tracking-tight">Code läuft ab in 00:24</p>
+</div>
+<!-- Subtle progress bar for timer decay -->
+<div class="w-full max-w-[200px] mx-auto h-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[80%] rounded-full"></div>
+</div>
+</div>
+<!-- Action Button (Usually hidden or auto-triggers, but good for UX) -->
+<button class="w-full flex items-center justify-center gap-2 h-12 bg-primary text-white font-bold rounded-lg hover:bg-opacity-90 transition-all mb-6">
+<span>Verifizieren</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- Help Links -->
+<div class="space-y-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+<a class="block text-primary hover:underline text-sm font-medium" href="#">
+                        Ersatzcode (Backup-Code) verwenden
+                    </a>
+<a class="flex items-center justify-center gap-1 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]">contact_support</span>
+<span>Probleme? Support kontaktieren</span>
+</a>
+</div>
+</div>
+<!-- Context Footer -->
+<div class="mt-8 flex flex-col items-center gap-4">
+<div class="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 uppercase tracking-widest font-bold">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>Sichere Admin-Verbindung</span>
+</div>
+<div class="flex gap-4">
+<img alt="Sustainability badge" class="h-8 grayscale opacity-50 contrast-125" data-alt="Eco-friendly leaf and sustainability badges" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW1VRYS1JjFnyjFkRe_qg2D7d-Wn4UZbPBIHYXfNfmJOpG4Oz-3VqpJXGsMcGs_SMuM2FkCnHZeybbIB_XCvVrmyWvgpXLCAvmdA7nAk8P3sIWBxfi9N7R0Y7yJjxcqE3xZHPusMWAqaTTmOO74VBjnvaEPm3cMSpgQmfeuo49aT2sRQbhbEGHqtZe9ZIYXkbhPcofNMRL2FMlsGhDJf9tvtclAs-9iQHR_RFFp48j3_O5Rs00oszVBzaMDy8cuOyPk_lKolyIF0yP"/>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Space -->
+<footer class="py-6 px-10 flex justify-between items-center text-xs text-gray-400 dark:text-gray-500">
+<p>© 2024 EcoTrack. Alle Rechte vorbehalten.</p>
+<div class="flex gap-4">
+<a class="hover:text-primary" href="#">Datenschutz</a>
+<a class="hover:text-primary" href="#">Impressum</a>
+</div>
+</footer>
+</body></html>

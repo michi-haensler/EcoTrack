@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>2FA Security Setup Wizard - EcoTrack Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b734b",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#111927",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .mono-code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#131614] dark:text-slate-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#dee3e0] dark:border-slate-800 bg-white dark:bg-slate-900 px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] text-[#131614] dark:text-white">EcoTrack Admin</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Challenges</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Resources</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Analytics</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-background-light dark:bg-slate-800 text-[#131614] dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-background-light dark:bg-slate-800 text-[#131614] dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Admin profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTbtewXowzZQ0_I3wiDa_5gRQTuYKHBi47Mif2HBSh-E4dtNNYfC-xiiL5nT_f8KuFxFljnV03qVrnLOW8Zx9_Ype7wuPHCNDEv94vOQxrY89InHYa7Pjh4z07kykqrHhnTellrg_MQ7nhGHPv5aDi7gpM2CxhGp5Cm4us-_FK7vfhKkDPRaIhx7w78bIjbw_rMIn6o7dNTw8RruHDwog2M_S-T9Off66A6pSUKj6Ah8DKxj8SIbrfZrz500ctWWBtv5KM2SMWP5iG");'></div>
+</div>
+</header>
+<main class="flex-1 flex justify-center py-10 px-4 md:px-10 lg:px-40">
+<div class="max-w-[1200px] w-full flex flex-col md:flex-row gap-8">
+<!-- Side Navigation -->
+<aside class="w-full md:w-64 flex flex-col gap-6">
+<div class="flex flex-col">
+<h1 class="text-base font-bold text-primary">Admin Portal</h1>
+<p class="text-[#6b8074] text-sm">EcoTrack Sustainability</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#131614] dark:text-slate-300 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm font-medium">Profil</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[fill]">shield_lock</span>
+<span class="text-sm font-bold">Sicherheit</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#131614] dark:text-slate-300 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Team-Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#131614] dark:text-slate-300 hover:bg-primary/10 transition-colors" href="#">
+<span class="material-symbols-outlined">settings_suggest</span>
+<span class="text-sm font-medium">Einstellungen</span>
+</a>
+<hr class="my-4 border-[#dee3e0] dark:border-slate-800"/>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Abmelden</span>
+</a>
+</nav>
+</aside>
+<!-- Content Area -->
+<section class="flex-1 flex flex-col gap-6">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2">
+<h2 class="text-3xl font-black leading-tight tracking-[-0.033em] text-[#131614] dark:text-white">2FA-Einrichtung</h2>
+<p class="text-[#6b8074] text-base">Sichern Sie Ihr Konto mit einer zusätzlichen Sicherheitsebene gegen unbefugten Zugriff.</p>
+</div>
+<!-- Wizard Card -->
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-[#dee3e0] dark:border-slate-800 overflow-hidden">
+<!-- Timeline/Progress -->
+<div class="flex items-center border-b border-[#dee3e0] dark:border-slate-800 bg-background-light/50 dark:bg-slate-800/50">
+<div class="flex-1 px-6 py-4 flex items-center gap-3 border-r border-[#dee3e0] dark:border-slate-800 bg-white dark:bg-slate-900 border-b-2 border-b-primary">
+<span class="size-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">1</span>
+<div class="hidden sm:block">
+<p class="text-sm font-bold text-primary leading-tight">Verknüpfen</p>
+<p class="text-[10px] text-primary/70 leading-tight uppercase tracking-wider">App scannen</p>
+</div>
+</div>
+<div class="flex-1 px-6 py-4 flex items-center gap-3 border-r border-[#dee3e0] dark:border-slate-800">
+<span class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-xs font-bold">2</span>
+<div class="hidden sm:block">
+<p class="text-sm font-medium text-slate-500 leading-tight">Backup-Codes</p>
+<p class="text-[10px] text-slate-400 leading-tight uppercase tracking-wider">Sicher speichern</p>
+</div>
+</div>
+<div class="flex-1 px-6 py-4 flex items-center gap-3">
+<span class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-xs font-bold">3</span>
+<div class="hidden sm:block">
+<p class="text-sm font-medium text-slate-500 leading-tight">Bestätigen</p>
+<p class="text-[10px] text-slate-400 leading-tight uppercase tracking-wider">Code eingeben</p>
+</div>
+</div>
+</div>
+<!-- Step 1 Content: Connect App -->
+<div class="p-8 space-y-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+<div class="space-y-6">
+<div>
+<h3 class="text-xl font-bold mb-2">Authenticator-App verknüpfen</h3>
+<p class="text-[#6b8074] leading-relaxed">Scannen Sie diesen QR-Code mit Ihrer Authenticator-App (z.B. Google Authenticator, Authy oder Microsoft Authenticator).</p>
+</div>
+<!-- QR Code Area -->
+<div class="flex justify-center lg:justify-start">
+<div class="p-4 bg-white rounded-lg border-2 border-primary/10 inline-block">
+<div class="size-48 bg-slate-100 flex items-center justify-center rounded relative overflow-hidden">
+<div class="absolute inset-0 bg-[linear-gradient(45deg,#2b734b_25%,transparent_25%,transparent_50%,#2b734b_50%,#2b734b_75%,transparent_75%,transparent)] bg-[length:20px_20px] opacity-10"></div>
+<!-- Mock QR Code -->
+<div class="relative z-10 w-40 h-40 bg-white p-2 border border-slate-200">
+<div class="w-full h-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-5xl">qr_code_2</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Manual Key -->
+<div class="space-y-2">
+<p class="text-xs font-bold uppercase tracking-wider text-[#6b8074]">Kein Scan möglich? Manueller Schlüssel:</p>
+<div class="flex gap-2">
+<code class="flex-1 p-3 bg-background-light dark:bg-slate-800 rounded border border-[#dee3e0] dark:border-slate-700 text-sm font-bold tracking-widest text-primary text-center">JX7W-4P9Q-L2MZ-8RTY</code>
+<button class="px-4 py-3 bg-slate-100 dark:bg-slate-800 text-[#131614] dark:text-white rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Step 2: Backup Codes (Pre-viewing logic mockup) -->
+<div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-6 border border-primary/20 flex flex-col justify-between">
+<div class="space-y-4">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined">description</span>
+<h4 class="font-bold">Backup-Codes bereitstellen</h4>
+</div>
+<p class="text-sm text-[#6b8074] leading-relaxed">
+                                            Im nächsten Schritt generieren wir 10 einmalige Backup-Codes. Speichern Sie diese an einem sicheren Ort. Wenn Sie Ihr Telefon verlieren, sind diese Codes die <strong>einzige Möglichkeit</strong>, wieder Zugriff auf Ihr Konto zu erhalten.
+                                        </p>
+<div class="grid grid-cols-2 gap-2 opacity-30 select-none">
+<div class="p-2 bg-white dark:bg-slate-800 rounded text-center text-[10px] mono-code">XXXX-XXXX</div>
+<div class="p-2 bg-white dark:bg-slate-800 rounded text-center text-[10px] mono-code">XXXX-XXXX</div>
+<div class="p-2 bg-white dark:bg-slate-800 rounded text-center text-[10px] mono-code">XXXX-XXXX</div>
+<div class="p-2 bg-white dark:bg-slate-800 rounded text-center text-[10px] mono-code">XXXX-XXXX</div>
+</div>
+</div>
+<div class="flex justify-end mt-6">
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-md">
+<span>Weiter</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Backup Codes (Hidden normally in state machine, shown here for the wizard feel) -->
+<div class="p-8 border-t border-[#dee3e0] dark:border-slate-800 space-y-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h3 class="text-xl font-bold mb-1">Backup-Codes</h3>
+<p class="text-[#6b8074] text-sm italic">Speichern Sie diese Codes sicher und offline.</p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-background-light dark:bg-slate-800 border border-[#dee3e0] dark:border-slate-700 rounded-lg text-sm font-bold hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Codes herunterladen</span>
+</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-3 p-6 bg-background-light dark:bg-slate-950 rounded-xl border border-dashed border-primary/30">
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">8341-2905</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">1102-8834</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">9934-1250</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">6721-0945</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">4432-1198</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">2290-7712</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">0082-5561</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">1563-3392</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">8823-1100</div>
+<div class="p-3 bg-white dark:bg-slate-900 rounded border border-[#dee3e0] dark:border-slate-800 text-center text-sm font-bold mono-code text-slate-600 dark:text-slate-300">7741-2298</div>
+</div>
+</div>
+<!-- Step 3 Content: Verify -->
+<div class="p-8 bg-slate-50 dark:bg-slate-900/50 border-t border-[#dee3e0] dark:border-slate-800">
+<div class="max-w-md mx-auto text-center space-y-6">
+<div class="space-y-2">
+<h3 class="text-xl font-bold">Verifizierung</h3>
+<p class="text-sm text-[#6b8074]">Geben Sie den 6-stelligen Code aus Ihrer App ein, um die Einrichtung abzuschließen.</p>
+</div>
+<div class="flex justify-between gap-3 px-4">
+<input class="w-12 h-14 text-2xl font-black text-center border-2 border-[#dee3e0] dark:border-slate-700 rounded-lg focus:border-primary focus:ring-primary dark:bg-slate-800" maxlength="1" placeholder="•" type="text"/>
+<input class="w-12 h-14 text-2xl font-black text-center border-2 border-[#dee3e0] dark:border-slate-700 rounded-lg focus:border-primary focus:ring-primary dark:bg-slate-800" maxlength="1" placeholder="•" type="text"/>
+<input class="w-12 h-14 text-2xl font-black text-center border-2 border-[#dee3e0] dark:border-slate-700 rounded-lg focus:border-primary focus:ring-primary dark:bg-slate-800" maxlength="1" placeholder="•" type="text"/>
+<span class="text-2xl flex items-center text-slate-300">—</span>
+<input class="w-12 h-14 text-2xl font-black text-center border-2 border-[#dee3e0] dark:border-slate-700 rounded-lg focus:border-primary focus:ring-primary dark:bg-slate-800" maxlength="1" placeholder="•" type="text"/>
+<input class="w-12 h-14 text-2xl font-black text-center border-2 border-[#dee3e0] dark:border-slate-700 rounded-lg focus:border-primary focus:ring-primary dark:bg-slate-800" maxlength="1" placeholder="•" type="text"/>
+<input class="w-12 h-14 text-2xl font-black text-center border-2 border-[#dee3e0] dark:border-slate-700 rounded-lg focus:border-primary focus:ring-primary dark:bg-slate-800" maxlength="1" placeholder="•" type="text"/>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full py-3 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-all shadow-lg text-lg">
+                                        2FA Aktivieren
+                                    </button>
+<button class="text-sm text-[#6b8074] hover:text-primary transition-colors font-medium">Abbrechen</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Additional Help Card -->
+<div class="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 rounded-xl border border-[#dee3e0] dark:border-slate-800 shadow-sm">
+<div class="p-2 bg-primary/10 rounded-full text-primary">
+<span class="material-symbols-outlined">help_center</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Brauchen Sie Hilfe?</p>
+<p class="text-xs text-[#6b8074]">Lesen Sie unser <a class="text-primary underline" href="#">Security-Handbuch</a> für EcoTrack-Administratoren.</p>
+</div>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+</section>
+</div>
+</main>
+<footer class="py-10 px-10 border-t border-[#dee3e0] dark:border-slate-800 text-center text-[#6b8074] text-xs">
+<p>© 2024 EcoTrack Sustainability Systems. Alle Rechte vorbehalten.</p>
+</footer>
+</div>
+</body></html>

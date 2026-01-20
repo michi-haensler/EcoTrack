@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Active Sessions Management - EcoTrack Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b734b",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#111927",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#131614] dark:text-slate-200 min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-72 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hidden lg:flex flex-col fixed h-full">
+<div class="p-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-10">
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">eco</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-[#131614] dark:text-white text-base font-bold leading-none">EcoTrack Admin</h1>
+<p class="text-[#6b8074] text-xs font-normal mt-1">Teacher Portal</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1.5 grow">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">nature_people</span>
+<span class="text-sm font-medium">Challenges</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-sm font-medium">Resources</span>
+</a>
+<div class="my-4 border-t border-slate-100 dark:border-slate-800"></div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">person</span>
+<span class="text-sm font-semibold">Profile &amp; Security</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
+<div class="size-9 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Profile picture of the teacher" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAnJU8vRLCHpDv8x1prJRTZFhZds5BdeIDUPAYzn_2oqHRClx15941F0fXnfLQAPMqrtbx9mcFmTDse8tGz_SLBzGd2oXlD74-N-glTCUzFHMS3nWy-oeC1a9YUUh0phc6QrLm1fmNG7Ik5jQb1HebKSP_x70AIY4zkBPcyfMKq0pb1wxTPsh4q0CRsx8yMCCRFwpBQxaKqw6OZqIlH0bh5HeP5BhkkhCGNIBdWTmipdfUibgaiKVQ2hf_wGj1mUptYtfyYTocB2teD');"></div>
+<div class="flex flex-col">
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Dr. Sarah Meyer</p>
+<p class="text-xs text-slate-500">Oberstudienrätin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-72 flex flex-col">
+<!-- Header Section -->
+<header class="max-w-5xl w-full mx-auto px-6 py-10">
+<div class="flex flex-wrap items-end justify-between gap-6 mb-8">
+<div class="flex-1 min-w-[300px]">
+<div class="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-2">
+<span class="material-symbols-outlined text-sm">shield</span>
+                        Sicherheit &amp; Zugriff
+                    </div>
+<h1 class="text-[#131614] dark:text-white text-4xl font-black leading-tight tracking-tight">Aktuelle Sitzungen</h1>
+<p class="text-[#6b8074] dark:text-slate-400 text-base mt-2 max-w-2xl">
+                        Verwalten Sie Ihre aktiven Logins auf verschiedenen Geräten. Falls Sie einen fremden Login bemerken, melden Sie diesen umgehend ab oder nutzen Sie die globale Abmeldung.
+                    </p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 cursor-pointer rounded-lg h-10 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[#131614] dark:text-white text-sm font-bold shadow-sm hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined text-lg">help</span>
+<span>Sicherheitstipps</span>
+</button>
+</div>
+</div>
+<!-- Content Area -->
+<div class="space-y-6">
+<!-- Active/Current Session Card -->
+<section>
+<h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="block h-px w-4 bg-slate-300"></span>
+                        Dieses Gerät
+                    </h2>
+<div class="flex items-stretch justify-between gap-6 rounded-xl bg-white dark:bg-slate-900 p-6 shadow-sm border-2 border-primary/20">
+<div class="flex flex-[2_2_0px] flex-col justify-between gap-4">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-primary text-white tracking-wider">Aktuelle Sitzung</span>
+<span class="text-[#6b8074] text-xs font-medium uppercase tracking-tighter">Berlin, Deutschland • Gerade eben</span>
+</div>
+<h3 class="text-[#131614] dark:text-white text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">laptop_mac</span>
+                                    Chrome auf MacBook Pro
+                                </h3>
+<div class="flex items-center gap-4 mt-1">
+<div class="flex items-center gap-1.5 text-[#6b8074] text-sm">
+<span class="material-symbols-outlined text-sm">terminal</span>
+                                        macOS 14.2
+                                    </div>
+<div class="flex items-center gap-1.5 text-[#6b8074] text-sm">
+<span class="material-symbols-outlined text-sm">public</span>
+                                        192.168.***.***
+                                    </div>
+</div>
+</div>
+</div>
+<div class="hidden sm:block w-48 h-24 bg-primary/5 rounded-lg border border-primary/10 overflow-hidden relative">
+<div class="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-60 mix-blend-multiply" data-alt="Abstract green eco-themed pattern" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUINH8hLybzwTkxlsbEnBnMT83Cd_mfWDKTsa-yGdey0pWUQILbJA6dENY_esh9yjkRzSJB9oIVEt95HMH1qe1nmhhMd4062PbWqt8OfbzfVRenvExzVi9XSfGZZG89hW_T34Y8W-lmIKOleKak5MX-QJmUS5Sa5XxdH8tDsd9K2w_BgoIyl6yiD7yryrVcdERLVAZlPW2RdKhZ8pafnmz9hfoaxM0W18CMz0O694TylCUDh26JRMphvshm04VzAQIxqaUMgyr1QRD');"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-primary/40">verified_user</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Other Sessions List -->
+<section>
+<h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="block h-px w-4 bg-slate-300"></span>
+                        Andere aktive Sitzungen
+                    </h2>
+<div class="grid gap-4">
+<!-- Session Card 2 -->
+<div class="flex items-center justify-between gap-4 rounded-xl bg-white dark:bg-slate-900 p-6 shadow-sm border border-slate-100 dark:border-slate-800 hover:border-slate-200 transition-all">
+<div class="flex items-start gap-4 flex-1">
+<div class="size-12 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 shrink-0">
+<span class="material-symbols-outlined text-2xl">smartphone</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-[#6b8074] text-xs font-medium uppercase tracking-tighter">München, Deutschland • Vor 2 Stunden</p>
+<p class="text-[#131614] dark:text-white text-base font-bold leading-tight">Safari auf iPhone 15</p>
+<div class="flex gap-3 mt-0.5">
+<p class="text-[#6b8074] text-xs font-normal">iOS 17.1</p>
+<p class="text-[#6b8074] text-xs font-normal">•</p>
+<p class="text-[#6b8074] text-xs font-normal">192.168.***.***</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block w-32 h-16 bg-center bg-no-repeat bg-cover rounded-lg" data-alt="Simplified map visualization of Munich" data-location="Munich" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5uTlZTCrmXXTn3Z-Vpb-8Tu0ulS7hvuh7qpHFGfwqco2_qoJWxqjQb25XGmIxblVqOtsQHjbLW5Hmdat0-dFS8lYMKcu0Y7AAU5UIPoTRCxB9AF7DxTcDVUnV8nOlU03SU0rVJmWLTpBXFJA36jOVosCh5fKPzRSpCXwf4xATmrdw9ZAbOcb6sHqN-60Rhoaftvn1lTbz6EHgIdHbSonhKLVWHWQ9I8p9kz3CLhswsmC8ENCu8qrJTju-RCwZP42z0QPEToYS-pEU");'></div>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 border border-slate-200 dark:border-slate-700 text-[#131614] dark:text-slate-200 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span>Abmelden</span>
+</button>
+</div>
+</div>
+<!-- Session Card 3 -->
+<div class="flex items-center justify-between gap-4 rounded-xl bg-white dark:bg-slate-900 p-6 shadow-sm border border-slate-100 dark:border-slate-800 hover:border-slate-200 transition-all">
+<div class="flex items-start gap-4 flex-1">
+<div class="size-12 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 shrink-0">
+<span class="material-symbols-outlined text-2xl">desktop_windows</span>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-[#6b8074] text-xs font-medium uppercase tracking-tighter">Hamburg, Deutschland • Gestern, 14:20</p>
+<p class="text-[#131614] dark:text-white text-base font-bold leading-tight">Chrome auf Windows Desktop</p>
+<div class="flex gap-3 mt-0.5">
+<p class="text-[#6b8074] text-xs font-normal">Windows 11</p>
+<p class="text-[#6b8074] text-xs font-normal">•</p>
+<p class="text-[#6b8074] text-xs font-normal">192.168.***.***</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block w-32 h-16 bg-center bg-no-repeat bg-cover rounded-lg" data-alt="Simplified map visualization of Hamburg" data-location="Hamburg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8_WDxgP3tx7D-iSiidBJkgsesk0a_VD7r8onn0Y6O99bIhjbI1eMJLpNXE6pdxN3FkO-y8p68_7UZbhflx5h3ETPY8Jj-Y4_eIsWOeSM1UmSc8FmKaTV5MyCrtwQHayMGQ6PD1sX9vcrg4k-M-p3NsbY6hldLkWeaMPVLpJbhYhAl99t8qmE4_CKTJhPdizZ9v7wQ1HT50qBETHSkAxIwFFKr76nq-MDHeHywtMi7PUpZmWJky0MQ36IMxs2EIbodjtX6e-D8Vgmq");'></div>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-9 px-4 border border-slate-200 dark:border-slate-700 text-[#131614] dark:text-slate-200 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span>Abmelden</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Global Action -->
+<div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+<div class="bg-red-50 dark:bg-red-900/10 rounded-xl p-8 border border-red-100 dark:border-red-900/30 flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex flex-col gap-1 text-center md:text-left">
+<h4 class="text-red-900 dark:text-red-400 text-lg font-bold">Kritische Aktion</h4>
+<p class="text-red-700/70 dark:text-red-400/60 text-sm max-w-md">Dies wird alle Sitzungen außer der aktuellen sofort beenden. Sie müssen sich auf anderen Geräten erneut anmelden.</p>
+</div>
+<button class="flex items-center gap-2 px-6 h-12 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all shadow-lg shadow-red-200 dark:shadow-none shrink-0">
+<span class="material-symbols-outlined">logout</span>
+<span>Alle anderen Geräte abmelden</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Meta -->
+<footer class="mt-12 pb-12 flex items-center justify-center gap-6 text-[#6b8074] text-xs font-medium">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">lock</span>
+                    Ende-zu-Ende verschlüsselt
+                </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">history</span>
+                    Letzte Prüfung: Heute, 09:12
+                </div>
+</footer>
+</header>
+</main>
+</body></html>

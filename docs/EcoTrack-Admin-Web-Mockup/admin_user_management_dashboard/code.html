@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoTrack | User Management</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b734b",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#111927",
+                        "sidebar-light": "#ffffff",
+                        "sidebar-dark": "#1a222f",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#131614] dark:text-gray-100 min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-sidebar-light dark:bg-sidebar-dark border-r border-gray-200 dark:border-gray-800 flex flex-col fixed inset-y-0 left-0 z-50">
+<div class="p-6 flex flex-col h-full">
+<!-- Admin Profile -->
+<div class="flex items-center gap-3 mb-10">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg border border-primary/20">
+                    EA
+                </div>
+<div class="flex flex-col">
+<h1 class="text-[#131614] dark:text-white text-base font-bold leading-none">EcoTrack Admin</h1>
+<p class="text-[#6b8074] dark:text-gray-400 text-xs font-medium mt-1 uppercase tracking-wider">Global System</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#6b8074] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary border border-primary/5" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-sm font-bold">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#6b8074] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">eco</span>
+<span class="text-sm font-medium">Challenges</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#6b8074] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="text-sm font-medium">Schools</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#6b8074] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Impact Reports</span>
+</a>
+</nav>
+<!-- Bottom Actions -->
+<div class="pt-6 border-t border-gray-100 dark:border-gray-800 space-y-4">
+<a class="flex items-center gap-3 px-3 py-2 text-[#6b8074] dark:text-gray-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white rounded-lg h-11 px-4 font-bold text-sm transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">person_add</span>
+<span>Add New User</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-72 min-w-0">
+<!-- Top Page Header -->
+<header class="p-8 pb-4">
+<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-[#131614] dark:text-white text-3xl font-black tracking-tight">User Management</h2>
+<p class="text-[#6b8074] dark:text-gray-400 text-base">Overseeing 1,240 active participants across the network.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-bold text-[#131614] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export CSV
+                    </button>
+<button class="flex items-center justify-center size-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#131614] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Search & Filter Bar -->
+<section class="px-8 py-4">
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-3 flex flex-wrap gap-3 items-center">
+<!-- Search -->
+<div class="flex-1 min-w-[300px]">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border-none bg-gray-50 dark:bg-gray-900 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-800 transition-all placeholder:text-[#6b8074]" placeholder="Search by name, email, or school identifier..." type="text"/>
+</div>
+</div>
+<!-- Chips/Dropdowns -->
+<div class="flex gap-2">
+<button class="flex items-center gap-2 h-10 px-4 rounded-lg bg-gray-50 dark:bg-gray-900 text-[#131614] dark:text-gray-200 text-xs font-bold uppercase tracking-wide hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        Role: All
+                        <span class="material-symbols-outlined text-base">expand_more</span>
+</button>
+<button class="flex items-center gap-2 h-10 px-4 rounded-lg bg-gray-50 dark:bg-gray-900 text-[#131614] dark:text-gray-200 text-xs font-bold uppercase tracking-wide hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        Status: Active
+                        <span class="material-symbols-outlined text-base text-primary">check_circle</span>
+</button>
+<button class="flex items-center gap-2 h-10 px-4 rounded-lg bg-gray-50 dark:bg-gray-900 text-[#131614] dark:text-gray-200 text-xs font-bold uppercase tracking-wide hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        School: All Schools
+                        <span class="material-symbols-outlined text-base">expand_more</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Data Table Section -->
+<section class="px-8 pb-12">
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50/50 dark:bg-gray-900/50 border-bottom border-gray-100 dark:border-gray-700">
+<th class="px-6 py-4 text-[11px] font-black text-[#6b8074] dark:text-gray-400 uppercase tracking-widest">User Details</th>
+<th class="px-6 py-4 text-[11px] font-black text-[#6b8074] dark:text-gray-400 uppercase tracking-widest">Role</th>
+<th class="px-6 py-4 text-[11px] font-black text-[#6b8074] dark:text-gray-400 uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 text-[11px] font-black text-[#6b8074] dark:text-gray-400 uppercase tracking-widest">School</th>
+<th class="px-6 py-4 text-[11px] font-black text-[#6b8074] dark:text-gray-400 uppercase tracking-widest">Last Login</th>
+<th class="px-6 py-4 text-[11px] font-black text-[#6b8074] dark:text-gray-400 uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<!-- Row 1 -->
+<tr class="hover:bg-primary/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm" data-alt="Avatar of Sarah Jenkins" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAU9n_HXAWpiHGLdnc7ph2iuemwNXfpLwWqceoWLV90oWRdd8plrBnx6FsQO9_dyyjRi0QKiQ1upFTz09CHClBtyB0fEbV94iMM0tieqSltFj8Gqth1utQArTTciLAS7IYjVVpWB6teI0_TVd1YeFSJFaYTl5byB42CUd-waUznzB7yj-ofW46yn4FNDkMb_m-aht7WTkBJzixlD9hh4Gf92sLf3q8XpX-2rQwuWAefBAn-0ITDehDUuNtrD4gNK9kQRH4FwRcx2ajD");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#131614] dark:text-white">Sarah Jenkins</span>
+<span class="text-xs text-[#6b8074] dark:text-gray-400">s.jenkins@school.edu</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                                        Teacher
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-[#131614] dark:text-gray-300 font-medium">Greenvalley High</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-[#6b8074] dark:text-gray-400">2 hours ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-400 hover:text-[#131614] dark:hover:text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-primary/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm" data-alt="Avatar of Marcus Chen" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPFCSs9TLiZu23_0raE1QQEuVzEuBvLvqjICdZTOWb4MPCIL0MbnrleLi9f5Mm3Wjlyec81x9i7IJtilxPE8qYmvXmSnry7-13xpGRNShsaVHVD4tqX3LMA3JwYHOy7oF9YTUCJnQ_CIQE-ZeW6HavhPjLXrwbscIMXXTbK3j4HVjkx2qLaxIx6zk8qj1o91LhOdcJLsl3HOaqVRCII6dNe7452MD-_yfmMOEWITwKDy94UKbjxfNDsuzB9l0Kc2cKbK2ZUjiLAhzB");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#131614] dark:text-white">Marcus Chen</span>
+<span class="text-xs text-[#6b8074] dark:text-gray-400">m.chen@school.edu</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
+                                        Admin
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+<span class="size-2 rounded-full bg-primary"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-[#131614] dark:text-gray-300 font-medium">Oakwood Academy</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-[#6b8074] dark:text-gray-400">10 mins ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-400 hover:text-[#131614] dark:hover:text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-primary/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm" data-alt="Avatar of Elena Rodriguez" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCSlCdrKSGEXTu5I1r7yIeGfqmyJid118sFl3HeUqDOP58iWQTaXdzAZUSbR_eV1F3jIOYDoOSmdCqMEvQf23WZv53ibiXZJZz_JiuG22Yg-9F1dVwKx55W2dwm0IMkEgLPb56_uAAXfJ-MaBjfzOTh67ZC720jYe5YFcEHFUu2e_6AEuDMMTuMNoauGGc3tMqZV3wSyNAHBQ4nwCjyH5P5nklzqF4v1DP83yt581QrOIskZTk2XIVyzOMTw8Ho_qttaIBy1YOaroXd");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#131614] dark:text-white">Elena Rodriguez</span>
+<span class="text-xs text-[#6b8074] dark:text-gray-400">e.rod@school.edu</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
+                                        Student
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-500">
+<span class="size-2 rounded-full bg-amber-500"></span>
+                                        Pending
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-[#131614] dark:text-gray-300 font-medium">Greenvalley High</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-[#6b8074] dark:text-gray-400 italic">Never</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-400 hover:text-[#131614] dark:hover:text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-primary/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm" data-alt="Avatar of James Wilson" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB5F2T88ffYPN9mmiZcGfv5QmIjgvzJJ9fL-7GVkow94nM8lrJ8K8mw-eRG8HIw62mJRajAWXJXsTL0stM_NoRmqqys2jwis3yAokQnYAjlc6AeYBXZYxOrwIZFGefiUrT6SAbZdni1J3CctxSFHuP3Rn0GTHBJ8Ctjol8ZnrxJ3O8IHMcu8Ktm1KpdfP5qVAGIm80kAq0u9-TXL8QSAizlg2BEIu3GNuCD1wkNJRFj6D6CHcx5eGb6XODnfZfF4EIIyHTlh6PRzfe5");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#131614] dark:text-white">James Wilson</span>
+<span class="text-xs text-[#6b8074] dark:text-gray-400">j.wilson@school.edu</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                                        Teacher
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-gray-400">
+<span class="size-2 rounded-full bg-gray-400"></span>
+                                        Inactive
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-[#131614] dark:text-gray-300 font-medium">Riverdale Tech</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-[#6b8074] dark:text-gray-400">3 days ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-400 hover:text-[#131614] dark:hover:text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-primary/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-700 shadow-sm" data-alt="Avatar of Priya Patel" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAv2R1hKU4q_ZwYulA0scv5ogui2QUB8Rlj9zOSY-ZbNjoU3Nr2_riZA3VfL89GT2QTVwqKD1gMt7AfufapnMEtJTpuWU68lCO8rhyfIg6Jmmb1g9AYBeRdwszmZthWLt2bFk6F8MG2Vg-CLWtWulp2HE4YwZxaLMFPzoz6JhMAX84vg3U_iBw-RFhWIa8R7HwVR0lcDIZKReX7KEzMWmqIuFJN0AKM4ZGsjwFADkAAaXrmwGdPVZCkf404ROTgaaSgtFBs5ZxSbKoM");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#131614] dark:text-white">Priya Patel</span>
+<span class="text-xs text-[#6b8074] dark:text-gray-400">p.patel@school.edu</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
+                                        Student
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+<span class="size-2 rounded-full bg-primary"></span>
+                                        Active
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-[#131614] dark:text-gray-300 font-medium">Oakwood Academy</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-xs text-[#6b8074] dark:text-gray-400">1 hour ago</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors text-gray-400 hover:text-[#131614] dark:hover:text-white">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+<p class="text-xs text-[#6b8074] dark:text-gray-400">Showing <span class="font-bold text-[#131614] dark:text-white">1-5</span> of <span class="font-bold">1,240</span> users</p>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded border border-gray-200 dark:border-gray-700 text-xs font-bold disabled:opacity-30" disabled="">
+                            Previous
+                        </button>
+<div class="flex items-center gap-1">
+<button class="size-8 rounded bg-primary text-white text-xs font-bold">1</button>
+<button class="size-8 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-xs font-bold transition-colors">2</button>
+<button class="size-8 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-xs font-bold transition-colors">3</button>
+<span class="text-gray-400 text-xs px-1">...</span>
+<button class="size-8 rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-xs font-bold transition-colors">248</button>
+</div>
+<button class="px-3 py-1.5 rounded border border-gray-200 dark:border-gray-700 text-xs font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            Next
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

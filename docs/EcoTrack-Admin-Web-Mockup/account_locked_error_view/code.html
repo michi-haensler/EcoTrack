@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoTrack Admin - Account gesperrt</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b734b",
+                        "background-light": "#f9fafa",
+                        "background-dark": "#111927",
+                        "error-red": "#ef4444"
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Work Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<!-- Navbar background (dimmed/blurred for modal focus) -->
+<div class="fixed inset-0 z-0 opacity-20 pointer-events-none grayscale">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f1f3f2] px-10 py-3 bg-white">
+<div class="flex items-center gap-4 text-[#131614]">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined">eco</span>
+</div>
+<h2 class="text-[#131614] text-lg font-bold leading-tight tracking-[-0.015em]">EcoTrack Admin</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-9 text-gray-400">
+<span class="text-sm font-medium">Dashboard</span>
+<span class="text-sm font-medium">Challenges</span>
+<span class="text-sm font-medium">Users</span>
+</div>
+<div class="bg-gray-200 rounded-full size-10"></div>
+</div>
+</header>
+</div>
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 z-10 flex items-center justify-center bg-[#111927]/60 backdrop-blur-sm px-4">
+<!-- Modal Card -->
+<div class="w-full max-w-[440px] bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
+<!-- Red Accent Top Border -->
+<div class="h-1.5 w-full bg-error-red"></div>
+<div class="p-8 md:p-10 flex flex-col items-center text-center">
+<!-- Error Icon -->
+<div class="mb-6 flex items-center justify-center size-20 rounded-full bg-red-50 dark:bg-red-900/20">
+<span class="material-symbols-outlined text-error-red text-4xl">lock_person</span>
+</div>
+<!-- Headline -->
+<h1 class="text-[#131614] dark:text-white text-2xl md:text-[32px] font-bold leading-tight mb-3">
+                    Account gesperrt
+                </h1>
+<!-- Body Text -->
+<p class="text-gray-600 dark:text-gray-400 text-base font-normal leading-relaxed mb-6">
+                    Dein Konto wurde von einem Administrator gesperrt. Du hast derzeit keinen Zugriff auf das Dashboard.
+                </p>
+<!-- Specific Reason Box -->
+<div class="w-full bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 mb-8 border border-gray-100 dark:border-gray-700/50">
+<p class="text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500 font-semibold mb-1">Grund</p>
+<h2 class="text-[#131614] dark:text-white text-base font-bold leading-tight tracking-tight">
+                        Zu viele fehlgeschlagene Anmeldeversuche
+                    </h2>
+</div>
+<!-- Primary Button -->
+<div class="w-full space-y-3">
+<button class="w-full flex cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-primary hover:bg-primary/90 transition-colors text-white gap-2 text-base font-bold leading-normal shadow-sm">
+<span class="material-symbols-outlined text-xl">mail</span>
+<span>Support kontaktieren</span>
+</button>
+<!-- Secondary Action -->
+<button class="w-full flex cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400 text-sm font-medium">
+<span>Zurück zum Login</span>
+</button>
+</div>
+</div>
+<!-- Footer Help Text -->
+<div class="px-8 pb-8 pt-0 text-center">
+<p class="text-xs text-gray-400">
+                    ID: ERR_LOCK_AUTH_092 • EcoTrack Security Compliance
+                </p>
+</div>
+</div>
+</div>
+</body></html>
