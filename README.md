@@ -1,5 +1,14 @@
 # EcoTrack 🌱
 
+# Team Aufteilung 
+
+Backend: Karner, Radlinger, Hänsler (Scrum Master)
+ 
+Fontend Web: Fellegger & Dalipovic
+ 
+Frontend App : Kovacs & Grigic 
+ 
+
 **Gamification-Plattform für nachhaltige Aktionen in Schulen**
 
 EcoTrack ist eine Mono-Repository-Anwendung, die Schüler:innen motiviert, nachhaltige Aktionen durchzuführen und dafür Punkte zu sammeln. Die Plattform bietet ein Leaderboard, Challenges und eine Admin-Oberfläche für Lehrkräfte.
