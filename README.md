@@ -2,11 +2,11 @@
 
 # Team Aufteilung 
 
-Backend: Karner, Radlinger, Hänsler (Scrum Master)
+- Backend: Karner, Radlinger, Hänsler (Scrum Master)
  
-Fontend Web: Fellegger & Dalipovic
+- Fontend Web: Fellegger & Dalipovic
  
-Frontend App : Kovacs & Grigic 
+- Frontend App : Kovacs & Grigic 
  
 
 **Gamification-Plattform für nachhaltige Aktionen in Schulen**
