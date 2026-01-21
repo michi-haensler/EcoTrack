@@ -1,11 +1,34 @@
 {
   "folders": [
-    { "name": "EcoTrack", "path": "." },
-    { "name": "mobile", "path": "mobile" },
-    { "name": "admin-web", "path": "admin-web" },
-    { "name": "server", "path": "server" }
+    { "name": "🔧 EcoTrack (Root)", "path": "." },
+    { "name": "🖥️ Server (Backend)", "path": "server" },
+    { "name": "🌐 Admin-Web (Frontend)", "path": "admin-web" },
+    { "name": "📱 Mobile (React Native)", "path": "mobile" },
+    { "name": "📦 Shared Resources", "path": "shared-resources" },
+    { "name": "🐳 Infrastructure", "path": "infra" },
+    { "name": "📚 Documentation", "path": "docs" }
   ],
   "settings": {
+    // ============================================
+    // Editor Settings
+    // ============================================
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.rulers": [100, 120],
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+
+    // ============================================
+    // File Settings
+    // ============================================
     "files.exclude": {
       "**/.git": true,
       "**/node_modules": true,
@@ -14,8 +37,25 @@
       "**/target": true,
       "**/.gradle": true,
       "**/android/app/build": true,
-      "**/ios/Pods": true
+      "**/ios/Pods": true,
+      "**/.DS_Store": true,
+      "**/coverage": true,
+      "**/.vite": true,
+      "**/.idea": true
     },
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/target/**": true,
+      "**/dist/**": true,
+      "**/android/**": true,
+      "**/ios/**": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+
+    // ============================================
+    // Search Settings
+    // ============================================
     "search.exclude": {
       "**/node_modules": true,
       "**/build": true,
@@ -23,39 +63,312 @@
       "**/target": true,
       "**/.gradle": true,
       "**/android/app/build": true,
-      "**/ios/Pods": true
+      "**/ios/Pods": true,
+      "**/coverage": true
     },
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // ============================================
+    // Java Settings
+    // ============================================
     "[java]": {
-      "editor.defaultFormatter": "redhat.java"
+      "editor.defaultFormatter": "redhat.java",
+      "editor.tabSize": 4
     },
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.saveActions.organizeImports": true,
+
+    // ============================================
+    // TypeScript/JavaScript Settings
+    // ============================================
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
     },
     "[typescriptreact]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
     },
     "typescript.preferences.importModuleSpecifier": "relative",
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+
+    // ============================================
+    // JSON/YAML Settings
+    // ============================================
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml",
+      "editor.tabSize": 2
+    },
+
+    // ============================================
+    // ESLint Settings
+    // ============================================
     "eslint.workingDirectories": [
       { "directory": "admin-web", "changeProcessCWD": true },
       { "directory": "mobile", "changeProcessCWD": true }
-    ]
+    ],
+
+    // ============================================
+    // Git Settings
+    // ============================================
+    "git.autofetch": true,
+    "git.enableSmartCommit": true
   },
   "extensions": {
     "recommendations": [
+      // Core Formatting
       "esbenp.prettier-vscode",
       "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
+      
+      // Java/Spring Boot
       "redhat.java",
       "vscjava.vscode-java-pack",
+      "vscjava.vscode-java-debug",
+      "vscjava.vscode-java-test",
+      "vscjava.vscode-maven",
       "vmware.vscode-boot-dev-pack",
+      
+      // React/React Native
       "msjsdiag.vscode-react-native",
-      "eamodio.gitlens",
-      "github.vscode-github-actions",
-      "ms-azuretools.vscode-docker",
+      "dsznajder.es7-react-js-snippets",
+      "bradlc.vscode-tailwindcss",
+      
+      // Testing
+      "vitest.explorer",
+      "orta.vscode-jest",
+      
+      // API & Contracts
       "42crunch.vscode-openapi",
-      "bradlc.vscode-tailwindcss"
+      "humao.rest-client",
+      
+      // DevOps
+      "ms-azuretools.vscode-docker",
+      "github.vscode-github-actions",
+      
+      // Git & Collaboration
+      "eamodio.gitlens",
+      "github.vscode-pull-request-github",
+      
+      // Code Quality
+      "sonarsource.sonarlint-vscode",
+      "streetsidesoftware.code-spell-checker",
+      "streetsidesoftware.code-spell-checker-german",
+      
+      // Utilities
+      "gruntfuggly.todo-tree",
+      "christian-kohler.path-intellisense",
+      "redhat.vscode-yaml",
+      "pkief.material-icon-theme",
+      
+      // AI Assistance
+      "github.copilot",
+      "github.copilot-chat"
+    ],
+    "unwantedRecommendations": []
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🚀 Full Stack: Start All",
+        "dependsOn": [
+          "🐳 Docker: Start Services",
+          "🖥️ Backend: Run",
+          "🌐 Web: Dev Server",
+          "📱 Mobile: Metro"
+        ],
+        "dependsOrder": "sequence",
+        "problemMatcher": []
+      },
+      {
+        "label": "🐳 Docker: Start Services",
+        "type": "shell",
+        "command": "docker-compose up -d",
+        "options": { "cwd": "${workspaceFolder:🐳 Infrastructure}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "🐳 Docker: Stop Services",
+        "type": "shell",
+        "command": "docker-compose down",
+        "options": { "cwd": "${workspaceFolder:🐳 Infrastructure}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "🖥️ Backend: Build",
+        "type": "shell",
+        "command": "./mvnw clean install -DskipTests",
+        "options": { "cwd": "${workspaceFolder:🖥️ Server (Backend)}" },
+        "group": "build",
+        "problemMatcher": "$maven"
+      },
+      {
+        "label": "🖥️ Backend: Run",
+        "type": "shell",
+        "command": "./mvnw spring-boot:run -Dspring-boot.run.profiles=dev",
+        "options": { "cwd": "${workspaceFolder:🖥️ Server (Backend)}" },
+        "isBackground": true,
+        "problemMatcher": []
+      },
+      {
+        "label": "🖥️ Backend: Test",
+        "type": "shell",
+        "command": "./mvnw test",
+        "options": { "cwd": "${workspaceFolder:🖥️ Server (Backend)}" },
+        "group": "test",
+        "problemMatcher": "$maven"
+      },
+      {
+        "label": "🌐 Web: Install",
+        "type": "shell",
+        "command": "npm install",
+        "options": { "cwd": "${workspaceFolder:🌐 Admin-Web (Frontend)}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "🌐 Web: Dev Server",
+        "type": "shell",
+        "command": "npm run dev",
+        "options": { "cwd": "${workspaceFolder:🌐 Admin-Web (Frontend)}" },
+        "isBackground": true,
+        "problemMatcher": []
+      },
+      {
+        "label": "🌐 Web: Build",
+        "type": "shell",
+        "command": "npm run build",
+        "options": { "cwd": "${workspaceFolder:🌐 Admin-Web (Frontend)}" },
+        "group": "build",
+        "problemMatcher": "$tsc"
+      },
+      {
+        "label": "🌐 Web: Test",
+        "type": "shell",
+        "command": "npm test",
+        "options": { "cwd": "${workspaceFolder:🌐 Admin-Web (Frontend)}" },
+        "group": "test",
+        "problemMatcher": []
+      },
+      {
+        "label": "📱 Mobile: Install",
+        "type": "shell",
+        "command": "npm install",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "📱 Mobile: Metro",
+        "type": "shell",
+        "command": "npm start",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "isBackground": true,
+        "problemMatcher": []
+      },
+      {
+        "label": "📱 Mobile: iOS",
+        "type": "shell",
+        "command": "npm run ios",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "📱 Mobile: Android",
+        "type": "shell",
+        "command": "npm run android",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "📱 Mobile: Test",
+        "type": "shell",
+        "command": "npm test",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "group": "test",
+        "problemMatcher": []
+      },
+      {
+        "label": "🔍 Lint All",
+        "dependsOn": ["🌐 Web: Lint", "📱 Mobile: Lint"],
+        "problemMatcher": []
+      },
+      {
+        "label": "🌐 Web: Lint",
+        "type": "shell",
+        "command": "npm run lint",
+        "options": { "cwd": "${workspaceFolder:🌐 Admin-Web (Frontend)}" },
+        "problemMatcher": ["$eslint-stylish"]
+      },
+      {
+        "label": "📱 Mobile: Lint",
+        "type": "shell",
+        "command": "npm run lint",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "problemMatcher": ["$eslint-stylish"]
+      },
+      {
+        "label": "🔄 Generate All API Clients",
+        "dependsOn": ["🌐 Web: Generate API", "📱 Mobile: Generate API"],
+        "problemMatcher": []
+      },
+      {
+        "label": "🌐 Web: Generate API",
+        "type": "shell",
+        "command": "npm run generate-api",
+        "options": { "cwd": "${workspaceFolder:🌐 Admin-Web (Frontend)}" },
+        "problemMatcher": []
+      },
+      {
+        "label": "📱 Mobile: Generate API",
+        "type": "shell",
+        "command": "npm run generate-api",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (React Native)}" },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "🖥️ Debug Backend",
+        "request": "launch",
+        "mainClass": "at.ecotrack.EcoTrackApplication",
+        "vmArgs": "-Dspring.profiles.active=dev"
+      },
+      {
+        "type": "chrome",
+        "name": "🌐 Debug Web (Chrome)",
+        "request": "launch",
+        "url": "http://localhost:5173",
+        "webRoot": "${workspaceFolder:🌐 Admin-Web (Frontend)}/src"
+      },
+      {
+        "name": "📱 Debug Android",
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "android"
+      },
+      {
+        "name": "📱 Debug iOS",
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "ios"
+      }
     ]
   }
 }

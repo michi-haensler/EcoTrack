@@ -1,27 +1,311 @@
 {
   "folders": [
-    { "name": "server", "path": "server" },
-    { "name": "shared-resources", "path": "shared-resources" }
+    { "name": "🖥️ Server (Backend)", "path": "server" },
+    { "name": "📦 Shared Resources", "path": "shared-resources" },
+    { "name": "🐳 Infrastructure", "path": "infra" },
+    { "name": "📚 Documentation", "path": "docs" }
   ],
   "settings": {
+    // ============================================
+    // Editor Settings
+    // ============================================
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.rulers": [120],
+    "editor.wordWrap": "off",
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.suggestSelection": "first",
+    "editor.inlineSuggest.enabled": true,
+
+    // ============================================
+    // File Settings
+    // ============================================
     "files.exclude": {
       "**/.git": true,
       "**/target": true,
-      "**/.gradle": true
+      "**/.gradle": true,
+      "**/.idea": true,
+      "**/*.iml": true,
+      "**/node_modules": true,
+      "**/.DS_Store": true
     },
-    "editor.formatOnSave": true,
+    "files.watcherExclude": {
+      "**/target/**": true,
+      "**/node_modules/**": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+
+    // ============================================
+    // Java Settings
+    // ============================================
     "[java]": {
-      "editor.defaultFormatter": "redhat.java"
+      "editor.defaultFormatter": "redhat.java",
+      "editor.tabSize": 4
     },
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.format.settings.profile": "GoogleStyle",
+    "java.saveActions.organizeImports": true,
+    "java.project.importOnFirstTimeStartup": "automatic",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m",
+    "java.debug.settings.hotCodeReplace": "auto",
+    "java.sources.organizeImports.starThreshold": 99,
+    "java.sources.organizeImports.staticStarThreshold": 99,
+
+    // ============================================
+    // Spring Boot Settings
+    // ============================================
+    "spring-boot.ls.problem.boot2.JAVA_AUTOWIRED_CONSTRUCTOR": "WARNING",
+    "boot-java.rewrite.reconcile": true,
+
+    // ============================================
+    // Maven Settings
+    // ============================================
+    "maven.terminal.useJavaHome": true,
+    "maven.executable.preferMavenWrapper": true,
+
+    // ============================================
+    // Testing Settings
+    // ============================================
+    "java.test.config": {
+      "vmArgs": ["-Dspring.profiles.active=test"]
+    },
+    "java.test.defaultConfig": "test",
+
+    // ============================================
+    // Terminal Settings
+    // ============================================
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.env.osx": {
+      "SPRING_PROFILES_ACTIVE": "dev"
+    },
+
+    // ============================================
+    // Git Settings
+    // ============================================
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "gitlens.hovers.currentLine.over": "line",
+
+    // ============================================
+    // YAML/JSON Settings
+    // ============================================
+    "[yaml]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml",
+      "editor.tabSize": 2
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+
+    // ============================================
+    // Search Settings
+    // ============================================
+    "search.exclude": {
+      "**/target": true,
+      "**/node_modules": true,
+      "**/.git": true
+    }
   },
   "extensions": {
     "recommendations": [
+      // Java Development
       "redhat.java",
       "vscjava.vscode-java-pack",
+      "vscjava.vscode-java-debug",
+      "vscjava.vscode-java-test",
+      "vscjava.vscode-maven",
+      "vscjava.vscode-java-dependency",
+      
+      // Spring Boot
       "vmware.vscode-boot-dev-pack",
+      "vmware.vscode-spring-boot",
+      "vscjava.vscode-spring-initializr",
+      "vscjava.vscode-spring-boot-dashboard",
+      
+      // API & Contracts
+      "42crunch.vscode-openapi",
+      "humao.rest-client",
+      
+      // Database
+      "mtxr.sqltools",
+      "mtxr.sqltools-driver-pg",
+      
+      // Docker & Containers
+      "ms-azuretools.vscode-docker",
+      
+      // Git & Collaboration
       "eamodio.gitlens",
-      "42crunch.vscode-openapi"
+      "github.vscode-pull-request-github",
+      
+      // Code Quality
+      "sonarsource.sonarlint-vscode",
+      
+      // YAML/JSON
+      "redhat.vscode-yaml",
+      
+      // Utilities
+      "streetsidesoftware.code-spell-checker",
+      "streetsidesoftware.code-spell-checker-german",
+      "gruntfuggly.todo-tree",
+      "editorconfig.editorconfig",
+      
+      // AI Assistance
+      "github.copilot",
+      "github.copilot-chat"
+    ],
+    "unwantedRecommendations": []
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🔨 Build (clean install)",
+        "type": "shell",
+        "command": "./mvnw clean install -DskipTests",
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": "$maven"
+      },
+      {
+        "label": "🧪 Run Tests",
+        "type": "shell",
+        "command": "./mvnw test",
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": "$maven"
+      },
+      {
+        "label": "✅ Verify (full build with tests)",
+        "type": "shell",
+        "command": "./mvnw clean verify",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": "$maven"
+      },
+      {
+        "label": "🚀 Run Spring Boot",
+        "type": "shell",
+        "command": "./mvnw spring-boot:run -Dspring-boot.run.profiles=dev",
+        "isBackground": true,
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🐳 Docker: Start Services",
+        "type": "shell",
+        "command": "docker-compose up -d",
+        "options": {
+          "cwd": "${workspaceFolder:🐳 Infrastructure}"
+        },
+        "presentation": {
+          "reveal": "always"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🐳 Docker: Stop Services",
+        "type": "shell",
+        "command": "docker-compose down",
+        "options": {
+          "cwd": "${workspaceFolder:🐳 Infrastructure}"
+        },
+        "presentation": {
+          "reveal": "always"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🐳 Docker: View Logs",
+        "type": "shell",
+        "command": "docker-compose logs -f",
+        "options": {
+          "cwd": "${workspaceFolder:🐳 Infrastructure}"
+        },
+        "isBackground": true,
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "📊 Generate Coverage Report",
+        "type": "shell",
+        "command": "./mvnw jacoco:report",
+        "presentation": {
+          "reveal": "always"
+        },
+        "problemMatcher": "$maven"
+      },
+      {
+        "label": "🔄 Generate API Client",
+        "type": "shell",
+        "command": "./mvnw generate-sources -pl :ecotrack-api",
+        "presentation": {
+          "reveal": "always"
+        },
+        "problemMatcher": "$maven"
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "🚀 EcoTrack Application",
+        "request": "launch",
+        "mainClass": "at.ecotrack.EcoTrackApplication",
+        "projectName": "ecotrack-application",
+        "vmArgs": "-Dspring.profiles.active=dev",
+        "envFile": "${workspaceFolder:🖥️ Server (Backend)}/.env"
+      },
+      {
+        "type": "java",
+        "name": "🧪 Debug Current Test",
+        "request": "launch",
+        "mainClass": "",
+        "projectName": ""
+      },
+      {
+        "type": "java",
+        "name": "🔗 Attach to Remote JVM",
+        "request": "attach",
+        "hostName": "localhost",
+        "port": 5005
+      }
+    ],
+    "compounds": [
+      {
+        "name": "🐳 Full Stack (Docker + Spring Boot)",
+        "configurations": [],
+        "preLaunchTask": "🐳 Docker: Start Services",
+        "stopAll": true
+      }
     ]
   }
 }

@@ -55,7 +55,7 @@ EcoTrack/
 
 2. **Datenbank starten:**
    ```bash
-   docker-compose -f docker-compose.dev.yml up -d
+   docker-compose -f infra/docker-compose.yml up -d
    ```
 
 3. **Backend starten:**
@@ -80,14 +80,22 @@ EcoTrack/
 
 ## 🔧 VS Code Workspaces
 
-Öffne den passenden Workspace für deine Entwicklungsaufgabe:
+Jedes Team hat einen eigenen, vollständig konfigurierten VS Code Workspace mit optimierten Settings, Extensions und Tasks:
 
-| Workspace | Beschreibung |
-|-----------|--------------|
-| `ecotrack.code-workspace` | Vollständiges Projekt |
-| `ecotrack-mobile.code-workspace` | Mobile App Entwicklung |
-| `ecotrack-web.code-workspace` | Admin Dashboard Entwicklung |
-| `ecotrack-server.code-workspace` | Backend API Entwicklung |
+| Workspace | Team | Befehl |
+|-----------|------|--------|
+| `ecotrack-server.code-workspace` | Backend (Karner, Radlinger, Hänsler) | `code ecotrack-server.code-workspace` |
+| `ecotrack-web.code-workspace` | Frontend Web (Fellegger, Dalipovic) | `code ecotrack-web.code-workspace` |
+| `ecotrack-mobile.code-workspace` | Frontend App (Kovacs, Grigic) | `code ecotrack-mobile.code-workspace` |
+| `ecotrack-full.code-workspace` | Full Stack / Lead | `code ecotrack-full.code-workspace` |
+
+### Workspace Features
+- ✅ **Empfohlene Extensions** - Automatische Installation-Empfehlung beim Öffnen
+- ✅ **Vorkonfigurierte Tasks** - Build, Test, Run mit `Cmd+Shift+B`
+- ✅ **Debug-Konfigurationen** - F5 zum Debuggen
+- ✅ **Optimierte Settings** - Formatter, Linter, Editor-Einstellungen
+
+👉 **Detaillierte Anleitung:** [docs/WORKSPACE_SETUP.md](docs/WORKSPACE_SETUP.md)
 
 ## 🛠️ Technologie-Stack
 

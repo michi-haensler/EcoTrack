@@ -1,32 +1,497 @@
 {
   "folders": [
-    { "name": "mobile", "path": "mobile" },
-    { "name": "shared-resources", "path": "shared-resources" }
+    { "name": "📱 Mobile (React Native)", "path": "mobile" },
+    { "name": "📦 Shared Resources", "path": "shared-resources" },
+    { "name": "📚 Documentation", "path": "docs" }
   ],
   "settings": {
+    // ============================================
+    // Editor Settings
+    // ============================================
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.rulers": [100],
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.linkedEditing": true,
+    "editor.suggestSelection": "first",
+    "editor.inlineSuggest.enabled": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+
+    // ============================================
+    // File Settings
+    // ============================================
     "files.exclude": {
       "**/.git": true,
       "**/node_modules": true,
       "**/build": true,
       "**/android/app/build": true,
-      "**/ios/Pods": true
+      "**/android/.gradle": true,
+      "**/ios/Pods": true,
+      "**/ios/build": true,
+      "**/.DS_Store": true,
+      "**/coverage": true,
+      "**/.expo": true,
+      "**/.metro-health-check*": true
     },
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/android/**": true,
+      "**/ios/**": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+
+    // ============================================
+    // TypeScript Settings
+    // ============================================
     "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
     },
     "[typescriptreact]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.suggest.autoImports": true,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.tsdk": "mobile/node_modules/typescript/lib",
+
+    // ============================================
+    // JSON Settings
+    // ============================================
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.tabSize": 2
+    },
+
+    // ============================================
+    // ESLint Settings
+    // ============================================
+    "eslint.enable": true,
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    "eslint.workingDirectories": [
+      { "directory": "mobile", "changeProcessCWD": true }
+    ],
+
+    // ============================================
+    // Prettier Settings
+    // ============================================
+    "prettier.requireConfig": true,
+    "prettier.configPath": "mobile/.prettierrc",
+
+    // ============================================
+    // React Native Settings
+    // ============================================
+    "react-native.packager.port": 8081,
+    "react-native-tools.showUserTips": false,
+    "react-native-tools.projectRoot": "mobile",
+
+    // ============================================
+    // Emmet Settings
+    // ============================================
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact",
+      "typescript": "typescriptreact"
+    },
+    "emmet.triggerExpansionOnTab": true,
+
+    // ============================================
+    // Terminal Settings
+    // ============================================
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+    "terminal.integrated.env.osx": {
+      "JAVA_HOME": "/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
+    },
+
+    // ============================================
+    // Git Settings
+    // ============================================
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "gitlens.hovers.currentLine.over": "line",
+
+    // ============================================
+    // Testing Settings
+    // ============================================
+    "testing.automaticallyOpenPeekView": "failureVisible",
+    "jest.autoRun": "off",
+    "jest.jestCommandLine": "npm test --",
+
+    // ============================================
+    // Search Settings
+    // ============================================
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/android": true,
+      "**/ios": true,
+      "**/coverage": true,
+      "**/.git": true
     }
   },
   "extensions": {
     "recommendations": [
+      // Core TypeScript/JavaScript
       "esbenp.prettier-vscode",
       "dbaeumer.vscode-eslint",
+      
+      // React Native Development
       "msjsdiag.vscode-react-native",
+      "dsznajder.es7-react-js-snippets",
+      "burkeholland.simple-react-snippets",
+      
+      // Testing
+      "orta.vscode-jest",
+      
+      // API & Contracts
+      "42crunch.vscode-openapi",
+      "humao.rest-client",
+      
+      // Git & Collaboration
       "eamodio.gitlens",
-      "42crunch.vscode-openapi"
+      "github.vscode-pull-request-github",
+      
+      // Code Quality
+      "sonarsource.sonarlint-vscode",
+      "streetsidesoftware.code-spell-checker",
+      "streetsidesoftware.code-spell-checker-german",
+      
+      // Utilities
+      "gruntfuggly.todo-tree",
+      "editorconfig.editorconfig",
+      "christian-kohler.path-intellisense",
+      "naumovs.color-highlight",
+      "steoates.autoimport",
+      
+      // Native Development (optional)
+      "redhat.vscode-xml",
+      "mathiasfrohlich.Kotlin",
+      
+      // Icons & Theme
+      "pkief.material-icon-theme",
+      
+      // AI Assistance
+      "github.copilot",
+      "github.copilot-chat"
+    ],
+    "unwantedRecommendations": []
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "📦 Install Dependencies",
+        "type": "shell",
+        "command": "npm install",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🚀 Start Metro Bundler",
+        "type": "shell",
+        "command": "npm start",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "isBackground": true,
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": {
+          "pattern": {
+            "regexp": "^$"
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "Starting Metro",
+            "endsPattern": "Welcome to Metro"
+          }
+        }
+      },
+      {
+        "label": "🤖 Run Android",
+        "type": "shell",
+        "command": "npm run android",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🍎 Run iOS",
+        "type": "shell",
+        "command": "npm run ios",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧪 Run Tests",
+        "type": "shell",
+        "command": "npm test",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧪 Run Tests (Watch)",
+        "type": "shell",
+        "command": "npm test -- --watch",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "isBackground": true,
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "📊 Run Tests with Coverage",
+        "type": "shell",
+        "command": "npm test -- --coverage",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🔍 Lint",
+        "type": "shell",
+        "command": "npm run lint",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": ["$eslint-stylish"]
+      },
+      {
+        "label": "📝 Type Check",
+        "type": "shell",
+        "command": "npx tsc --noEmit",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": "$tsc"
+      },
+      {
+        "label": "🔄 Generate API Client",
+        "type": "shell",
+        "command": "npm run generate-api",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🍎 iOS: Install Pods",
+        "type": "shell",
+        "command": "cd ios && pod install",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🤖 Android: Clean Build",
+        "type": "shell",
+        "command": "cd android && ./gradlew clean",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧹 Clean All",
+        "type": "shell",
+        "command": "rm -rf node_modules ios/Pods android/app/build coverage .metro-health-check*",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "presentation": {
+          "reveal": "always"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🔄 Reset Metro Cache",
+        "type": "shell",
+        "command": "npm start -- --reset-cache",
+        "options": {
+          "cwd": "${workspaceFolder:📱 Mobile (React Native)}"
+        },
+        "isBackground": true,
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated"
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🤖 Debug Android",
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "android",
+        "sourceMaps": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./~/*": "${workspaceFolder:📱 Mobile (React Native)}/node_modules/*",
+          "webpack:///./*": "${workspaceFolder:📱 Mobile (React Native)}/*",
+          "webpack:///*": "*"
+        }
+      },
+      {
+        "name": "🍎 Debug iOS",
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "type": "reactnative",
+        "request": "launch",
+        "platform": "ios",
+        "sourceMaps": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./~/*": "${workspaceFolder:📱 Mobile (React Native)}/node_modules/*",
+          "webpack:///./*": "${workspaceFolder:📱 Mobile (React Native)}/*",
+          "webpack:///*": "*"
+        }
+      },
+      {
+        "name": "🔗 Attach to Packager",
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "type": "reactnative",
+        "request": "attach",
+        "sourceMaps": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./~/*": "${workspaceFolder:📱 Mobile (React Native)}/node_modules/*",
+          "webpack:///./*": "${workspaceFolder:📱 Mobile (React Native)}/*",
+          "webpack:///*": "*"
+        }
+      },
+      {
+        "name": "🧪 Debug Jest Tests",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "${workspaceFolder:📱 Mobile (React Native)}/node_modules/jest/bin/jest.js",
+          "--runInBand"
+        ],
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      },
+      {
+        "name": "🧪 Debug Current Test File",
+        "type": "node",
+        "request": "launch",
+        "runtimeArgs": [
+          "--inspect-brk",
+          "${workspaceFolder:📱 Mobile (React Native)}/node_modules/jest/bin/jest.js",
+          "--runInBand",
+          "${relativeFile}"
+        ],
+        "cwd": "${workspaceFolder:📱 Mobile (React Native)}",
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "🚀 Metro + Android Debug",
+        "configurations": ["🤖 Debug Android"],
+        "preLaunchTask": "🚀 Start Metro Bundler",
+        "stopAll": true
+      },
+      {
+        "name": "🚀 Metro + iOS Debug",
+        "configurations": ["🍎 Debug iOS"],
+        "preLaunchTask": "🚀 Start Metro Bundler",
+        "stopAll": true
+      }
     ]
   }
 }

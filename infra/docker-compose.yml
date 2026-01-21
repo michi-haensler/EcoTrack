@@ -51,9 +51,9 @@ services:
       
     volumes:
       # Realm-Import beim Start
-      - ./shared-resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+      - ../shared-resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
       # Themes (optional für Custom UI)
-      - ./shared-resources/keycloak/themes:/opt/keycloak/themes:ro
+      - ../shared-resources/keycloak/themes:/opt/keycloak/themes:ro
     ports:
       - "8180:8080"
     networks:
