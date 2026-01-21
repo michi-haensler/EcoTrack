@@ -29,10 +29,12 @@
 - [ ] Ich habe entsprechende Änderungen an der Dokumentation vorgenommen
 - [ ] Meine Änderungen erzeugen keine neuen Warnings
 
-### Tests
+### Tests (CI/CD Erforderlich ✅)
 - [ ] Ich habe Tests hinzugefügt, die beweisen, dass mein Fix effektiv ist oder mein Feature funktioniert
 - [ ] Neue und bestehende Unit-Tests laufen lokal durch
 - [ ] Integration Tests sind erfolgreich (falls zutreffend)
+- [ ] Alle CI-Checks sind grün (Backend, Admin-Web, Mobile Tests)
+- [ ] Code Coverage ist >= 80% (oder begründet warum nicht)
 
 ### API-Änderungen (falls zutreffend)
 - [ ] Ich habe die OpenAPI-Spezifikation aktualisiert

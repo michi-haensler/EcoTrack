@@ -1,0 +1,253 @@
+# EcoTrack Pull Request Checks
+# Zusätzliche Checks für Pull Requests
+
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  # ============================================
+  # PR Title & Description Check
+  # ============================================
+  pr-validation:
+    name: 📋 PR Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check PR Title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            test
+            chore
+            perf
+            ci
+            build
+            revert
+          requireScope: false
+          subjectPattern: ^[A-Z].*$
+          subjectPatternError: |
+            Der PR-Titel muss mit einem Großbuchstaben beginnen.
+            Format: <type>: <Beschreibung>
+            Beispiel: feat: Add user authentication
+
+      - name: Check PR Description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            
+            if (body.length < 50) {
+              core.setFailed('PR-Beschreibung muss mindestens 50 Zeichen lang sein.');
+              return;
+            }
+            
+            console.log('✅ PR-Beschreibung ist ausreichend.');
+
+  # ============================================
+  # Changed Files Analysis
+  # ============================================
+  changed-files:
+    name: 📁 Analyze Changed Files
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.changes.outputs.backend }}
+      admin-web: ${{ steps.changes.outputs.admin-web }}
+      mobile: ${{ steps.changes.outputs.mobile }}
+      docs: ${{ steps.changes.outputs.docs }}
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Detect Changed Files
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'server/**'
+              - 'pom.xml'
+            admin-web:
+              - 'admin-web/**'
+            mobile:
+              - 'mobile/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+              - 'shared-resources/**'
+
+      - name: Report Changes
+        run: |
+          echo "## 📁 Changed Components" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Changed |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Backend | ${{ steps.changes.outputs.backend == 'true' && '✅ Yes' || '⬜ No' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Admin-Web | ${{ steps.changes.outputs.admin-web == 'true' && '✅ Yes' || '⬜ No' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Mobile | ${{ steps.changes.outputs.mobile == 'true' && '✅ Yes' || '⬜ No' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs | ${{ steps.changes.outputs.docs == 'true' && '✅ Yes' || '⬜ No' }} |" >> $GITHUB_STEP_SUMMARY
+
+  # ============================================
+  # Conditional Backend Tests
+  # ============================================
+  backend-tests:
+    name: 🧪 Backend Tests (Conditional)
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: needs.changed-files.outputs.backend == 'true'
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ecotrack
+          POSTGRES_PASSWORD: ecotrack
+          POSTGRES_DB: ecotrack_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Run Tests
+        run: ./mvnw -B clean verify
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+  # ============================================
+  # Conditional Admin-Web Tests
+  # ============================================
+  admin-web-tests:
+    name: 🧪 Admin-Web Tests (Conditional)
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: needs.changed-files.outputs.admin-web == 'true'
+
+    defaults:
+      run:
+        working-directory: ./admin-web
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: admin-web/package-lock.json
+
+      - name: Install & Test
+        run: |
+          npm ci
+          npm run lint
+          npm test
+
+  # ============================================
+  # Conditional Mobile Tests
+  # ============================================
+  mobile-tests:
+    name: 🧪 Mobile Tests (Conditional)
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: needs.changed-files.outputs.mobile == 'true'
+
+    defaults:
+      run:
+        working-directory: ./mobile
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install & Test
+        run: |
+          npm ci
+          npm run lint
+          npm test
+
+  # ============================================
+  # PR Status Summary
+  # ============================================
+  pr-status:
+    name: ✅ PR Status
+    runs-on: ubuntu-latest
+    needs: [pr-validation, changed-files, backend-tests, admin-web-tests, mobile-tests]
+    if: always()
+    
+    steps:
+      - name: Check Status
+        run: |
+          echo "## 📊 PR Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Determine overall status
+          FAILED=false
+          
+          if [[ "${{ needs.pr-validation.result }}" == "failure" ]]; then
+            echo "❌ PR Validation failed" >> $GITHUB_STEP_SUMMARY
+            FAILED=true
+          fi
+          
+          if [[ "${{ needs.backend-tests.result }}" == "failure" ]]; then
+            echo "❌ Backend Tests failed" >> $GITHUB_STEP_SUMMARY
+            FAILED=true
+          fi
+          
+          if [[ "${{ needs.admin-web-tests.result }}" == "failure" ]]; then
+            echo "❌ Admin-Web Tests failed" >> $GITHUB_STEP_SUMMARY
+            FAILED=true
+          fi
+          
+          if [[ "${{ needs.mobile-tests.result }}" == "failure" ]]; then
+            echo "❌ Mobile Tests failed" >> $GITHUB_STEP_SUMMARY
+            FAILED=true
+          fi
+          
+          if [[ "$FAILED" == "true" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**⛔ Please fix the failing checks before merging.**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+          
+          echo "✅ All PR checks passed!" >> $GITHUB_STEP_SUMMARY
