@@ -75,44 +75,46 @@ Füge folgende Status Checks hinzu (erscheinen nach dem ersten Workflow-Lauf):
 
 ---
 
-## 🔧 Ruleset Alternative (Empfohlen für GitHub Enterprise)
+## 🔧 Ruleset Alternative (GitHub UI)
 
-Für GitHub Enterprise oder größere Teams, nutze **Rulesets**:
+> ⚠️ **Wichtig:** Rulesets können **nicht** über Dateien im Repository konfiguriert werden. 
+> Sie müssen über die GitHub Web-Oberfläche eingerichtet werden.
+
+### Ruleset über GitHub UI erstellen:
 
 1. Gehe zu **Settings** → **Rules** → **Rulesets**
 2. Klicke auf **New ruleset** → **New branch ruleset**
+3. Konfiguriere folgende Einstellungen:
 
-### Ruleset Konfiguration
+| Feld | Wert |
+|------|------|
+| **Ruleset Name** | `EcoTrack Main Protection` |
+| **Enforcement status** | `Active` |
+| **Target branches** | Add target → Include by pattern: `main`, `develop` |
 
-```yaml
-name: "EcoTrack Main Protection"
-enforcement: active
-target: branches
-include:
-  - refs/heads/main
-  - refs/heads/develop
+### Rules hinzufügen:
 
-rules:
-  - type: required_pull_request
-    parameters:
-      required_approving_review_count: 1
-      dismiss_stale_reviews_on_push: true
-      require_code_owner_review: false
-      require_last_push_approval: true
-      
-  - type: required_status_checks
-    parameters:
-      strict_required_status_checks_policy: true
-      required_status_checks:
-        - context: "✅ CI Status"
-          integration_id: 0
-        - context: "📋 PR Validation"
-          integration_id: 0
-          
-  - type: non_fast_forward
-  - type: deletion
-    allow: false
-```
+#### 1. Restrict deletions
+- ✅ Aktivieren
+
+#### 2. Require a pull request before merging
+- ✅ Aktivieren
+- Required approvals: `1`
+- ✅ Dismiss stale pull request approvals when new commits are pushed
+- ✅ Require approval of the most recent reviewable push
+
+#### 3. Require status checks to pass
+- ✅ Aktivieren
+- ✅ Require branches to be up to date before merging
+- **Status checks hinzufügen:**
+  - Suche nach `CI Status` und füge hinzu
+  - Suche nach `PR Status` und füge hinzu
+
+#### 4. Block force pushes
+- ✅ Aktivieren
+
+### Speichern
+Klicke auf **Create** um das Ruleset zu aktivieren.
 
 ---
 

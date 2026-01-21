@@ -66,13 +66,37 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       backend: ${{ steps.changes.outputs.backend }}
+      backend-exists: ${{ steps.check.outputs.backend-exists }}
       admin-web: ${{ steps.changes.outputs.admin-web }}
+      admin-web-exists: ${{ steps.check.outputs.admin-web-exists }}
       mobile: ${{ steps.changes.outputs.mobile }}
+      mobile-exists: ${{ steps.check.outputs.mobile-exists }}
       docs: ${{ steps.changes.outputs.docs }}
     
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Check which components exist
+        id: check
+        run: |
+          if [ -d "server" ] && [ -f "server/pom.xml" ]; then
+            echo "backend-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "backend-exists=false" >> $GITHUB_OUTPUT
+          fi
+          
+          if [ -d "admin-web" ] && [ -f "admin-web/package.json" ]; then
+            echo "admin-web-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "admin-web-exists=false" >> $GITHUB_OUTPUT
+          fi
+          
+          if [ -d "mobile" ] && [ -f "mobile/package.json" ]; then
+            echo "mobile-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "mobile-exists=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Detect Changed Files
         id: changes
@@ -104,12 +128,13 @@ jobs:
 
   # ============================================
   # Conditional Backend Tests
+  # Only runs if backend exists AND files changed
   # ============================================
   backend-tests:
     name: 🧪 Backend Tests (Conditional)
     runs-on: ubuntu-latest
     needs: changed-files
-    if: needs.changed-files.outputs.backend == 'true'
+    if: needs.changed-files.outputs.backend == 'true' && needs.changed-files.outputs.backend-exists == 'true'
     
     services:
       postgres:
@@ -148,12 +173,13 @@ jobs:
 
   # ============================================
   # Conditional Admin-Web Tests
+  # Only runs if admin-web exists AND files changed
   # ============================================
   admin-web-tests:
     name: 🧪 Admin-Web Tests (Conditional)
     runs-on: ubuntu-latest
     needs: changed-files
-    if: needs.changed-files.outputs.admin-web == 'true'
+    if: needs.changed-files.outputs.admin-web == 'true' && needs.changed-files.outputs.admin-web-exists == 'true'
 
     defaults:
       run:
@@ -178,12 +204,13 @@ jobs:
 
   # ============================================
   # Conditional Mobile Tests
+  # Only runs if mobile exists AND files changed
   # ============================================
   mobile-tests:
     name: 🧪 Mobile Tests (Conditional)
     runs-on: ubuntu-latest
     needs: changed-files
-    if: needs.changed-files.outputs.mobile == 'true'
+    if: needs.changed-files.outputs.mobile == 'true' && needs.changed-files.outputs.mobile-exists == 'true'
 
     defaults:
       run:
