@@ -106,7 +106,7 @@ jobs:
           ./mvnw -B jacoco:check || echo "Coverage check completed"
 
       - name: Publish Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         if: success() || failure()
         with:
           name: Backend Test Results
