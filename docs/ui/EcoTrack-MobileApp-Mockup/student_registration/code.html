@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
+<html class="light" lang="de"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>EcoTrack - Student Registration</title>
+<title>EcoTrack - Student Login</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
@@ -21,25 +19,30 @@
                     fontFamily: {
                         "display": ["Plus Jakarta Sans", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
                 },
             },
         }
     </script>
-<style>
+<style type="text/tailwindcss">
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: max(884px, 100dvh);
         }
-        .strength-bar {
-            height: 4px;
-            transition: width 0.3s ease, background-color 0.3s ease;
+        .ios-shadow {
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
         }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
         }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .dark .glass-effect {
+            background: rgba(29, 40, 42, 0.8);
         }
     </style>
 <style>
@@ -48,103 +51,68 @@
     }
   </style>
   </head>
-<body class="bg-background-light dark:bg-background-dark text-[#0d1b15] dark:text-white font-display">
-<div class="flex flex-col min-h-screen max-w-md mx-auto relative">
-<!-- Top App Bar -->
-<div class="sticky top-0 z-20 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-4 py-4 justify-between border-b border-[#cfe7dd]/30 dark:border-white/10">
-<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10" data-icon="arrow_back">
-<span class="material-symbols-outlined">arrow_back</span>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center p-6 transition-colors duration-300">
+<div class="w-full max-w-[400px] flex flex-col gap-10">
+<div class="flex flex-col items-center gap-6">
+<div class="relative w-24 h-24 flex items-center justify-center bg-primary/10 dark:bg-primary/20 rounded-full">
+<div class="absolute inset-0 bg-primary/5 rounded-full animate-pulse"></div>
+<span class="material-symbols-outlined text-primary text-6xl" style="font-variation-settings: 'FILL' 1">eco</span>
 </div>
-<h2 class="text-[#0d1b15] dark:text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Create Account</h2>
+<div class="text-center">
+<h1 class="text-[#0d1b15] dark:text-white text-3xl font-bold tracking-tight">EcoTrack</h1>
+<p class="text-[#4c9a77] dark:text-primary/80 text-base font-medium mt-2">Gemeinsam für eine nachhaltige Zukunft 🌱</p>
 </div>
-<!-- Scrollable Content -->
-<div class="flex-1 overflow-y-auto hide-scrollbar pb-32">
-<!-- Header Section -->
-<div class="px-6 pt-8 pb-4">
-<div class="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-2xl flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-primary text-4xl">eco</span>
 </div>
-<h1 class="text-[#0d1b15] dark:text-white tracking-tight text-3xl font-bold leading-tight mb-2">Start Growing.</h1>
-<p class="text-[#4c9a77] dark:text-[#a0c4b4] text-base font-medium leading-relaxed">Join your school's eco-challenge and track your impact today.</p>
-</div>
-<!-- Registration Form -->
-<div class="px-6 space-y-5">
-<!-- Email Field -->
+<div class="flex flex-col gap-4">
 <div class="flex flex-col gap-2">
-<p class="text-[#0d1b15] dark:text-white text-[15px] font-semibold">School Email</p>
-<input class="form-input w-full rounded-xl text-[#0d1b15] dark:text-white border border-[#cfe7dd] dark:border-white/10 bg-white dark:bg-[#253235] h-14 placeholder:text-[#4c9a77]/50 p-4 focus:ring-2 focus:ring-primary focus:border-primary border-none shadow-sm" placeholder="name@school.edu" type="email"/>
+<p class="text-[#0d1b15] dark:text-white text-sm font-semibold px-1">E-Mail</p>
+<div class="relative group">
+<input class="w-full h-14 px-4 rounded-xl border border-[#cfe7dd] dark:border-[#2d3a3c] bg-white dark:bg-[#253234] text-[#0d1b15] dark:text-white placeholder:text-[#4c9a77]/50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="deine@email.de" type="email"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-[#4c9a77]">
+<span class="material-symbols-outlined">mail</span>
 </div>
-<!-- First & Last Name Grid -->
-<div class="grid grid-cols-2 gap-4">
-<div class="flex flex-col gap-2">
-<p class="text-[#0d1b15] dark:text-white text-[15px] font-semibold">First Name</p>
-<input class="form-input w-full rounded-xl text-[#0d1b15] dark:text-white border border-[#cfe7dd] dark:border-white/10 bg-white dark:bg-[#253235] h-14 placeholder:text-[#4c9a77]/50 p-4 focus:ring-2 focus:ring-primary focus:border-primary border-none shadow-sm" placeholder="Jane" type="text"/>
+</div>
 </div>
 <div class="flex flex-col gap-2">
-<p class="text-[#0d1b15] dark:text-white text-[15px] font-semibold">Last Name</p>
-<input class="form-input w-full rounded-xl text-[#0d1b15] dark:text-white border border-[#cfe7dd] dark:border-white/10 bg-white dark:bg-[#253235] h-14 placeholder:text-[#4c9a77]/50 p-4 focus:ring-2 focus:ring-primary focus:border-primary border-none shadow-sm" placeholder="Doe" type="text"/>
-</div>
-</div>
-<!-- Password Field -->
-<div class="flex flex-col gap-2">
-<p class="text-[#0d1b15] dark:text-white text-[15px] font-semibold">Create Password</p>
+<p class="text-[#0d1b15] dark:text-white text-sm font-semibold px-1">Passwort</p>
 <div class="relative flex items-center">
-<input class="form-input w-full rounded-xl text-[#0d1b15] dark:text-white border border-[#cfe7dd] dark:border-white/10 bg-white dark:bg-[#253235] h-14 placeholder:text-[#4c9a77]/50 p-4 pr-12 focus:ring-2 focus:ring-primary focus:border-primary border-none shadow-sm" placeholder="••••••••" type="password"/>
-<span class="material-symbols-outlined absolute right-4 text-[#4c9a77] cursor-pointer">visibility</span>
-</div>
-<!-- Strength Bar -->
-<div class="flex gap-1 mt-1">
-<div class="strength-bar flex-1 rounded-full bg-primary"></div>
-<div class="strength-bar flex-1 rounded-full bg-primary"></div>
-<div class="strength-bar flex-1 rounded-full bg-primary/20 dark:bg-white/10"></div>
-<div class="strength-bar flex-1 rounded-full bg-primary/20 dark:bg-white/10"></div>
-</div>
-</div>
-<!-- Password Requirements -->
-<div class="bg-primary/5 dark:bg-white/5 rounded-xl p-4 space-y-2">
-<div class="flex items-center gap-2 text-sm text-primary font-medium">
-<span class="material-symbols-outlined text-sm">check_circle</span>
-                        At least 8 characters
-                    </div>
-<div class="flex items-center gap-2 text-sm text-primary font-medium">
-<span class="material-symbols-outlined text-sm">check_circle</span>
-                        Include a number
-                    </div>
-<div class="flex items-center gap-2 text-sm text-[#4c9a77] dark:text-[#a0c4b4]">
-<span class="material-symbols-outlined text-sm">circle</span>
-                        Include a symbol (@, #, $)
-                    </div>
-</div>
-<!-- Confirm Password -->
-<div class="flex flex-col gap-2">
-<p class="text-[#0d1b15] dark:text-white text-[15px] font-semibold">Confirm Password</p>
-<input class="form-input w-full rounded-xl text-[#0d1b15] dark:text-white border border-[#cfe7dd] dark:border-white/10 bg-white dark:bg-[#253235] h-14 placeholder:text-[#4c9a77]/50 p-4 focus:ring-2 focus:ring-primary focus:border-primary border-none shadow-sm" placeholder="••••••••" type="password"/>
-</div>
-<!-- Class Code Field -->
-<div class="flex flex-col gap-2">
-<div class="flex items-center justify-between">
-<p class="text-[#0d1b15] dark:text-white text-[15px] font-semibold">Class Code</p>
-<div class="flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-wider">
-<span class="material-symbols-outlined text-sm">info</span>
-                            From Teacher
-                        </div>
-</div>
-<input class="form-input w-full rounded-xl text-center text-2xl font-bold tracking-[0.5em] text-primary border border-[#cfe7dd] dark:border-white/10 bg-white dark:bg-[#253235] h-16 placeholder:text-[#4c9a77]/20 p-4 focus:ring-2 focus:ring-primary focus:border-primary border-none shadow-sm uppercase" maxlength="6" placeholder="000000" type="text"/>
-</div>
-</div>
-</div>
-<!-- Sticky Footer -->
-<div class="absolute bottom-0 left-0 right-0 p-6 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-[#cfe7dd]/30 dark:border-white/10">
-<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold h-14 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
-                Complete Registration
-                <span class="material-symbols-outlined">arrow_forward</span>
+<input class="w-full h-14 px-4 rounded-xl border border-[#cfe7dd] dark:border-[#2d3a3c] bg-white dark:bg-[#253234] text-[#0d1b15] dark:text-white placeholder:text-[#4c9a77]/50 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 text-[#4c9a77] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
 </button>
-<div class="mt-4 text-center">
-<p class="text-sm text-[#4c9a77] dark:text-[#a0c4b4] font-medium">
-                    Already have an account? 
-                    <a class="text-primary font-bold hover:underline" href="#">Log In</a>
+</div>
+</div>
+<div class="flex items-center justify-between px-1 mt-1">
+<label class="flex items-center gap-2 cursor-pointer group">
+<div class="relative flex items-center justify-center">
+<input class="peer appearance-none h-5 w-5 rounded-md border-2 border-[#cfe7dd] dark:border-[#2d3a3c] checked:bg-primary checked:border-primary transition-all cursor-pointer" type="checkbox"/>
+<span class="material-symbols-outlined absolute text-white text-xs opacity-0 peer-checked:opacity-100 pointer-events-none">check</span>
+</div>
+<span class="text-[#4c9a77] dark:text-gray-400 text-sm font-medium">Angemeldet bleiben</span>
+</label>
+<button class="text-primary hover:text-primary/80 text-sm font-semibold transition-colors">
+                    Passwort vergessen?
+                </button>
+</div>
+<button class="w-full h-14 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl ios-shadow transition-transform active:scale-[0.98] mt-6 flex items-center justify-center gap-2">
+                Anmelden
+                <span class="material-symbols-outlined text-xl">login</span>
+</button>
+</div>
+<div class="text-center">
+<p class="text-[#4c9a77] dark:text-gray-400 text-sm">
+                Noch kein Konto? 
+                <a class="text-primary font-bold hover:underline ml-1" href="#">Registrieren</a>
 </p>
 </div>
 </div>
+<div class="fixed -bottom-12 -left-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<div class="fixed -top-12 -right-12 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+<div class="fixed bottom-6 right-6">
+<button class="p-3 bg-white dark:bg-[#253234] rounded-full shadow-lg border border-[#cfe7dd] dark:border-[#2d3a3c] text-[#4c9a77]" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined block dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block">light_mode</span>
+</button>
 </div>
+
 </body></html>
