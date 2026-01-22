@@ -15,7 +15,7 @@ tools:
   - get_errors
   - list_code_usages
 handoffs:
-  - label: "An Feature Developer übergeben"
+  - label: "An Feature Component Developer übergeben"
     agent: cdd-feature-components
     prompt: |
       Custom Hooks sind bereit:
@@ -24,8 +24,8 @@ handoffs:
       
       Diese Hooks können jetzt in Feature-Komponenten verwendet werden.
       Return Types und Parameter sind dokumentiert.
-  - label: "An Tester übergeben"
-    agent: tester
+  - label: "An Test Engineer übergeben"
+    agent: test-engineer
     prompt: |
       Custom Hooks zum Testen:
       

@@ -15,17 +15,17 @@ tools:
   - get_errors
   - list_code_usages
 handoffs:
-  - label: "An Page/Screen Developer übergeben"
-    agent: cdd-page-screen
+  - label: "An Mobile Developer übergeben"
+    agent: mobile-developer
     prompt: |
       Feature-Komponenten sind bereit:
       
       {{CREATED_FEATURES}}
       
-      Diese Features können jetzt in Pages/Screens integriert werden.
+      Diese Features können jetzt in Screens/Pages integriert werden.
       Query Hooks und Event Handlers sind implementiert.
-  - label: "An Tester übergeben"
-    agent: tester
+  - label: "An Test Engineer übergeben"
+    agent: test-engineer
     prompt: |
       Feature-Komponenten zum Testen:
       

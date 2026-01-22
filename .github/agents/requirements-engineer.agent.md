@@ -7,8 +7,8 @@ tools:
   - grep_search
   - fetch_webpage
 handoffs:
-  - label: "An Architekt übergeben"
-    agent: architect
+  - label: "An Software Architect übergeben"
+    agent: software-architect
     prompt: |
       Die Requirements-Analyse ist abgeschlossen. Folgende User Stories wurden erstellt:
       

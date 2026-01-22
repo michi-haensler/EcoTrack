@@ -10,8 +10,8 @@ tools:
   - create_file
   - run_in_terminal
 handoffs:
-  - label: "An Tester übergeben"
-    agent: tester
+  - label: "An Test Engineer übergeben"
+    agent: test-engineer
     prompt: |
       Backend-Feature ist implementiert:
       

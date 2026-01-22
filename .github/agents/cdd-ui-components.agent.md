@@ -15,7 +15,7 @@ tools:
   - run_in_terminal
   - get_errors
 handoffs:
-  - label: "An Feature Developer übergeben"
+  - label: "An Feature Component Developer übergeben"
     agent: cdd-feature-components
     prompt: |
       UI-Komponenten sind bereit:
@@ -24,8 +24,8 @@ handoffs:
       
       Diese Komponenten können jetzt in Feature-Komponenten verwendet werden.
       Props-Interfaces und Variants sind dokumentiert.
-  - label: "An Tester übergeben"
-    agent: tester
+  - label: "An Test Engineer übergeben"
+    agent: test-engineer
     prompt: |
       UI-Komponenten zum Testen:
       

@@ -1,265 +1,247 @@
-# EcoTrack AI Agents - Übersicht
+# EcoTrack AI Agents
 
-Diese Dokumentation beschreibt alle verfügbaren AI Agents für das EcoTrack-Projekt. Agents sind spezialisierte KI-Assistenten, die für bestimmte Aufgabenbereiche optimiert sind.
-
-## 🎯 Schnellübersicht
-
-| Agent | Zuständigkeit | Wann aktivieren? |
-|-------|--------------|------------------|
-| [Requirements Engineer](#requirements-engineer) | User Stories, Anforderungen | Neue Features planen |
-| [Software Architect](#software-architect) | Architektur, ADRs, APIs | Technische Designs |
-| [Backend Developer](#backend-developer) | Java/Spring Boot Code | Backend implementieren |
-| [Frontend Developer](#frontend-developer-legacy) | React/RN Übersicht | Allgemeine Frontend-Fragen |
-| [CDD UI Components](#cdd-ui-components-developer) | Button, Card, Input | UI-Bausteine erstellen |
-| [CDD Feature Components](#cdd-feature-components-developer) | Listen, Formulare | Features mit Business-Logik |
-| [CDD Page/Screen](#cdd-pagescreen-developer) | Seiten, Navigation | Routing & Layouts |
-| [CDD Hooks](#cdd-hooks-developer) | Custom Hooks, Queries | Wiederverwendbare Logik |
-| [Test Engineer](#test-engineer) | Unit/Integration Tests | Qualitätssicherung |
+Spezialisierte KI-Assistenten für das EcoTrack-Projekt, optimiert für verschiedene Aufgabenbereiche im Entwicklungsprozess.
 
 ---
 
-## 📋 Detaillierte Agent-Beschreibungen
+## 🔄 Agent-Workflow
 
-### Requirements Engineer
+Der folgende Workflow zeigt, wie die Agents zusammenarbeiten:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Requirements Engineer                     │
+│              (User Stories & Akzeptanzkriterien)             │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     Software Architect                       │
+│               (Architektur & API Definition)                 │
+└───────────┬─────────────────────────────────┬───────────────┘
+            │                                 │
+            ▼                                 ▼
+┌───────────────────────┐    ┌────────────────────────────────┐
+│   Backend Developer   │    │      Frontend (CDD-Agents)     │
+│   (Java/Spring Boot)  │    │  ┌────────────────────────────┐│
+└───────────┬───────────┘    │  │ UI Component Developer     ││
+            │                │  │ (Buttons, Cards, Inputs)   ││
+            │                │  └─────────────┬──────────────┘│
+            │                │                │               │
+            │                │  ┌─────────────▼──────────────┐│
+            │                │  │Feature Component Developer ││
+            │                │  │(Listen, Forms, Data)       ││
+            │                │  └─────────────┬──────────────┘│
+            │                │                │               │
+            │                │  ┌─────────────▼──────────────┐│
+            │                │  │    Mobile Developer        ││
+            │                │  │(Screens, Navigation)       ││
+            │                │  └────────────────────────────┘│
+            │                └────────────────────────────────┘
+            │                                 │
+            └────────────────┬────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                       Test Engineer                          │
+│              (Unit, Integration & E2E Tests)                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📋 Agents im Detail
+
+### 1️⃣ Requirements Engineer
 **Datei:** [requirements-engineer.agent.md](requirements-engineer.agent.md)
 
-#### Was macht dieser Agent?
-Analysiert und dokumentiert Anforderungen, erstellt User Stories im standardisierten Format und definiert Akzeptanzkriterien.
+| Aufgabe | Beschreibung |
+|---------|--------------|
+| User Stories | Erstellt und verfeinert User Stories |
+| Akzeptanzkriterien | Definiert messbare Erfolgskriterien |
+| Requirements-Analyse | Analysiert und dokumentiert Anforderungen |
 
-#### Wann aktivieren?
-- ✅ Neue Features spezifizieren
-- ✅ User Stories erstellen
-- ✅ Akzeptanzkriterien definieren
-- ✅ Requirements verfeinern
+**Aktivieren bei:** Neue Features spezifizieren, Anforderungen klären
 
-#### Handoff
-➡️ Übergibt an: **Software Architect**
+**Handoff:** ➡️ Software Architect
 
 ---
 
-### Software Architect
+### 2️⃣ Software Architect
 **Datei:** [software-architect.agent.md](software-architect.agent.md)
 
-#### Was macht dieser Agent?
-Entwirft technische Architekturen, erstellt ADRs (Architecture Decision Records), definiert API-Schnittstellen und sorgt für konsistente Modularisierung.
+| Aufgabe | Beschreibung |
+|---------|--------------|
+| Architektur | Entwirft technische Strukturen |
+| ADRs | Dokumentiert Architekturentscheidungen |
+| API-Contracts | Definiert Schnittstellen (OpenAPI) |
+| Modularisierung | Plant Modul-Grenzen und Kommunikation |
 
-#### Wann aktivieren?
-- ✅ Technische Architektur entwerfen
-- ✅ API-Contracts definieren
-- ✅ Modul-Schnittstellen planen
-- ✅ Architekturentscheidungen dokumentieren (ADRs)
+**Aktivieren bei:** Technische Designs, API-Definition, Architektur-Fragen
 
-#### Handoff
-➡️ Übergibt an: **Backend Developer** oder **CDD Feature Components Developer**
+**Handoff:** ➡️ Backend Developer ODER Frontend (CDD-Agents)
 
 ---
 
-### Backend Developer
+### 3️⃣ Backend Developer
 **Datei:** [backend-developer.agent.md](backend-developer.agent.md)
 
-#### Was macht dieser Agent?
-Implementiert Java/Spring Boot Code nach DDD und Hexagonal Architecture. Erstellt Use Cases, Repositories, REST-Controller und Domain Events.
+| Aufgabe | Beschreibung |
+|---------|--------------|
+| Java/Spring Boot | Implementiert Backend-Code |
+| DDD & Hexagonal | Folgt Domain-Driven Design |
+| REST APIs | Erstellt Controller und Endpoints |
+| Domain Events | Implementiert Event-basierte Kommunikation |
 
-#### Wann aktivieren?
-- ✅ Java-Klassen implementieren
-- ✅ REST APIs erstellen
-- ✅ Use Case Services schreiben
-- ✅ Domain Events implementieren
+**Bounded Contexts:**
+| Modul | Domain-Typ | Architektur |
+|-------|-----------|-------------|
+| `module-scoring` | Core Domain | Hexagonal (ActivityEntry, PointsLedger) |
+| `module-challenge` | Core Domain | Hexagonal (Challenge, ChallengeGoal) |
+| `module-userprofile` | Supporting | CRUD (EcoUser, Name) |
+| `module-administration` | Generic | ACL/Keycloak |
 
-#### Handoff
-➡️ Übergibt an: **Test Engineer**
+**Arbeitsbereich:**
+```
+_server/module-*/src/main/java/
+```
+
+**Aktivieren bei:** Java-Klassen, REST APIs, Use Cases, Repositories
+
+**Handoff:** ➡️ Test Engineer
 
 ---
 
-### Frontend Developer (Legacy)
-**Datei:** [frontend-developer.agent.md](frontend-developer.agent.md)
+### 4️⃣ Frontend: CDD-Agents (Component-Driven Development)
 
-#### Was macht dieser Agent?
-Allgemeiner Frontend-Agent für Übersichtsfragen. **Für konkrete Implementierungen die spezialisierten CDD-Agents verwenden!**
-
-#### Wann aktivieren?
-- ✅ Allgemeine Frontend-Architekturfragen
-- ✅ Übersicht über Komponenten-Struktur
-
-#### Empfehlung
-🔄 Für konkrete Aufgaben → CDD-Agents verwenden
-
----
-
-## 🧩 Component-Driven Development (CDD) Agents
-
-Die CDD-Agents sind spezialisiert auf verschiedene Ebenen der Komponenten-Hierarchie:
+Die Frontend-Entwicklung folgt dem CDD-Ansatz mit drei spezialisierten Agents:
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                     Page/Screen (Routing)                     │
-│                    ↳ cdd-page-screen.agent.md                 │
-├──────────────────────────────────────────────────────────────┤
-│                 Feature Components (Business Logic)           │
-│                ↳ cdd-feature-components.agent.md              │
-├──────────────────────────────────────────────────────────────┤
-│              UI Components (Presentational, Reusable)         │
-│                  ↳ cdd-ui-components.agent.md                 │
-├──────────────────────────────────────────────────────────────┤
-│                    Custom Hooks (Logic Layer)                 │
-│                      ↳ cdd-hooks.agent.md                     │
-└──────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────┐
+│  UI Component Developer                                     │
+│  ↳ Atomare, wiederverwendbare UI-Bausteine                 │
+│  ↳ _admin-web/src/components/ui/                           │
+│  ↳ _mobile/src/components/ui/                              │
+├────────────────────────────────────────────────────────────┤
+│                            ▼                               │
+├────────────────────────────────────────────────────────────┤
+│  Feature Component Developer                                │
+│  ↳ Business-Logik, Datenabruf, TanStack Query              │
+│  ↳ _admin-web/src/components/features/                     │
+│  ↳ _mobile/src/components/features/                        │
+├────────────────────────────────────────────────────────────┤
+│                            ▼                               │
+├────────────────────────────────────────────────────────────┤
+│  Mobile Developer                                           │
+│  ↳ Screens, Navigation, Layout-Orchestrierung              │
+│  ↳ _admin-web/src/pages/  |  _mobile/src/screens/          │
+└────────────────────────────────────────────────────────────┘
 ```
 
-### CDD UI Components Developer
+#### 4a) UI Component Developer
 **Datei:** [cdd-ui-components.agent.md](cdd-ui-components.agent.md)
 
-#### Was macht dieser Agent?
-Erstellt wiederverwendbare, atomare UI-Bausteine wie Buttons, Inputs, Cards und Badges. Diese Komponenten haben **keine Business-Logik** und sind rein präsentational.
+| Aspekt | Details |
+|--------|---------|
+| Komponenten | Button, Input, Card, Badge, PointsDisplay |
+| Logik | ❌ Keine Business-Logik |
+| Styling | Tailwind CSS + cva (class-variance-authority) |
+| Features | forwardRef, Accessibility (ARIA), Variants |
 
-#### Arbeitsbereich
-```
-_admin-web/src/components/ui/
-_admin-web/src/components/common/
-_mobile/src/components/ui/
-_mobile/src/components/common/
-```
+**EcoTrack-Beispiele:** PointsBadge, LevelIndicator, TreeIcon, ActivityIcon
 
-#### Wann aktivieren?
-- ✅ "Erstelle einen Button mit verschiedenen Variants"
-- ✅ "Ich brauche eine Card-Komponente"
-- ✅ "Die Input-Komponente braucht Error-States"
-- ✅ "Badge für Punkte-Anzeige erstellen"
-
-#### Technologien
-- Tailwind CSS + cva (class-variance-authority)
-- TypeScript strict mode
-- forwardRef für DOM-Zugriff
-- Accessibility (ARIA)
+**Aktivieren bei:** "Erstelle einen Button", "Card-Komponente", "Badge für Punkte-Anzeige"
 
 ---
 
-### CDD Feature Components Developer
+#### 4b) Feature Component Developer
 **Datei:** [cdd-feature-components.agent.md](cdd-feature-components.agent.md)
 
-#### Was macht dieser Agent?
-Erstellt Feature-Komponenten, die **Business-Logik und Datenabruf** enthalten. Diese Komponenten nutzen TanStack Query Hooks und kombinieren UI-Komponenten zu funktionalen Features.
+| Aspekt | Details |
+|--------|---------|
+| Komponenten | ActivityList, ChallengeCard, Leaderboard |
+| Logik | ✅ Business-Logik + Datenabruf |
+| Data Fetching | TanStack Query Hooks |
+| States | Loading, Error, Empty, Success |
 
-#### Arbeitsbereich
-```
-_admin-web/src/components/features/
-_mobile/src/components/features/
-```
+**EcoTrack-Beispiele:** ActivityEntryList, ChallengeOverview, RankingTable, ProgressTree
 
-#### Wann aktivieren?
-- ✅ "Erstelle eine Aktivitätsliste"
-- ✅ "Formular zum Loggen von Aktivitäten"
-- ✅ "Challenge-Übersicht mit API-Anbindung"
-- ✅ "Leaderboard-Tabelle implementieren"
-
-#### Unterschied zu UI Components
-| Aspekt | UI Components | Feature Components |
-|--------|---------------|-------------------|
-| Business-Logik | ❌ Keine | ✅ Enthält |
-| Datenabruf | ❌ Nein | ✅ TanStack Query |
-| States | Props only | Loading, Error, Empty |
+**Aktivieren bei:** "Aktivitätsliste erstellen", "Challenge-Übersicht", "Leaderboard implementieren"
 
 ---
 
-### CDD Page/Screen Developer
-**Datei:** [cdd-page-screen.agent.md](cdd-page-screen.agent.md)
+#### 4c) Mobile Developer
+**Datei:** [mobile-developer.agent.md](mobile-developer.agent.md)
 
-#### Was macht dieser Agent?
-Erstellt die oberste Ebene der UI – **Pages** (Admin-Web) und **Screens** (Mobile). Verantwortlich für Routing, Navigation und Layout-Orchestrierung.
+| Aspekt | Details |
+|--------|---------|
+| Mobile | React Navigation v6, Stack/Tab Navigator |
+| Admin-Web | React Router v6, Lazy Loading |
+| Aufgabe | Screens, Navigation, Layout-Orchestrierung |
 
-#### Arbeitsbereich
-```
-_admin-web/src/pages/
-_admin-web/src/routes/
-_mobile/src/screens/
-_mobile/src/navigation/
-```
+**EcoTrack-Beispiele:** HomeScreen, ChallengeScreen, LeaderboardScreen, ProfileScreen
 
-#### Wann aktivieren?
-- ✅ "Erstelle die Dashboard-Seite"
-- ✅ "Neuer Screen für Challenges"
-- ✅ "Routing für das Feature einrichten"
-- ✅ "Layout für Admin-Bereich"
-
-#### Technologien
-- **Admin-Web:** React Router v6, Lazy Loading
-- **Mobile:** React Navigation v6, Stack/Tab Navigator
+**Aktivieren bei:** "Screen erstellen", "Dashboard-Seite erstellen", "Navigation einrichten"
 
 ---
 
-### CDD Hooks Developer
+### 5️⃣ Test Engineer
+**Datei:** [test-engineer.agent.md](test-engineer.agent.md)
+
+| Aufgabe | Beschreibung |
+|---------|--------------|
+| Unit Tests | 70% - Isolierte Komponenten/Funktionen |
+| Integration Tests | 20% - Zusammenspiel von Modulen |
+| E2E Tests | 10% - Komplette User Flows |
+
+**Technologien:**
+| Bereich | Tools |
+|---------|-------|
+| Backend | JUnit 5, Mockito, Spring Boot Test |
+| Frontend | Vitest, React Testing Library, MSW |
+
+**Aktivieren bei:** Tests schreiben, Coverage prüfen, Akzeptanzkriterien verifizieren
+
+---
+
+## 🔧 Zusätzliche Agents (Querschnitt)
+
+Diese Agents sind nicht Teil des Hauptflusses, können aber bei Bedarf aktiviert werden:
+
+### Hooks Developer
 **Datei:** [cdd-hooks.agent.md](cdd-hooks.agent.md)
 
-#### Was macht dieser Agent?
-Erstellt **Custom React Hooks** – wiederverwendbare Logik für Datenabruf, Formulare und Utilities. Kapselt komplexe Logik außerhalb von Komponenten.
+| Hook-Typ | EcoTrack-Beispiele |
+|----------|-----------|
+| Query Hooks | `useActivities`, `useChallenges`, `useLeaderboard` |
+| Mutation Hooks | `useLogActivity`, `useJoinChallenge` |
+| Form Hooks | `useActivityForm`, `useLoginForm` |
+| Utility Hooks | `useEcoUser`, `usePoints`, `useLevel` |
 
-#### Arbeitsbereich
+**Arbeitsbereich:**
 ```
 _admin-web/src/hooks/
 _mobile/src/hooks/
 ```
 
-#### Wann aktivieren?
-- ✅ "Erstelle einen Hook für Aktivitäten-Abfrage"
-- ✅ "useAuth Hook implementieren"
-- ✅ "API-Calls in Hooks kapseln"
-- ✅ "useDebounce Utility Hook"
+**Aktivieren bei:** "Hook für API-Abfrage", "useAuth implementieren", "Custom Hook erstellen"
 
-#### Hook-Typen
-| Typ | Beispiele |
-|-----|-----------|
-| Query Hooks | useActivities, useUser |
-| Mutation Hooks | useCreateActivity |
-| Form Hooks | useActivityForm |
-| Utility Hooks | useDebounce, useLocalStorage |
+**Handoff:** ➡️ Feature Component Developer oder Test Engineer
 
 ---
 
-### Test Engineer
-**Datei:** [test-engineer.agent.md](test-engineer.agent.md)
+## 🎯 Schnellreferenz
 
-#### Was macht dieser Agent?
-Implementiert Tests nach der Test-Pyramide (70% Unit, 20% Integration, 10% E2E). Verifiziert Akzeptanzkriterien und sorgt für Code-Qualität.
-
-#### Wann aktivieren?
-- ✅ Unit Tests schreiben
-- ✅ Integration Tests erstellen
-- ✅ Test Coverage prüfen
-- ✅ Akzeptanzkriterien verifizieren
-
-#### Technologien
-- **Backend:** JUnit 5, Mockito, Spring Boot Test
-- **Frontend:** Vitest, React Testing Library, MSW
-
----
-
-## 🔄 Typischer Workflow
-
-```
-1️⃣ Requirements Engineer
-   → User Story erstellen
-   
-2️⃣ Software Architect  
-   → API Contract & Architektur
-   
-3️⃣ Backend Developer
-   → Java Implementation
-   
-4️⃣ CDD Hooks Developer
-   → TanStack Query Hooks
-   
-5️⃣ CDD UI Components Developer
-   → Benötigte UI-Bausteine
-   
-6️⃣ CDD Feature Components Developer
-   → Feature mit Business-Logik
-   
-7️⃣ CDD Page/Screen Developer
-   → Integration in Page/Screen
-   
-8️⃣ Test Engineer
-   → Tests für alle Ebenen
-```
+| Agent | Datei | Hauptaufgabe |
+|-------|-------|--------------|
+| Requirements Engineer | [requirements-engineer.agent.md](requirements-engineer.agent.md) | User Stories & Anforderungen |
+| Software Architect | [software-architect.agent.md](software-architect.agent.md) | Architektur & APIs |
+| Backend Developer | [backend-developer.agent.md](backend-developer.agent.md) | Java/Spring Boot |
+| UI Component Developer | [cdd-ui-components.agent.md](cdd-ui-components.agent.md) | Buttons, Cards, Inputs |
+| Feature Component Developer | [cdd-feature-components.agent.md](cdd-feature-components.agent.md) | Listen, Forms, Data |
+| Mobile Developer | [mobile-developer.agent.md](mobile-developer.agent.md) | Screens, Navigation |
+| Test Engineer | [test-engineer.agent.md](test-engineer.agent.md) | Unit/Integration/E2E Tests |
+| Hooks Developer | [cdd-hooks.agent.md](cdd-hooks.agent.md) | Custom React Hooks (Querschnitt) |
 
 ---
 

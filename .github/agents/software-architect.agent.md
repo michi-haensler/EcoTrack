@@ -8,7 +8,7 @@ tools:
   - list_code_usages
   - file_search
 handoffs:
-  - label: "An Backend-Developer übergeben"
+  - label: "An Backend Developer übergeben"
     agent: backend-developer
     prompt: |
       Die Architektur ist geplant. Folgende Komponenten müssen implementiert werden:
@@ -21,15 +21,24 @@ handoffs:
       3. Adapter Layer (REST, JPA)
       
       Beachte die Hexagonal Architecture und DDD-Patterns.
-  - label: "An Frontend-Developer übergeben"
-    agent: frontend-developer
+  - label: "An UI Component Developer übergeben"
+    agent: cdd-ui-components
     prompt: |
-      Die Backend-API ist definiert. Folgende Frontend-Komponenten werden benötigt:
+      Die Backend-API ist definiert. Folgende UI-Komponenten werden benötigt:
       
       {{API_ENDPOINTS}}
-      {{COMPONENTS}}
+      {{UI_COMPONENTS}}
       
-      Bitte implementiere die UI-Komponenten mit TanStack Query für State Management.
+      Bitte erstelle die atomaren UI-Bausteine (Buttons, Cards, Inputs).
+  - label: "An Feature Component Developer übergeben"
+    agent: cdd-feature-components
+    prompt: |
+      Die Backend-API ist definiert. Folgende Feature-Komponenten werden benötigt:
+      
+      {{API_ENDPOINTS}}
+      {{FEATURES}}
+      
+      Bitte implementiere die Feature-Komponenten mit TanStack Query für State Management.
 ---
 
 # Software Architect Agent
