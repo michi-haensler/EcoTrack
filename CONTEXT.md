@@ -181,13 +181,48 @@ Dieses Dokument bietet AI Agents einen schnellen Überblick über alle verfügba
 - Für REST APIs
 - **Handoff zu**: Tester
 
-#### Frontend Developer
+#### Frontend Developer (Legacy)
 **Pfad**: `.github/agents/frontend-developer.agent.md`  
 **Wann aktivieren**:
-- Für React/TypeScript Komponenten
-- Bei UI-Implementierungen
-- Für State Management (TanStack Query)
+- Für allgemeine Frontend-Architekturfragen
+- **Empfehlung**: Für konkrete Aufgaben die CDD-Agents verwenden
+
+### CDD (Component-Driven Development) Agents
+
+Die CDD-Agents sind spezialisiert auf verschiedene Ebenen der Komponenten-Hierarchie.
+**Übersicht**: `.github/agents/README.md`
+
+#### CDD UI Components Developer
+**Pfad**: `.github/agents/cdd-ui-components.agent.md`  
+**Wann aktivieren**:
+- Für Button, Card, Input, Badge erstellen
+- Bei UI-Kit Erweiterungen
+- Für atomare, wiederverwendbare Komponenten
+- **Handoff zu**: Feature Components Developer
+
+#### CDD Feature Components Developer
+**Pfad**: `.github/agents/cdd-feature-components.agent.md`  
+**Wann aktivieren**:
+- Für Listen mit Datenanbindung (ActivityList)
+- Bei Formularen (CreateActivityForm)
+- Für Komponenten mit Business-Logik
+- **Handoff zu**: Page/Screen Developer
+
+#### CDD Page/Screen Developer
+**Pfad**: `.github/agents/cdd-page-screen.agent.md`  
+**Wann aktivieren**:
+- Für neue Seiten (Admin-Web)
+- Bei neuen Screens (Mobile)
+- Für Routing & Navigation
 - **Handoff zu**: Tester
+
+#### CDD Hooks Developer
+**Pfad**: `.github/agents/cdd-hooks.agent.md`  
+**Wann aktivieren**:
+- Für TanStack Query Hooks
+- Bei Custom Hooks (useDebounce, useAuth)
+- Für wiederverwendbare Logik
+- **Handoff zu**: Feature Components Developer
 
 #### Test Engineer
 **Pfad**: `.github/agents/test-engineer.agent.md`  
