@@ -45,25 +45,25 @@ jobs:
         id: check
         run: |
           # Check if directories exist AND have relevant files
-          if [ -d "server" ] && [ -f "server/pom.xml" ]; then
+          if [ -d "_server" ] && [ -f "_server/pom.xml" ]; then
             echo "backend-exists=true" >> $GITHUB_OUTPUT
-            echo "✅ Backend exists (server/pom.xml found)"
+            echo "✅ Backend exists (_server/pom.xml found)"
           else
             echo "backend-exists=false" >> $GITHUB_OUTPUT
             echo "⏭️ Backend not found (skipping)"
           fi
           
-          if [ -d "admin-web" ] && [ -f "admin-web/package.json" ]; then
+          if [ -d "_admin-web" ] && [ -f "_admin-web/package.json" ]; then
             echo "admin-web-exists=true" >> $GITHUB_OUTPUT
-            echo "✅ Admin-Web exists (admin-web/package.json found)"
+            echo "✅ Admin-Web exists (_admin-web/package.json found)"
           else
             echo "admin-web-exists=false" >> $GITHUB_OUTPUT
             echo "⏭️ Admin-Web not found (skipping)"
           fi
           
-          if [ -d "mobile" ] && [ -f "mobile/package.json" ]; then
+          if [ -d "_mobile" ] && [ -f "_mobile/package.json" ]; then
             echo "mobile-exists=true" >> $GITHUB_OUTPUT
-            echo "✅ Mobile exists (mobile/package.json found)"
+            echo "✅ Mobile exists (_mobile/package.json found)"
           else
             echo "mobile-exists=false" >> $GITHUB_OUTPUT
             echo "⏭️ Mobile not found (skipping)"
@@ -75,11 +75,11 @@ jobs:
         with:
           filters: |
             backend:
-              - 'server/**'
+              - '_server/**'
             admin-web:
-              - 'admin-web/**'
+              - '_admin-web/**'
             mobile:
-              - 'mobile/**'
+              - '_mobile/**'
             shared:
               - 'shared-resources/**'
 
@@ -106,7 +106,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ./_server
 
     steps:
       - name: Checkout Repository
@@ -143,7 +143,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./admin-web
+        working-directory: ./_admin-web
 
     steps:
       - name: Checkout Repository
@@ -154,7 +154,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: admin-web/package-lock.json
+          cache-dependency-path: _admin-web/package-lock.json
 
       - name: Install Dependencies
         run: npm ci
@@ -178,7 +178,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./mobile
+        working-directory: ./_mobile
 
     steps:
       - name: Checkout Repository
@@ -189,7 +189,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
+          cache-dependency-path: _mobile/package-lock.json
 
       - name: Install Dependencies
         run: npm ci

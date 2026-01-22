@@ -5,7 +5,7 @@
       "label": "mobile: install",
       "type": "shell",
       "command": "npm install",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "problemMatcher": [],
       "group": "build"
     },
@@ -13,7 +13,7 @@
       "label": "mobile: start",
       "type": "shell",
       "command": "npm start",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "isBackground": true,
       "problemMatcher": []
     },
@@ -21,42 +21,42 @@
       "label": "mobile: android",
       "type": "shell",
       "command": "npm run android",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "problemMatcher": []
     },
     {
       "label": "mobile: ios",
       "type": "shell",
       "command": "npm run ios",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "problemMatcher": []
     },
     {
       "label": "mobile: lint",
       "type": "shell",
       "command": "npm run lint",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "problemMatcher": ["$eslint-stylish"]
     },
     {
       "label": "mobile: test",
       "type": "shell",
       "command": "npm test",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "problemMatcher": []
     },
     {
       "label": "mobile: generate-api",
       "type": "shell",
       "command": "npm run generate-api",
-      "options": { "cwd": "${workspaceFolder}/mobile" },
+      "options": { "cwd": "${workspaceFolder}/_mobile" },
       "problemMatcher": []
     },
     {
       "label": "web: install",
       "type": "shell",
       "command": "npm install",
-      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "options": { "cwd": "${workspaceFolder}/_admin-web" },
       "problemMatcher": [],
       "group": "build"
     },
@@ -64,7 +64,7 @@
       "label": "web: dev",
       "type": "shell",
       "command": "npm run dev",
-      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "options": { "cwd": "${workspaceFolder}/_admin-web" },
       "isBackground": true,
       "problemMatcher": {
         "pattern": {
@@ -81,7 +81,7 @@
       "label": "web: build",
       "type": "shell",
       "command": "npm run build",
-      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "options": { "cwd": "${workspaceFolder}/_admin-web" },
       "problemMatcher": ["$tsc"],
       "group": "build"
     },
@@ -89,28 +89,28 @@
       "label": "web: lint",
       "type": "shell",
       "command": "npm run lint",
-      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "options": { "cwd": "${workspaceFolder}/_admin-web" },
       "problemMatcher": ["$eslint-stylish"]
     },
     {
       "label": "web: test",
       "type": "shell",
       "command": "npm test",
-      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "options": { "cwd": "${workspaceFolder}/_admin-web" },
       "problemMatcher": []
     },
     {
       "label": "web: generate-api",
       "type": "shell",
       "command": "npm run generate-api",
-      "options": { "cwd": "${workspaceFolder}/admin-web" },
+      "options": { "cwd": "${workspaceFolder}/_admin-web" },
       "problemMatcher": []
     },
     {
       "label": "server: mvn clean install",
       "type": "shell",
       "command": "mvn -B clean install",
-      "options": { "cwd": "${workspaceFolder}/server" },
+      "options": { "cwd": "${workspaceFolder}/_server" },
       "problemMatcher": "$mvn",
       "group": "build"
     },
@@ -118,7 +118,7 @@
       "label": "server: mvn verify",
       "type": "shell",
       "command": "mvn -B clean verify",
-      "options": { "cwd": "${workspaceFolder}/server" },
+      "options": { "cwd": "${workspaceFolder}/_server" },
       "problemMatcher": "$mvn",
       "group": {
         "kind": "build",
@@ -129,7 +129,7 @@
       "label": "server: run",
       "type": "shell",
       "command": "mvn spring-boot:run",
-      "options": { "cwd": "${workspaceFolder}/server" },
+      "options": { "cwd": "${workspaceFolder}/_server" },
       "isBackground": true,
       "problemMatcher": []
     },
@@ -137,7 +137,7 @@
       "label": "server: test",
       "type": "shell",
       "command": "mvn test",
-      "options": { "cwd": "${workspaceFolder}/server" },
+      "options": { "cwd": "${workspaceFolder}/_server" },
       "problemMatcher": "$mvn",
       "group": "test"
     },

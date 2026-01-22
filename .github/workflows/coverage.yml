@@ -42,7 +42,7 @@ jobs:
           cache: 'maven'
 
       - name: Generate Backend Coverage
-        working-directory: ./server
+        working-directory: ./_server
         run: |
           ./mvnw -B clean verify jacoco:report
         env:
@@ -56,14 +56,14 @@ jobs:
           node-version: '20'
 
       - name: Generate Admin-Web Coverage
-        working-directory: ./admin-web
+        working-directory: ./_admin-web
         run: |
           npm ci
           npm test -- --coverage --reporter=json
         continue-on-error: true
 
       - name: Generate Mobile Coverage
-        working-directory: ./mobile
+        working-directory: ./_mobile
         run: |
           npm ci
           npm test -- --coverage --json --outputFile=coverage/coverage-summary.json
@@ -78,9 +78,9 @@ jobs:
           echo "|-----------|---------------|-----------------|--------|" >> $GITHUB_STEP_SUMMARY
           
           # Backend Coverage (Jacoco)
-          if [ -f "server/target/site/jacoco/jacoco.xml" ]; then
-            BACKEND_LINE=$(grep -oP 'type="LINE".*?counter.*?covered="\K[^"]+' server/target/site/jacoco/jacoco.xml | head -1 || echo "0")
-            BACKEND_MISSED=$(grep -oP 'type="LINE".*?counter.*?missed="\K[^"]+' server/target/site/jacoco/jacoco.xml | head -1 || echo "0")
+          if [ -f "_server/target/site/jacoco/jacoco.xml" ]; then
+            BACKEND_LINE=$(grep -oP 'type="LINE".*?counter.*?covered="\K[^"]+' _server/target/site/jacoco/jacoco.xml | head -1 || echo "0")
+            BACKEND_MISSED=$(grep -oP 'type="LINE".*?counter.*?missed="\K[^"]+' _server/target/site/jacoco/jacoco.xml | head -1 || echo "0")
             if [ "$BACKEND_LINE" != "0" ] || [ "$BACKEND_MISSED" != "0" ]; then
               BACKEND_TOTAL=$((BACKEND_LINE + BACKEND_MISSED))
               BACKEND_PCT=$((BACKEND_LINE * 100 / BACKEND_TOTAL))
@@ -100,8 +100,8 @@ jobs:
           fi
           
           # Admin-Web Coverage
-          if [ -f "admin-web/coverage/coverage-summary.json" ]; then
-            WEB_PCT=$(cat admin-web/coverage/coverage-summary.json | jq -r '.total.lines.pct // 0' 2>/dev/null || echo "0")
+          if [ -f "_admin-web/coverage/coverage-summary.json" ]; then
+            WEB_PCT=$(cat _admin-web/coverage/coverage-summary.json | jq -r '.total.lines.pct // 0' 2>/dev/null || echo "0")
             if [ "$WEB_PCT" != "0" ] && [ "$WEB_PCT" != "null" ]; then
               if (( $(echo "$WEB_PCT >= 80" | bc -l) )); then
                 STATUS="✅"
@@ -119,8 +119,8 @@ jobs:
           fi
           
           # Mobile Coverage
-          if [ -f "mobile/coverage/coverage-summary.json" ]; then
-            MOBILE_PCT=$(cat mobile/coverage/coverage-summary.json | jq -r '.total.lines.pct // 0' 2>/dev/null || echo "0")
+          if [ -f "_mobile/coverage/coverage-summary.json" ]; then
+            MOBILE_PCT=$(cat _mobile/coverage/coverage-summary.json | jq -r '.total.lines.pct // 0' 2>/dev/null || echo "0")
             if [ "$MOBILE_PCT" != "0" ] && [ "$MOBILE_PCT" != "null" ]; then
               if (( $(echo "$MOBILE_PCT >= 80" | bc -l) )); then
                 STATUS="✅"
@@ -150,7 +150,7 @@ jobs:
         if: always()
         with:
           name: backend-coverage-report
-          path: server/target/site/jacoco/
+          path: _server/target/site/jacoco/
           retention-days: 14
 
       - name: Upload Admin-Web Coverage
@@ -158,7 +158,7 @@ jobs:
         if: always()
         with:
           name: admin-web-coverage-report
-          path: admin-web/coverage/
+          path: _admin-web/coverage/
           retention-days: 14
 
       - name: Upload Mobile Coverage
@@ -166,7 +166,7 @@ jobs:
         if: always()
         with:
           name: mobile-coverage-report
-          path: mobile/coverage/
+          path: _mobile/coverage/
           retention-days: 14
 
       # Comment on PR
@@ -182,9 +182,9 @@ jobs:
             comment += '|-----------|--------|\n';
             
             // Check which coverage reports exist
-            const backendExists = fs.existsSync('server/target/site/jacoco/jacoco.xml');
-            const webExists = fs.existsSync('admin-web/coverage/coverage-summary.json');
-            const mobileExists = fs.existsSync('mobile/coverage/coverage-summary.json');
+            const backendExists = fs.existsSync('_server/target/site/jacoco/jacoco.xml');
+            const webExists = fs.existsSync('_admin-web/coverage/coverage-summary.json');
+            const mobileExists = fs.existsSync('_mobile/coverage/coverage-summary.json');
             
             comment += `| Backend | ${backendExists ? '✅ Generated' : '⏸️ Skipped'} |\n`;
             comment += `| Admin-Web | ${webExists ? '✅ Generated' : '⏸️ Skipped'} |\n`;

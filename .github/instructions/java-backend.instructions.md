@@ -1,5 +1,5 @@
 ---
-applyTo: "server/**/*.java"
+applyTo: "_server/**/*.java"
 description: "Java Backend Coding Standards für EcoTrack"
 ---
 

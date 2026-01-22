@@ -1,5 +1,5 @@
 ---
-applyTo: "mobile/**/*.{ts,tsx,js,jsx}"
+applyTo: "_mobile/**/*.{ts,tsx,js,jsx}"
 description: "React Native Standards für Mobile App"
 ---
 

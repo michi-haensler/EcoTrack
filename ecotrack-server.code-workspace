@@ -1,6 +1,6 @@
 {
   "folders": [
-    { "name": "🖥️ Server (Backend)", "path": "server" },
+    { "name": "🖥️ Server (Backend)", "path": "_server" },
     { "name": "📦 Shared Resources", "path": "shared-resources" },
     { "name": "🐳 Infrastructure", "path": "infra" },
     { "name": "📚 Documentation", "path": "docs" }

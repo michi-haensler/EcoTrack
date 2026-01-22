@@ -1,6 +1,6 @@
 {
   "folders": [
-    { "name": "🌐 Admin-Web (Frontend)", "path": "admin-web" },
+    { "name": "🌐 Admin-Web (Frontend)", "path": "_admin-web" },
     { "name": "📦 Shared Resources", "path": "shared-resources" },
     { "name": "📚 Documentation", "path": "docs" }
   ],

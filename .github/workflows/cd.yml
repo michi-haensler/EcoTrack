@@ -80,8 +80,8 @@ jobs:
       - name: Build and push Backend image
         uses: docker/build-push-action@v5
         with:
-          context: ./server
-          file: ./server/Dockerfile
+          context: ./_server
+          file: ./_server/Dockerfile
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
           labels: ${{ steps.meta-backend.outputs.labels }}
@@ -102,8 +102,8 @@ jobs:
       - name: Build and push Admin-Web image
         uses: docker/build-push-action@v5
         with:
-          context: ./admin-web
-          file: ./admin-web/Dockerfile
+          context: ./_admin-web
+          file: ./_admin-web/Dockerfile
           push: true
           tags: ${{ steps.meta-admin-web.outputs.tags }}
           labels: ${{ steps.meta-admin-web.outputs.labels }}

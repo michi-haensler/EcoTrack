@@ -1,9 +1,9 @@
 {
   "folders": [
     { "name": "🔧 EcoTrack (Root)", "path": "." },
-    { "name": "🖥️ Server (Backend)", "path": "server" },
-    { "name": "🌐 Admin-Web (Frontend)", "path": "admin-web" },
-    { "name": "📱 Mobile (React Native)", "path": "mobile" },
+    { "name": "🖥️ Server (Backend)", "path": "_server" },
+    { "name": "🌐 Admin-Web (Frontend)", "path": "_admin-web" },
+    { "name": "📱 Mobile (React Native)", "path": "_mobile" },
     { "name": "📦 Shared Resources", "path": "shared-resources" },
     { "name": "🐳 Infrastructure", "path": "infra" },
     { "name": "📚 Documentation", "path": "docs" }

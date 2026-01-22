@@ -1,6 +1,6 @@
 {
   "folders": [
-    { "name": "📱 Mobile (React Native)", "path": "mobile" },
+    { "name": "📱 Mobile (React Native)", "path": "_mobile" },
     { "name": "📦 Shared Resources", "path": "shared-resources" },
     { "name": "📚 Documentation", "path": "docs" }
   ],

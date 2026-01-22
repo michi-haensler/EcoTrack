@@ -1,0 +1,32 @@
+# Mobile-spezifische Dateien ignorieren
+node_modules/
+build/
+coverage/
+
+# React Native
+android/app/build/
+android/.gradle/
+android/local.properties
+ios/Pods/
+ios/build/
+.expo/
+.metro-health-check*
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# TypeScript
+*.tsbuildinfo

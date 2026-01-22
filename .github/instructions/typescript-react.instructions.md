@@ -1,5 +1,5 @@
 ---
-applyTo: "admin-web/**/*.{ts,tsx}"
+applyTo: "_admin-web/**/*.{ts,tsx}"
 description: "TypeScript & React Standards für Admin-Web"
 ---
 

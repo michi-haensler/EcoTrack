@@ -80,19 +80,19 @@ jobs:
       - name: Check which components exist
         id: check
         run: |
-          if [ -d "server" ] && [ -f "server/pom.xml" ]; then
+          if [ -d "_server" ] && [ -f "_server/pom.xml" ]; then
             echo "backend-exists=true" >> $GITHUB_OUTPUT
           else
             echo "backend-exists=false" >> $GITHUB_OUTPUT
           fi
           
-          if [ -d "admin-web" ] && [ -f "admin-web/package.json" ]; then
+          if [ -d "_admin-web" ] && [ -f "_admin-web/package.json" ]; then
             echo "admin-web-exists=true" >> $GITHUB_OUTPUT
           else
             echo "admin-web-exists=false" >> $GITHUB_OUTPUT
           fi
           
-          if [ -d "mobile" ] && [ -f "mobile/package.json" ]; then
+          if [ -d "_mobile" ] && [ -f "_mobile/package.json" ]; then
             echo "mobile-exists=true" >> $GITHUB_OUTPUT
           else
             echo "mobile-exists=false" >> $GITHUB_OUTPUT
@@ -104,12 +104,12 @@ jobs:
         with:
           filters: |
             backend:
-              - 'server/**'
+              - '_server/**'
               - 'pom.xml'
             admin-web:
-              - 'admin-web/**'
+              - '_admin-web/**'
             mobile:
-              - 'mobile/**'
+              - '_mobile/**'
             docs:
               - 'docs/**'
               - '*.md'
@@ -153,7 +153,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ./_server
 
     steps:
       - name: Checkout Repository
@@ -183,7 +183,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./admin-web
+        working-directory: ./_admin-web
 
     steps:
       - name: Checkout Repository
@@ -194,7 +194,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: admin-web/package-lock.json
+          cache-dependency-path: _admin-web/package-lock.json
 
       - name: Install & Test
         run: |
@@ -214,7 +214,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./mobile
+        working-directory: ./_mobile
 
     steps:
       - name: Checkout Repository
@@ -225,7 +225,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
+          cache-dependency-path: _mobile/package-lock.json
 
       - name: Install & Test
         run: |
