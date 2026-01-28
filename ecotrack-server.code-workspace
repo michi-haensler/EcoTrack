@@ -3,7 +3,8 @@
     { "name": "🖥️ Server (Backend)", "path": "_server" },
     { "name": "📦 Shared Resources", "path": "shared-resources" },
     { "name": "🐳 Infrastructure", "path": "infra" },
-    { "name": "📚 Documentation", "path": "docs" }
+    { "name": "� User Stories (Server)", "path": "docs/user-stories/server" },
+    { "name": "📐 Architecture", "path": "docs/architecture" }
   ],
   "settings": {
     // ============================================

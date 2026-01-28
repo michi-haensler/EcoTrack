@@ -2,7 +2,9 @@
   "folders": [
     { "name": "📱 Mobile (React Native)", "path": "_mobile" },
     { "name": "📦 Shared Resources", "path": "shared-resources" },
-    { "name": "📚 Documentation", "path": "docs" }
+    { "name": "� User Stories (Mobile)", "path": "docs/user-stories/mobile" },
+    { "name": "📐 Architecture", "path": "docs/architecture" },
+    { "name": "🎨 UI Mockups", "path": "docs/ui" }
   ],
   "settings": {
     // ============================================
