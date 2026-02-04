@@ -1,14 +1,10 @@
-// ============================================================
-// Integration Test Beispiele
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung von
-// Integration Tests mit Spring Boot Test und MockMvc.
-// ============================================================
+# Integration Test Beispiele
 
-// -----------------------------
-// Controller Integration Test
-// -----------------------------
+Dieses Beispiel zeigt die korrekte Implementierung von Integration Tests mit Spring Boot Test und MockMvc.
 
+## Controller Integration Test
+
+```java
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -44,11 +40,11 @@ class ScoringControllerIntegrationTest {
                 .category("Transport")
                 .build());
     }
+```
 
-    // -------------------------
-    // POST Tests
-    // -------------------------
+## POST Tests
 
+```java
     @Test
     void should_return201_when_activityLogged() throws Exception {
         // Arrange
@@ -121,11 +117,11 @@ class ScoringControllerIntegrationTest {
                 .content(invalidJson))
                 .andExpect(status().isBadRequest());
     }
+```
 
-    // -------------------------
-    // GET Tests
-    // -------------------------
+## GET Tests
 
+```java
     @Test
     void should_returnActivity_when_exists() throws Exception {
         // Arrange
@@ -151,10 +147,11 @@ class ScoringControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 }
+```
 
-// -----------------------------
-// Repository Integration Test
-// -----------------------------
+## Repository Integration Test
+
+```java
 @DataJpaTest
 @ActiveProfiles("test")
 class ActivityEntryRepositoryTest {
@@ -235,11 +232,11 @@ class ActivityEntryRepositoryTest {
         assertThat(found.get(0).getLoggedAt()).isAfterOrEqualTo(found.get(1).getLoggedAt());
         assertThat(found.get(1).getLoggedAt()).isAfterOrEqualTo(found.get(2).getLoggedAt());
     }
+```
 
-    // -------------------------
-    // Helper Methods
-    // -------------------------
+## Helper Methods
 
+```java
     private ActivityEntryJpaEntity createEntity(UUID userId) {
         return ActivityEntryJpaEntity.builder()
                 .ecoUserId(userId)
@@ -258,3 +255,4 @@ class ActivityEntryRepositoryTest {
                 .build();
     }
 }
+```

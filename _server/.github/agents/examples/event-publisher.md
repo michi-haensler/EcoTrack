@@ -1,24 +1,21 @@
-// ============================================================
-// Event Publisher & Handler Beispiel
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung von
-// Domain Events für Modul-Kommunikation.
-// ============================================================
+# Event Publisher & Handler Beispiel
 
-// -----------------------------
-// Domain Event Interface
-// -----------------------------
+Dieses Beispiel zeigt die korrekte Implementierung von Domain Events für Modul-Kommunikation.
 
+## Domain Event Interface
+
+```java
 import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface DomainEvent {
     // Marker Interface für Domain Events
 }
+```
 
-// -----------------------------
-// Konkretes Domain Event
-// -----------------------------
+## Konkrete Domain Events
+
+```java
 public record ActivityLoggedEvent(
         EcoUserId ecoUserId,
         int points,
@@ -31,17 +28,19 @@ public record ChallengeCompletedEvent(
         int totalPoints,
         OffsetDateTime completedAt) implements DomainEvent {
 }
+```
 
-// -----------------------------
-// Event Publisher Port (Domain)
-// -----------------------------
+## Event Publisher Port (Domain)
+
+```java
 public interface EventPublisher {
     void publish(DomainEvent event);
 }
+```
 
-// -----------------------------
-// Spring Event Publisher Adapter
-// -----------------------------
+## Spring Event Publisher Adapter
+
+```java
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -55,13 +54,15 @@ public class SpringEventPublisher implements EventPublisher {
         eventPublisher.publishEvent(event);
     }
 }
+```
 
-// -----------------------------
-// Event Handler (in anderem Modul!)
-// -----------------------------
-// Wichtig: Handler in REQUIRES_NEW Transaktion für Isolation
+## Event Handler (in anderem Modul!)
 
-// Im UserProfile-Modul: Punkte gutschreiben
+**Wichtig:** Handler in `REQUIRES_NEW` Transaktion für Isolation
+
+### Im UserProfile-Modul: Punkte gutschreiben
+
+```java
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -87,8 +88,11 @@ public class ActivityLoggedEventHandler {
                 event.ecoUserId(), event.points());
     }
 }
+```
 
-// Im Challenge-Modul: Challenge-Fortschritt aktualisieren
+### Im Challenge-Modul: Challenge-Fortschritt aktualisieren
+
+```java
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -122,10 +126,11 @@ public class ChallengeProgressUpdater {
         }
     }
 }
+```
 
-// -----------------------------
-// Async Event Handler (optional)
-// -----------------------------
+## Async Event Handler (optional)
+
+```java
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -145,3 +150,4 @@ public class NotificationEventHandler {
                 event.totalPoints());
     }
 }
+```

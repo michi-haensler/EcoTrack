@@ -1,10 +1,10 @@
-// ============================================================
-// Unit Test Beispiel - LogActivityServiceTest
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung von
-// Unit Tests mit JUnit 5, Mockito und AssertJ.
-// ============================================================
+# Unit Test Beispiel - LogActivityServiceTest
 
+Dieses Beispiel zeigt die korrekte Implementierung von Unit Tests mit JUnit 5, Mockito und AssertJ.
+
+## Test Class Setup
+
+```java
 import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,11 +26,11 @@ class LogActivityServiceTest {
 
     @InjectMocks
     private LogActivityService service;
+```
 
-    // -------------------------
-    // Happy Path Tests
-    // -------------------------
+## Happy Path Tests
 
+```java
     @Test
     void should_saveActivityAndPublishEvent_when_validCommand() {
         // Arrange
@@ -76,11 +76,11 @@ class LogActivityServiceTest {
         verify(eventPublisher).publish(argThat(event -> event instanceof ActivityLoggedEvent &&
                 ((ActivityLoggedEvent) event).points() == 50));
     }
+```
 
-    // -------------------------
-    // Error Case Tests
-    // -------------------------
+## Error Case Tests
 
+```java
     @Test
     void should_throwException_when_actionNotFound() {
         // Arrange
@@ -119,11 +119,11 @@ class LogActivityServiceTest {
                 .build())
                 .isInstanceOf(IllegalArgumentException.class);
     }
+```
 
-    // -------------------------
-    // Edge Case Tests
-    // -------------------------
+## Edge Case Tests
 
+```java
     @Test
     void should_calculateCorrectPoints_when_quantityIsLarge() {
         // Arrange
@@ -141,11 +141,11 @@ class LogActivityServiceTest {
         // Assert
         assertThat(result.points()).isEqualTo(500); // 100 * 5
     }
+```
 
-    // -------------------------
-    // Helper Methods
-    // -------------------------
+## Helper Methods
 
+```java
     private LogActivityCommand createCommand() {
         return LogActivityCommand.builder()
                 .ecoUserId(UUID.randomUUID())
@@ -185,3 +185,4 @@ class LogActivityServiceTest {
                 null, 1, points, null, OffsetDateTime.now());
     }
 }
+```

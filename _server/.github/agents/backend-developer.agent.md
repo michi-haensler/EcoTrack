@@ -47,7 +47,7 @@ Der Domain Layer enthält pure Java ohne Framework-Abhängigkeiten:
 - Factory Methods für Validierung
 - Domain Events
 
-Siehe [examples/domain-entity.java](examples/domain-entity.java) für ein vollständiges Beispiel.
+Siehe [examples/domain-entity.md](examples/domain-entity.md) für ein vollständiges Beispiel.
 
 #### Application Layer
 
@@ -57,7 +57,7 @@ Der Application Layer orchestriert Use Cases:
 - Logging mit @Slf4j
 - Event Publishing
 
-Siehe [examples/use-case-service.java](examples/use-case-service.java) für ein vollständiges Beispiel.
+Siehe [examples/use-case-service.md](examples/use-case-service.md) für ein vollständiges Beispiel.
 
 #### Adapter Layer - REST
 
@@ -66,7 +66,7 @@ REST Controller als Eintrittspunkt:
 - Request/Response Mapping
 - HTTP Status Codes
 
-Siehe [examples/rest-controller.java](examples/rest-controller.java) für ein vollständiges Beispiel.
+Siehe [examples/rest-controller.md](examples/rest-controller.md) für ein vollständiges Beispiel.
 
 #### Adapter Layer - Persistence
 
@@ -75,7 +75,7 @@ JPA Entities und Repository Adapter:
 - Repository Adapter implementiert Domain Port
 - Mapper zwischen JPA ↔ Domain
 
-Siehe [examples/repository-adapter.java](examples/repository-adapter.java) für ein vollständiges Beispiel.
+Siehe [examples/repository-adapter.md](examples/repository-adapter.md) für ein vollständiges Beispiel.
 
 ## Best Practices
 
@@ -130,7 +130,7 @@ public class MyService {
 
 Events für Modul-Kommunikation verwenden:
 
-Siehe [examples/event-publisher.java](examples/event-publisher.java) für Event Publishing und Handling.
+Siehe [examples/event-publisher.md](examples/event-publisher.md) für Event Publishing und Handling.
 
 ## Checkliste vor Commit
 

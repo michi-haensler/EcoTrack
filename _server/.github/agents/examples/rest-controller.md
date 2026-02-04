@@ -1,14 +1,10 @@
-// ============================================================
-// REST Controller Beispiel - ScoringController
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung eines
-// REST Controllers im Adapter Layer.
-// ============================================================
+# REST Controller Beispiel - ScoringController
 
-// -----------------------------
-// Request DTO
-// -----------------------------
+Dieses Beispiel zeigt die korrekte Implementierung eines REST Controllers im Adapter Layer.
 
+## Request DTO
+
+```java
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -20,10 +16,11 @@ public record LogActivityRequest(
         @Min(1) @Max(100) int quantity,
         @Size(max = 500) String notes) {
 }
+```
 
-// -----------------------------
-// REST Controller
-// -----------------------------
+## REST Controller
+
+```java
 @RestController
 @RequestMapping("/api/scoring")
 @RequiredArgsConstructor
@@ -78,10 +75,11 @@ public class ScoringController {
         return ResponseEntity.ok(activities);
     }
 }
+```
 
-// -----------------------------
-// Global Exception Handler
-// -----------------------------
+## Global Exception Handler
+
+```java
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -121,10 +119,11 @@ public class GlobalExceptionHandler {
                 .body(new ValidationErrorResponse("VALIDATION_FAILED", errors));
     }
 }
+```
 
-// -----------------------------
-// Error Response DTOs
-// -----------------------------
+## Error Response DTOs
+
+```java
 public record ErrorResponse(
         String code,
         String message) {
@@ -134,3 +133,4 @@ public record ValidationErrorResponse(
         String code,
         Map<String, String> errors) {
 }
+```

@@ -1,14 +1,10 @@
-// ============================================================
-// Repository Adapter Beispiel
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung eines
-// Repository Adapters mit JPA Entity und Mapper.
-// ============================================================
+# Repository Adapter Beispiel
 
-// -----------------------------
-// JPA Entity (Adapter Layer!)
-// -----------------------------
+Dieses Beispiel zeigt die korrekte Implementierung eines Repository Adapters mit JPA Entity und Mapper.
 
+## JPA Entity (Adapter Layer!)
+
+```java
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +38,11 @@ public class ActivityEntryJpaEntity extends BaseEntity {
     @Column(name = "logged_at", nullable = false)
     private OffsetDateTime loggedAt;
 }
+```
 
-// -----------------------------
-// Spring Data JPA Repository
-// -----------------------------
+## Spring Data JPA Repository
+
+```java
 @Repository
 public interface ActivityEntryJpaRepository
         extends JpaRepository<ActivityEntryJpaEntity, UUID> {
@@ -68,10 +65,11 @@ public interface ActivityEntryJpaRepository
             UUID ecoUserId,
             Pageable pageable);
 }
+```
 
-// -----------------------------
-// JPA ↔ Domain Mapper
-// -----------------------------
+## JPA ↔ Domain Mapper
+
+```java
 @Mapper(componentModel = "spring")
 public interface ActivityEntryJpaMapper {
 
@@ -85,11 +83,13 @@ public interface ActivityEntryJpaMapper {
     @Mapping(target = "actionDefinitionId", expression = "java(domain.getActionDefinitionId().value())")
     ActivityEntryJpaEntity toJpaEntity(ActivityEntry domain);
 }
+```
 
-// -----------------------------
-// Repository Adapter
-// -----------------------------
-// Implementiert Domain Port, nutzt JPA Repository
+## Repository Adapter
+
+Implementiert Domain Port, nutzt JPA Repository:
+
+```java
 @Component
 @RequiredArgsConstructor
 public class ActivityEntryRepositoryAdapter implements ActivityEntryRepository {
@@ -127,3 +127,4 @@ public class ActivityEntryRepositoryAdapter implements ActivityEntryRepository {
                 .map(mapper::toDomain);
     }
 }
+```

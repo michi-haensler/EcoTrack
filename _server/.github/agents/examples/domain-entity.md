@@ -1,14 +1,10 @@
-// ============================================================
-// Domain Entity Beispiel - ActivityEntry
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung einer
-// Domain Entity nach Hexagonal Architecture & DDD Prinzipien.
-// ============================================================
+# Domain Entity Beispiel - ActivityEntry
 
-// -----------------------------
-// Value Object für typsichere ID
-// -----------------------------
+Dieses Beispiel zeigt die korrekte Implementierung einer Domain Entity nach Hexagonal Architecture & DDD Prinzipien.
 
+## Value Object für typsichere ID
+
+```java
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +22,13 @@ public class ActivityEntryId {
         return new ActivityEntryId(value);
     }
 }
+```
 
-// -----------------------------
-// Domain Entity (Aggregate Root)
-// -----------------------------
-// ✅ Pure Java - keine Framework-Abhängigkeiten!
+## Domain Entity (Aggregate Root)
+
+✅ Pure Java - keine Framework-Abhängigkeiten!
+
+```java
 public class ActivityEntry extends AggregateRoot {
     private ActivityEntryId id;
     private EcoUserId ecoUserId;
@@ -97,20 +95,23 @@ public class ActivityEntry extends AggregateRoot {
         return loggedAt;
     }
 }
+```
 
-// -----------------------------
-// ❌ FALSCH: Framework-Abhängigkeiten in Domain
-// -----------------------------
+## ❌ FALSCH: Framework-Abhängigkeiten in Domain
+
+```java
 // @Entity // NO! Gehört in Adapter Layer
 // public class ActivityEntry {
-// @Id // NO!
-// private UUID id;
+//     @Id // NO!
+//     private UUID id;
 // }
+```
 
-// -----------------------------
-// Domain Port (Interface)
-// -----------------------------
-// Output Port - wird vom Adapter implementiert
+## Domain Port (Interface)
+
+### Output Port - wird vom Adapter implementiert
+
+```java
 public interface ActivityEntryRepository {
     ActivityEntry save(ActivityEntry entry);
 
@@ -118,17 +119,22 @@ public interface ActivityEntryRepository {
 
     List<ActivityEntry> findByEcoUserId(EcoUserId userId);
 }
+```
 
-// Input Port - Use Case Interface
+### Input Port - Use Case Interface
+
+```java
 public interface LogActivityUseCase {
     ActivityEntryDto execute(LogActivityCommand command);
 }
+```
 
-// -----------------------------
-// Domain Event
-// -----------------------------
+## Domain Event
+
+```java
 public record ActivityLoggedEvent(
         EcoUserId ecoUserId,
         int points,
         OffsetDateTime timestamp) implements DomainEvent {
 }
+```

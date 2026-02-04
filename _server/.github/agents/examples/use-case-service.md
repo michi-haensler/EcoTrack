@@ -1,14 +1,10 @@
-// ============================================================
-// Use Case Service Beispiel - LogActivityService
-// ============================================================
-// Dieses Beispiel zeigt die korrekte Implementierung eines
-// Use Case Services im Application Layer.
-// ============================================================
+# Use Case Service Beispiel - LogActivityService
 
-// -----------------------------
-// Command Object (Input DTO)
-// -----------------------------
+Dieses Beispiel zeigt die korrekte Implementierung eines Use Case Services im Application Layer.
 
+## Command Object (Input DTO)
+
+```java
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -24,10 +20,11 @@ public record LogActivityCommand(
         }
     }
 }
+```
 
-// -----------------------------
-// Response DTO
-// -----------------------------
+## Response DTO
+
+```java
 public record ActivityEntryDto(
         UUID id,
         UUID ecoUserId,
@@ -37,10 +34,11 @@ public record ActivityEntryDto(
         String notes,
         OffsetDateTime loggedAt) {
 }
+```
 
-// -----------------------------
-// Use Case Service Implementation
-// -----------------------------
+## Use Case Service Implementation
+
+```java
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -88,10 +86,11 @@ public class LogActivityService implements LogActivityUseCase {
         return mapper.toDto(saved, action);
     }
 }
+```
 
-// -----------------------------
-// Mapper (MapStruct)
-// -----------------------------
+## Mapper (MapStruct)
+
+```java
 @Mapper(componentModel = "spring")
 public interface ScoringMapper {
 
@@ -101,3 +100,4 @@ public interface ScoringMapper {
     @Mapping(target = "createdAt", ignore = true)
     ActivityEntry toEntity(LogActivityCommand command);
 }
+```
