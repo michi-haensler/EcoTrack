@@ -1,5 +1,5 @@
 ---
-applyTo: "_server/**/*.java"
+applyTo: "**/*.java"
 description: "Java Backend Coding Standards für EcoTrack"
 ---
 
@@ -359,58 +359,6 @@ public class MyService {
         }
         
         log.info("Operation completed successfully");
-    }
-}
-```
-
-### Testing
-
-#### Unit Tests
-```java
-@ExtendWith(MockitoExtension.class)
-class LogActivityServiceTest {
-    
-    @Mock
-    private ActivityEntryRepository activityRepository;
-    
-    @Mock
-    private EventPublisher eventPublisher;
-    
-    @InjectMocks
-    private LogActivityService service;
-    
-    @Test
-    void should_saveActivityAndPublishEvent_when_validCommand() {
-        // Arrange
-        LogActivityCommand command = new LogActivityCommand(/* ... */);
-        when(activityRepository.save(any())).thenReturn(savedEntry);
-        
-        // Act
-        ActivityEntryDto result = service.execute(command);
-        
-        // Assert
-        assertThat(result).isNotNull();
-        verify(eventPublisher).publish(any(ActivityLoggedEvent.class));
-    }
-}
-```
-
-#### Integration Tests
-```java
-@SpringBootTest
-@ActiveProfiles("test")
-class ScoringControllerIntegrationTest {
-    
-    @Autowired
-    private MockMvc mockMvc;
-    
-    @Test
-    void should_return201_when_activityLogged() throws Exception {
-        mockMvc.perform(post("/api/scoring/activities")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(/* JSON */))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
     }
 }
 ```

@@ -1,5 +1,5 @@
 ---
-applyTo: "_admin-web/**/*.{ts,tsx}"
+applyTo: "**/*.{ts,tsx}"
 description: "TypeScript & React Standards für Admin-Web"
 ---
 
@@ -34,7 +34,6 @@ function getUser(id: any): any {
 #### Type Definitions
 - `interface` für Objektstrukturen
 - `type` für Unions, Intersections, Primitives
-- Keine redundanten Type Aliases
 
 ```typescript
 // Interfaces
@@ -53,7 +52,6 @@ type Result<T> = { success: true; data: T } | { success: false; error: string };
 #### Nullability
 - Optional Chaining: `user?.profile?.name`
 - Nullish Coalescing: `value ?? defaultValue`
-- Keine `== null` Checks (außer explizit beide null/undefined)
 
 ```typescript
 // ✅ Richtig
@@ -68,7 +66,7 @@ const name = user && user.profile && user.profile.name || 'Anonymous';
 #### Komponenten-Struktur
 - **Funktionale Komponenten** mit Hooks (keine Class Components)
 - Ein Component pro Datei
-- Props Interface/Type vor Component Definition
+- Props Interface vor Component Definition
 
 ```typescript
 interface UserCardProps {
@@ -122,7 +120,6 @@ function useEcoUser(userId: string) {
 - `useState` für lokalen State
 - TanStack Query für Server State
 - Context API für globale Themes/Auth
-- Zustand/Jotai für komplexen Client State (falls nötig)
 
 ```typescript
 // TanStack Query
@@ -155,7 +152,6 @@ function ActivitiesList({ userId }: Props) {
 - `useMemo` für teure Berechnungen
 - `useCallback` für Callbacks in Props
 - `React.memo` für reine Komponenten
-- Virtual Lists für lange Listen
 
 ```typescript
 const MemoizedUserCard = React.memo(UserCard);
@@ -211,17 +207,15 @@ function LogActivityForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('actionDefinitionId')} />
       {errors.actionDefinitionId && <span>{errors.actionDefinitionId.message}</span>}
-      {/* ... */}
     </form>
   );
 }
 ```
 
-### Styling (Tailwind CSS)
+### Styling (Tailwind CSS + cva)
 
 - Utility Classes bevorzugen
 - `cn()` Helper für Conditional Classes
-- Design Tokens über CSS Variables
 - Komponenten-Varianten mit cva (class-variance-authority)
 
 ```typescript
@@ -265,7 +259,6 @@ export function Button({ variant, size, className, children, ...props }: ButtonP
 
 ### API Integration
 
-#### Fetch Wrapper
 ```typescript
 class ApiClient {
   private baseUrl: string;
@@ -279,10 +272,7 @@ class ApiClient {
     this.token = token;
   }
   
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
+  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const headers = {
       'Content-Type': 'application/json',
       ...(this.token && { Authorization: `Bearer ${this.token}` }),
@@ -316,73 +306,19 @@ class ApiClient {
 export const api = new ApiClient(import.meta.env.VITE_API_URL);
 ```
 
-### Error Handling
-
-```typescript
-class ApiError extends Error {
-  constructor(public status: number, message: string) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
-
-function ErrorBoundary({ error }: { error: Error }) {
-  if (error instanceof ApiError) {
-    return <div>API Error {error.status}: {error.message}</div>;
-  }
-  
-  return <div>Unexpected Error: {error.message}</div>;
-}
-```
-
-### Testing
-
-#### Component Tests (Vitest + React Testing Library)
-```typescript
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-
-describe('UserCard', () => {
-  it('should call onSelect when clicked', () => {
-    const onSelect = vi.fn();
-    const user = { id: '1', userId: 'test', totalPoints: 100, level: 'BAUM' };
-    
-    render(<UserCard user={user} onSelect={onSelect} />);
-    
-    fireEvent.click(screen.getByRole('button'));
-    
-    expect(onSelect).toHaveBeenCalledWith('1');
-  });
-});
-```
-
 ### File Organization
 
 ```
 src/
-├── components/        # Wiederverwendbare UI-Komponenten
-│   ├── ui/           # Basis-UI-Komponenten (Button, Input, etc.)
-│   └── features/     # Feature-spezifische Komponenten
+├── components/
+│   ├── ui/           # Button, Input, Card, etc.
+│   └── features/     # ActivityCard, ChallengeForm, etc.
 ├── pages/            # Route-Komponenten
 ├── hooks/            # Custom Hooks
-├── lib/              # Utilities, Helpers
+├── lib/              # Utilities
 │   ├── api.ts
 │   ├── utils.ts
 │   └── cn.ts
 ├── types/            # TypeScript Types
 └── config/           # Konfiguration
-```
-
-### Naming
-
-- PascalCase: Komponenten, Interfaces, Types
-- camelCase: Variablen, Funktionen, Hooks
-- UPPER_CASE: Konstanten
-- kebab-case: Dateinamen
-
-```
-UserCard.tsx
-useEcoUser.ts
-api-client.ts
-types.ts
 ```

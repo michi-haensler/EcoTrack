@@ -1,5 +1,5 @@
 ---
-applyTo: "_mobile/**/*.{ts,tsx,js,jsx}"
+applyTo: "**/*.{ts,tsx,js,jsx}"
 description: "React Native Standards für Mobile App"
 ---
 
@@ -120,10 +120,6 @@ class StorageService {
       return null;
     }
   }
-  
-  async removeItem(key: string): Promise<void> {
-    await AsyncStorage.removeItem(key);
-  }
 }
 
 export const storage = new StorageService();
@@ -176,20 +172,6 @@ const styles = StyleSheet.create({
   container: {
     padding: Spacing.md,
     backgroundColor: Colors.background,
-  },
-});
-```
-
-#### Responsive Design
-```typescript
-import { Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    width: width * 0.9,
-    maxWidth: 500,
   },
 });
 ```
@@ -310,51 +292,6 @@ function ErrorView({ error, onRetry }: ErrorViewProps) {
 }
 ```
 
-### Testing
-
-```typescript
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-describe('ActivitiesScreen', () => {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-  });
-  
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  );
-  
-  it('should display activities', async () => {
-    const { getByText } = render(<ActivitiesScreen userId="1" />, { wrapper });
-    
-    await waitFor(() => {
-      expect(getByText('Fahrrad fahren')).toBeTruthy();
-    });
-  });
-});
-```
-
-### File Organization
-
-```
-mobile/
-├── src/
-│   ├── components/     # Wiederverwendbare Komponenten
-│   │   ├── ui/        # Basis-UI (Button, Input, Card)
-│   │   └── features/  # Feature-spezifisch
-│   ├── screens/       # Screen-Komponenten
-│   ├── navigation/    # Navigation Setup
-│   ├── hooks/         # Custom Hooks
-│   ├── services/      # API, Storage
-│   ├── types/         # TypeScript Types
-│   ├── constants/     # Colors, Spacing, etc.
-│   └── utils/         # Helper Functions
-└── App.tsx
-```
-
 ### Permissions
 
 ```typescript
@@ -400,7 +337,6 @@ const linking = {
 - ✅ Design Tokens verwenden
 - ✅ TanStack Query für Server State
 - ✅ AsyncStorage für lokale Daten
-- ✅ Error Boundaries
 - ✅ Platform-spezifischen Code isolieren
 - ❌ Keine globalen Variablen
 - ❌ Keine console.log in Production
