@@ -1,11 +1,5 @@
 # EcoTrack 🌱
 
-[![CI](https://github.com/[OWNER]/[REPO]/actions/workflows/ci.yml/badge.svg)](https://github.com/[OWNER]/[REPO]/actions/workflows/ci.yml)
-[![CD](https://github.com/[OWNER]/[REPO]/actions/workflows/cd.yml/badge.svg)](https://github.com/[OWNER]/[REPO]/actions/workflows/cd.yml)
-[![Coverage](https://github.com/[OWNER]/[REPO]/actions/workflows/coverage.yml/badge.svg)](https://github.com/[OWNER]/[REPO]/actions/workflows/coverage.yml)
-
-> ⚠️ **Hinweis:** Ersetze `[OWNER]/[REPO]` mit dem tatsächlichen Repository-Pfad
-
 ## Team Aufteilung 
 
 - Backend: Karner, Radlinger, Hänsler (Scrum Master)
