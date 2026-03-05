@@ -16,19 +16,11 @@ spring:
     open-in-view: false
   flyway:
     enabled: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # Nur jwk-set-uri verwenden → kein Eager-Connect beim Start (Keycloak muss nicht beim Start laufen)
-          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8180/realms/ecotrack/protocol/openid-connect/certs}
 
-keycloak:
-  admin:
-    server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8180}
-    realm: ${KEYCLOAK_REALM:ecotrack}
-    client-id: ${KEYCLOAK_CLIENT_ID:ecotrack-backend}
-    client-secret: ${KEYCLOAK_CLIENT_SECRET:ecotrack-backend-secret}
+security:
+  jwt:
+    secret: ${JWT_SECRET:change-this-secret-key-at-least-32-bytes-long-ecotrack}
+    access-token-minutes: 60
 
 ecotrack:
   level-thresholds:

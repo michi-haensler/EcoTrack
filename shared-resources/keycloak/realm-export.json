@@ -38,17 +38,17 @@
   "roles": {
     "realm": [
       {
-        "name": "SCHUELER",
+        "name": "STUDENT",
         "description": "Standard-Rolle für Schüler:innen - Zugriff auf Mobile App",
         "composite": false,
         "clientRole": false
       },
       {
-        "name": "LEHRER",
+        "name": "TEACHER",
         "description": "Rolle für Lehrkräfte - Zugriff auf Admin-Web",
         "composite": true,
         "composites": {
-          "realm": ["SCHUELER"]
+          "realm": ["STUDENT"]
         },
         "clientRole": false
       },
@@ -57,7 +57,7 @@
         "description": "System-Administrator - Volle Rechte",
         "composite": true,
         "composites": {
-          "realm": ["LEHRER", "SCHUELER"]
+          "realm": ["TEACHER", "STUDENT"]
         },
         "clientRole": false
       }
@@ -70,12 +70,12 @@
       "description": "Spring Boot Backend - Resource Server & Service Account",
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
-      "secret": "ecotrack-backend-secret",
+      "secret": "**********",
       "publicClient": false,
       "serviceAccountsEnabled": true,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": true,
+      "directAccessGrantsEnabled": false,
       "authorizationServicesEnabled": false,
       "redirectUris": [
         "http://localhost:8080/*",
