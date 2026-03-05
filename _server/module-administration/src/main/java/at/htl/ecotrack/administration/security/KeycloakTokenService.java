@@ -51,7 +51,6 @@ public class KeycloakTokenService {
         body.add("client_secret", props.clientSecret());
         body.add("username", email);
         body.add("password", password);
-        body.add("scope", "openid email profile");
 
         try {
             @SuppressWarnings("unchecked")

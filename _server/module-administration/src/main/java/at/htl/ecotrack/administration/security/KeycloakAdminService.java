@@ -135,6 +135,56 @@ public class KeycloakAdminService {
     }
 
     /**
+     * Gibt die vollständigen Keycloak-Benutzerdaten für eine E-Mail zurück.
+     *
+     * @return Map mit Keycloak-Feldern (id, firstName, lastName, email, enabled,
+     *         requiredActions, …)
+     *         oder {@code null} wenn kein Benutzer existiert
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getUserByEmail(String email) {
+        String adminToken = obtainAdminToken();
+        String url = adminUsersUrl() + "?email=" + email.toLowerCase() + "&exact=true";
+        try {
+            List<Map<String, Object>> users = restClient.get()
+                    .uri(url)
+                    .header("Authorization", "Bearer " + adminToken)
+                    .retrieve()
+                    .body(List.class);
+            if (users == null || users.isEmpty())
+                return null;
+            return users.get(0);
+        } catch (Exception ex) {
+            log.warn("Keycloak User-Suche fehlgeschlagen für {}: {}", email, ex.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Gibt die Realm-Rollen eines Keycloak-Benutzers zurück.
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getUserRealmRoles(UUID keycloakUserId) {
+        String adminToken = obtainAdminToken();
+        String url = adminUsersUrl() + "/" + keycloakUserId + "/role-mappings/realm";
+        try {
+            List<Map<String, Object>> roles = restClient.get()
+                    .uri(url)
+                    .header("Authorization", "Bearer " + adminToken)
+                    .retrieve()
+                    .body(List.class);
+            if (roles == null)
+                return List.of();
+            return roles.stream()
+                    .map(r -> (String) r.get("name"))
+                    .toList();
+        } catch (Exception ex) {
+            log.warn("Keycloak Rollen-Abfrage fehlgeschlagen für {}: {}", keycloakUserId, ex.getMessage());
+            return List.of();
+        }
+    }
+
+    /**
      * Schickt eine Password-Reset-E-Mail über Keycloak an den Benutzer.
      */
     public void sendPasswordResetEmail(String email) {

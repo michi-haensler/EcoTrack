@@ -1,10 +1,11 @@
 package at.htl.ecotrack.administration.application;
 
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.htl.ecotrack.administration.domain.AppUser;
 import at.htl.ecotrack.administration.domain.AppUserRepository;
-import at.htl.ecotrack.administration.domain.PasswordResetToken;
-import at.htl.ecotrack.administration.domain.RefreshToken;
 import at.htl.ecotrack.administration.domain.SchoolClass;
 import at.htl.ecotrack.administration.domain.SchoolClassRepository;
 import at.htl.ecotrack.administration.security.KeycloakAdminService;
@@ -36,6 +35,8 @@ import at.htl.ecotrack.userprofile.domain.EcoUserProfile;
  */
 @Service
 public class AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final AppUserRepository appUserRepository;
     private final SchoolClassRepository classRepository;
@@ -89,7 +90,7 @@ public class AuthService {
             user.setPasswordHash(null);
             user.setRole(request.role());
             user.setStatus(UserStatus.ACTIVE);
-            user.setMustChangePassword(false);
+            user.setMustChangePassword(request.role() == Role.LEHRER);
             user.setFailedLoginAttempts(0);
             AppUser savedUser = appUserRepository.save(user);
 
@@ -128,26 +129,92 @@ public class AuthService {
     // Login / Logout
     // ---------------------------------------------------------------------------
 
-    @Transactional(readOnly = true)
+    @Transactional
     public AuthDtos.AuthResponse login(AuthDtos.LoginRequest request, Role targetRole) {
-        // Lokalen Benutzer für Statusprüfung laden
-        AppUser user = appUserRepository.findByEmailIgnoreCase(request.email())
-                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS",
-                        "Ungültige Login-Daten"));
+        // 1. Keycloak übernimmt die Passwortprüfung (Single Source of Truth)
+        KeycloakTokenService.KeycloakTokenResponse tokens;
+        try {
+            tokens = keycloakTokenService.login(request.email(), request.password());
+        } catch (ApiException ex) {
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS",
+                    "Ungültige Login-Daten");
+        }
 
+        // 2. Lokalen Benutzer laden — oder per JIT-Provisioning automatisch anlegen
+        AppUser user = appUserRepository.findByEmailIgnoreCase(request.email())
+                .orElseGet(() -> provisionLocalUser(request.email()));
+
+        // 3. Statusprüfungen
         if (targetRole != null && user.getRole() != targetRole) {
             throw new ApiException(HttpStatus.FORBIDDEN, "ROLE_MISMATCH", "Falscher Login-Endpunkt für diese Rolle");
         }
         if (user.getStatus() == UserStatus.DISABLED) {
             throw new ApiException(HttpStatus.FORBIDDEN, "USER_DISABLED", "Benutzer ist deaktiviert");
         }
-
-        // Keycloak übernimmt die Passwortprüfung und Brute-Force-Schutz
-        KeycloakTokenService.KeycloakTokenResponse tokens = keycloakTokenService.login(request.email(),
-                request.password());
+        if (user.isMustChangePassword()) {
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "PASSWORD_CHANGE_REQUIRED",
+                    "Das Passwort muss vor dem ersten Login geändert werden");
+        }
 
         EcoUserProfile profile = profileService.getByUserId(user.getUserId());
         return toAuthResponse(tokens, user, profile);
+    }
+
+    /**
+     * JIT (Just-In-Time) Provisioning: Legt einen lokalen AppUser + Profil an,
+     * wenn der Benutzer in Keycloak existiert, aber noch nicht in der lokalen DB.
+     * So funktionieren auch Benutzer, die über die Keycloak Admin-Konsole angelegt
+     * wurden.
+     */
+    private AppUser provisionLocalUser(String email) {
+        Map<String, Object> kcUser = keycloakAdminService.getUserByEmail(email);
+        if (kcUser == null) {
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", "Ungültige Login-Daten");
+        }
+
+        UUID keycloakUserId = UUID.fromString((String) kcUser.get("id"));
+        String firstName = (String) kcUser.getOrDefault("firstName", "");
+        String lastName = (String) kcUser.getOrDefault("lastName", "");
+
+        // Rolle aus Keycloak-Realm-Rollen ableiten
+        Role role = resolveRoleFromKeycloak(keycloakUserId);
+
+        AppUser user = new AppUser();
+        user.setUserId(keycloakUserId);
+        user.setEmail(email.toLowerCase());
+        user.setPasswordHash(null);
+        user.setRole(role);
+        user.setStatus(UserStatus.ACTIVE);
+        user.setMustChangePassword(false);
+        user.setFailedLoginAttempts(0);
+        AppUser savedUser = appUserRepository.save(user);
+
+        // Profil anlegen
+        profileService.createProfile(
+                savedUser.getUserId(), savedUser.getEmail(),
+                firstName, lastName, role,
+                null, null, null, null);
+
+        log.info("JIT-Provisioning: Lokaler Benutzer für {} angelegt (Keycloak-ID: {}, Rolle: {})",
+                email, keycloakUserId, role);
+
+        return savedUser;
+    }
+
+    /**
+     * Leitet die App-Rolle aus den Keycloak-Realm-Rollen ab.
+     * Priorität: ADMIN > LEHRER > SCHUELER
+     */
+    private Role resolveRoleFromKeycloak(UUID keycloakUserId) {
+        List<String> roles = keycloakAdminService.getUserRealmRoles(keycloakUserId);
+        if (roles.contains("ADMIN"))
+            return Role.ADMIN;
+        if (roles.contains("LEHRER"))
+            return Role.LEHRER;
+        if (roles.contains("SCHUELER"))
+            return Role.SCHUELER;
+        // Fallback: Wenn keine App-Rolle zugewiesen ist, Default-Rolle
+        return Role.SCHUELER;
     }
 
     public void logout(AuthDtos.LogoutRequest request) {

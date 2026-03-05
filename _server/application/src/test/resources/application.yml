@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+    open-in-view: false
+  flyway:
+    enabled: true
+
+keycloak:
+  admin:
+    server-url: http://localhost:0
+    realm: test
+    client-id: test-client
+    client-secret: test-secret
+
+ecotrack:
+  level-thresholds:
+    jungbaum: 100
+    baum: 250
+    altbaum: 500
+    legend: 1000
