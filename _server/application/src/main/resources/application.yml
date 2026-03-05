@@ -36,13 +36,3 @@ ecotrack:
     baum: 250
     altbaum: 500
     legend: 1000
-
-# Actuator — Healthcheck für Docker
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health
-  endpoint:
-    health:
-      show-details: never

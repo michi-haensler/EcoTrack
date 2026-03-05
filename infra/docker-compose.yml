@@ -1,16 +1,18 @@
 version: '3.8'
 
 services:
-  # ─── Datenbank: Keycloak ──────────────────────────────────────────────────
-  postgres-keycloak:
+  # PostgreSQL Database für Keycloak
+  postgres:
     image: postgres:15-alpine
-    container_name: ecotrack-postgres-keycloak
+    container_name: ecotrack-postgres
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: ${POSTGRES_KEYCLOAK_PASSWORD:-keycloak_dev_password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-keycloak_dev_password}
     volumes:
-      - postgres_keycloak_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - ecotrack-network
     healthcheck:
@@ -19,55 +21,45 @@ services:
       timeout: 5s
       retries: 5
 
-  # ─── Datenbank: Applikation ───────────────────────────────────────────────
-  postgres-app:
-    image: postgres:15-alpine
-    container_name: ecotrack-postgres-app
-    environment:
-      POSTGRES_DB: ecotrack
-      POSTGRES_USER: ecotrack
-      POSTGRES_PASSWORD: ${POSTGRES_APP_PASSWORD:-ecotrack_dev_password}
-    volumes:
-      - postgres_app_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - ecotrack-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ecotrack"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ─── Keycloak Identity Provider ───────────────────────────────────────────
+  # Keycloak Identity Provider
   keycloak:
     image: quay.io/keycloak/keycloak:23.0
     container_name: ecotrack-keycloak
-    command:
+    command: 
       - start-dev
       - --import-realm
     environment:
+      # Admin Credentials
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      
+      # Database Configuration
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
       KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: ${POSTGRES_KEYCLOAK_PASSWORD:-keycloak_dev_password}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-keycloak_dev_password}
+      
+      # Hostname Configuration
       KC_HOSTNAME: localhost
       KC_HOSTNAME_PORT: 8180
-      KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+      
+      # Logging
       KC_LOG_LEVEL: INFO
+      
     volumes:
+      # Realm-Import beim Start
       - ../shared-resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+      # Themes (optional für Custom UI)
       - ../shared-resources/keycloak/themes:/opt/keycloak/themes:ro
     ports:
       - "8180:8080"
     networks:
       - ecotrack-network
     depends_on:
-      postgres-keycloak:
+      postgres:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
@@ -76,79 +68,20 @@ services:
       retries: 5
       start_period: 60s
 
-  # ─── MailHog (E-Mail-Testing) ─────────────────────────────────────────────
+  # MailHog für E-Mail-Testing (Development)
   mailhog:
     image: mailhog/mailhog:latest
     container_name: ecotrack-mailhog
     ports:
-      - "1025:1025"  # SMTP
-      - "8025:8025"  # Web UI → http://localhost:8025
+      - "1025:1025"  # SMTP Server
+      - "8025:8025"  # Web UI
     networks:
       - ecotrack-network
-
-  # ─── Spring Boot Backend ──────────────────────────────────────────────────
-  backend:
-    build:
-      context: ../_server
-      dockerfile: Dockerfile
-    container_name: ecotrack-backend
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-      # PostgreSQL (App-Datenbank)
-      DB_URL: jdbc:postgresql://postgres-app:5432/ecotrack
-      DB_USERNAME: ecotrack
-      DB_PASSWORD: ${POSTGRES_APP_PASSWORD:-ecotrack_dev_password}
-      DB_DRIVER: org.postgresql.Driver
-      # Keycloak (interne Docker-Adresse)
-      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/ecotrack/protocol/openid-connect/certs
-      KEYCLOAK_SERVER_URL: http://keycloak:8080
-      KEYCLOAK_REALM: ecotrack
-      KEYCLOAK_CLIENT_ID: ecotrack-backend
-      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET:-ecotrack-backend-secret}
-      # MailHog
-      SPRING_MAIL_HOST: mailhog
-      SPRING_MAIL_PORT: 1025
-    ports:
-      - "8080:8080"
-    networks:
-      - ecotrack-network
-    depends_on:
-      postgres-app:
-        condition: service_healthy
-      keycloak:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 90s
-
-  # ─── Admin-Web (React + nginx) ────────────────────────────────────────────
-  admin-web:
-    build:
-      context: ../_admin-web
-      dockerfile: Dockerfile
-      args:
-        VITE_API_BASE_URL: /api
-        VITE_KEYCLOAK_URL: ${VITE_KEYCLOAK_URL:-http://localhost:8180}
-        VITE_KEYCLOAK_REALM: ecotrack
-        VITE_KEYCLOAK_CLIENT_ID: ecotrack-admin-web
-    container_name: ecotrack-admin-web
-    ports:
-      - "3000:80"
-    networks:
-      - ecotrack-network
-    depends_on:
-      backend:
-        condition: service_healthy
 
 networks:
   ecotrack-network:
     driver: bridge
 
 volumes:
-  postgres_keycloak_data:
-    driver: local
-  postgres_app_data:
+  postgres_data:
     driver: local

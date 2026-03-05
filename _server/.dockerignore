@@ -1,7 +1,0 @@
-# Build-Artefakte werden im Docker-Build neu erzeugt
-**/target/
-**/.mvn/
-*.md
-.git
-.gitignore
-.editorconfig
