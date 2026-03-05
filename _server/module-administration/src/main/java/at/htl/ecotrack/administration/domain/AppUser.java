@@ -1,5 +1,8 @@
 package at.htl.ecotrack.administration.domain;
 
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 import at.htl.ecotrack.shared.model.Role;
 import at.htl.ecotrack.shared.model.UserStatus;
 import jakarta.persistence.Column;
@@ -10,9 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-
-import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "app_users")
@@ -25,7 +25,8 @@ public class AppUser {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
+    // Kein Passwort-Hash: Passwörter werden von Keycloak verwaltet
+    @Column(name = "password_hash")
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
