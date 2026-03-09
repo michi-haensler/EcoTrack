@@ -16,11 +16,11 @@ import type {
     LogoutRequest,
     UserInfo,
 } from '@/types/auth';
-import { PasswordChangeRequiredError } from '@/types/auth';
+import { EmailNotVerifiedError, InsufficientRoleError, PasswordChangeRequiredError } from '@/types/auth';
 import { AxiosError } from 'axios';
 
 // ---------------------------------------------------------------------------
-// Keycloak-URL für Passwortänderungs-Redirect
+// Keycloak-URL für Passwortänderungs-Redirect (nicht mehr verwendet, aber als Fallback)
 // ---------------------------------------------------------------------------
 
 function getKeycloakPasswordChangeUrl(): string {
@@ -39,6 +39,14 @@ function handleApiError(error: unknown): never {
 
     if (body.code === 'PASSWORD_CHANGE_REQUIRED') {
       throw new PasswordChangeRequiredError(getKeycloakPasswordChangeUrl());
+    }
+
+    if (body.code === 'EMAIL_NOT_VERIFIED') {
+      throw new EmailNotVerifiedError(body.message || 'E-Mail-Adresse wurde noch nicht verifiziert.');
+    }
+
+    if (body.code === 'INSUFFICIENT_ROLE') {
+      throw new InsufficientRoleError(body.message || 'Keine Berechtigung für das Admin-Dashboard.');
     }
 
     const err = new Error(body.message || 'Anmeldung fehlgeschlagen.');
@@ -101,4 +109,24 @@ export async function requestPasswordReset(email: string): Promise<void> {
 export async function getCurrentUser(): Promise<UserInfo> {
   const { data } = await apiClient.get<UserInfo>('/api/v1/users/me');
   return data;
+}
+
+/**
+ * POST /api/v1/auth/password/change
+ * Ändert das Passwort (verifiziert aktuelles Passwort via ROPC, setzt neues via Admin API).
+ */
+export async function changePassword(
+  email: string,
+  currentPassword: string,
+  newPassword: string,
+): Promise<{ message: string }> {
+  try {
+    const { data } = await apiClient.post<{ message: string }>(
+      '/api/v1/auth/password/change',
+      { email, currentPassword, newPassword },
+    );
+    return data;
+  } catch (error) {
+    handleApiError(error);
+  }
 }

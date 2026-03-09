@@ -10,7 +10,7 @@
  */
 
 import { isAuthenticated, useAuthStore } from '@/stores/authStore';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function LoginPage() {
@@ -18,12 +18,21 @@ export function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
 
   const login = useAuthStore((s) => s.login);
+  const changePassword = useAuthStore((s) => s.changePassword);
   const clearError = useAuthStore((s) => s.clearError);
   const loginStatus = useAuthStore((s) => s.loginStatus);
   const loginError = useAuthStore((s) => s.loginError);
   const passwordChangeRequired = useAuthStore((s) => s.passwordChangeRequired);
-  const passwordChangeUrl = useAuthStore((s) => s.passwordChangeUrl);
+  const emailNotVerified = useAuthStore((s) => s.emailNotVerified);
   const authenticated = useAuthStore(isAuthenticated);
+
+  // Password change form state
+  const [pwCurrentPassword, setPwCurrentPassword] = useState('');
+  const [pwNewPassword, setPwNewPassword] = useState('');
+  const [pwConfirmPassword, setPwConfirmPassword] = useState('');
+  const [pwError, setPwError] = useState<string | null>(null);
+  const [pwSuccess, setPwSuccess] = useState<string | null>(null);
+  const [pwLoading, setPwLoading] = useState(false);
 
   // Redirect wenn bereits eingeloggt
   useEffect(() => {
@@ -32,10 +41,32 @@ export function LoginPage() {
     }
   }, [authenticated, navigate]);
 
-  // Passwortänderung über Keycloak (manueller Button statt Auto-Redirect)
-  function handlePasswordChangeRedirect() {
-    if (passwordChangeUrl) {
-      window.open(passwordChangeUrl, '_blank');
+  // Passwortänderung über eigenen Endpoint
+  async function handlePasswordChange(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setPwError(null);
+    setPwSuccess(null);
+
+    if (pwNewPassword !== pwConfirmPassword) {
+      setPwError('Die Passwörter stimmen nicht überein.');
+      return;
+    }
+    if (pwNewPassword.length < 8) {
+      setPwError('Das neue Passwort muss mindestens 8 Zeichen lang sein.');
+      return;
+    }
+
+    setPwLoading(true);
+    try {
+      const message = await changePassword(pwCurrentPassword, pwNewPassword);
+      setPwSuccess(message);
+      setPwCurrentPassword('');
+      setPwNewPassword('');
+      setPwConfirmPassword('');
+    } catch (err) {
+      setPwError(err instanceof Error ? err.message : 'Passwortänderung fehlgeschlagen.');
+    } finally {
+      setPwLoading(false);
     }
   }
 
@@ -127,7 +158,7 @@ export function LoginPage() {
             </div>
 
             {/* Fehlermeldung */}
-            {loginError && (
+            {loginError && !emailNotVerified && (
               <div
                 role="alert"
                 aria-live="assertive"
@@ -138,31 +169,119 @@ export function LoginPage() {
               </div>
             )}
 
-            {/* Passwortänderungszwang — Info + manueller Button */}
-            {passwordChangeRequired && (
+            {/* E-Mail nicht verifiziert — Info-Block */}
+            {emailNotVerified && (
+              <div
+                role="alert"
+                aria-live="assertive"
+                className="mb-4 rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-800"
+              >
+                <div className="flex items-start gap-2">
+                  <span aria-hidden="true" className="mt-0.5 shrink-0">📧</span>
+                  <span>
+                    Deine E-Mail-Adresse wurde noch nicht verifiziert.
+                    Bitte prüfe dein Postfach und klicke auf den Bestätigungslink.
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Passwortänderungszwang — Inline-Formular */}
+            {passwordChangeRequired && !pwSuccess && (
               <div
                 role="status"
                 aria-live="polite"
-                className="mb-4 rounded-lg bg-yellow-50 border border-yellow-200 px-4 py-3 text-sm text-yellow-800"
+                className="mb-4 rounded-lg bg-yellow-50 border border-yellow-200 px-4 py-4 text-sm text-yellow-800"
               >
-                <div className="flex items-start gap-2 mb-2">
+                <div className="flex items-start gap-2 mb-3">
                   <span aria-hidden="true" className="mt-0.5 shrink-0">🔑</span>
                   <span>
-                    Dein Passwort muss geändert werden. Klicke auf den Button, um
-                    die Keycloak-Passwortänderung zu öffnen.
-                    <br />
-                    <span className="text-xs text-yellow-600">
-                      (Keycloak muss unter localhost:8180 laufen)
-                    </span>
+                    Dein Passwort muss geändert werden, bevor du dich anmelden kannst.
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handlePasswordChangeRedirect}
-                  className="w-full py-2 px-3 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-medium rounded-lg transition"
-                >
-                  Passwort ändern (Keycloak öffnen)
-                </button>
+
+                <form onSubmit={handlePasswordChange} noValidate aria-label="Passwort ändern">
+                  <div className="mb-3">
+                    <label htmlFor="pw-current" className="block text-xs font-medium text-yellow-700 mb-1">
+                      Aktuelles Passwort
+                    </label>
+                    <input
+                      id="pw-current"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      disabled={pwLoading}
+                      value={pwCurrentPassword}
+                      onChange={(e) => setPwCurrentPassword(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-yellow-300 text-gray-900 placeholder-gray-400
+                                 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500
+                                 disabled:bg-gray-50 disabled:text-gray-400 text-sm transition"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="pw-new" className="block text-xs font-medium text-yellow-700 mb-1">
+                      Neues Passwort (min. 8 Zeichen)
+                    </label>
+                    <input
+                      id="pw-new"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      disabled={pwLoading}
+                      value={pwNewPassword}
+                      onChange={(e) => setPwNewPassword(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-yellow-300 text-gray-900 placeholder-gray-400
+                                 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500
+                                 disabled:bg-gray-50 disabled:text-gray-400 text-sm transition"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="pw-confirm" className="block text-xs font-medium text-yellow-700 mb-1">
+                      Neues Passwort bestätigen
+                    </label>
+                    <input
+                      id="pw-confirm"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      disabled={pwLoading}
+                      value={pwConfirmPassword}
+                      onChange={(e) => setPwConfirmPassword(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-yellow-300 text-gray-900 placeholder-gray-400
+                                 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500
+                                 disabled:bg-gray-50 disabled:text-gray-400 text-sm transition"
+                    />
+                  </div>
+
+                  {pwError && (
+                    <div role="alert" className="mb-3 text-xs text-red-600">
+                      {pwError}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={pwLoading}
+                    className="w-full py-2 px-3 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-medium rounded-lg
+                               disabled:opacity-60 disabled:cursor-not-allowed transition"
+                  >
+                    {pwLoading ? 'Wird geändert…' : 'Passwort ändern'}
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {/* Passwort erfolgreich geändert */}
+            {pwSuccess && (
+              <div
+                role="status"
+                aria-live="polite"
+                className="mb-4 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700"
+              >
+                <div className="flex items-start gap-2">
+                  <span aria-hidden="true" className="mt-0.5 shrink-0">✅</span>
+                  <span>{pwSuccess}</span>
+                </div>
               </div>
             )}
 

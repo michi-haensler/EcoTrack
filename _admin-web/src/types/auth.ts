@@ -47,6 +47,28 @@ export class PasswordChangeRequiredError extends Error {
   }
 }
 
+/**
+ * Wird geworfen, wenn die E-Mail nicht verifiziert ist.
+ * Code: EMAIL_NOT_VERIFIED
+ */
+export class EmailNotVerifiedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'EmailNotVerifiedError';
+  }
+}
+
+/**
+ * Wird geworfen, wenn die Rolle nicht ausreicht (z.B. Schüler im Admin-Dashboard).
+ * Code: INSUFFICIENT_ROLE
+ */
+export class InsufficientRoleError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'InsufficientRoleError';
+  }
+}
+
 /** Auth-Session im Store */
 export interface AuthSession {
   accessToken: string;

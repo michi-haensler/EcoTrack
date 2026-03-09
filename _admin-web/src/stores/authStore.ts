@@ -12,7 +12,7 @@
 import * as realApi from '@/services/authApi';
 import * as mockApi from '@/services/authMockApi';
 import type { AdminLoginRequest, AuthSession } from '@/types/auth';
-import { PasswordChangeRequiredError } from '@/types/auth';
+import { EmailNotVerifiedError, InsufficientRoleError, PasswordChangeRequiredError } from '@/types/auth';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
@@ -33,13 +33,17 @@ interface AuthState {
 
   /**
    * true wenn Keycloak einen Passwortwechsel erzwingt.
-   * In diesem Fall muss zur Keycloak-UI weitergeleitet werden.
+   * In diesem Fall wird ein Formular zum Passwort-Ändern angezeigt.
    */
   passwordChangeRequired: boolean;
-  passwordChangeUrl: string | null;
+  passwordChangeEmail: string | null;
+
+  /** true wenn die E-Mail noch nicht verifiziert wurde */
+  emailNotVerified: boolean;
 
   // Aktionen
   login: (request: AdminLoginRequest) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<string>;
   logout: () => Promise<void>;
   clearError: () => void;
 }
@@ -55,10 +59,11 @@ export const useAuthStore = create<AuthState>()(
       loginStatus: 'idle',
       loginError: null,
       passwordChangeRequired: false,
-      passwordChangeUrl: null,
+      passwordChangeEmail: null,
+      emailNotVerified: false,
 
       login: async (request: AdminLoginRequest) => {
-        set({ loginStatus: 'loading', loginError: null, passwordChangeRequired: false });
+        set({ loginStatus: 'loading', loginError: null, passwordChangeRequired: false, passwordChangeEmail: null, emailNotVerified: false });
 
         try {
           const response = await api.adminLogin(request);
@@ -77,7 +82,24 @@ export const useAuthStore = create<AuthState>()(
               loginStatus: 'idle',
               loginError: null,
               passwordChangeRequired: true,
-              passwordChangeUrl: err.keycloakChangeUrl,
+              passwordChangeEmail: request.email,
+            });
+            return;
+          }
+
+          if (err instanceof EmailNotVerifiedError) {
+            set({
+              loginStatus: 'error',
+              loginError: err.message,
+              emailNotVerified: true,
+            });
+            return;
+          }
+
+          if (err instanceof InsufficientRoleError) {
+            set({
+              loginStatus: 'error',
+              loginError: err.message,
             });
             return;
           }
@@ -86,6 +108,19 @@ export const useAuthStore = create<AuthState>()(
             err instanceof Error ? err.message : 'Anmeldung fehlgeschlagen.';
           set({ loginStatus: 'error', loginError: message });
         }
+      },
+
+      changePassword: async (currentPassword: string, newPassword: string) => {
+        const email = get().passwordChangeEmail;
+        if (!email) throw new Error('Keine E-Mail für Passwortänderung gespeichert');
+
+        const result = await api.changePassword(email, currentPassword, newPassword);
+        set({
+          passwordChangeRequired: false,
+          passwordChangeEmail: null,
+          loginError: null,
+        });
+        return result.message;
       },
 
       logout: async () => {
@@ -102,7 +137,8 @@ export const useAuthStore = create<AuthState>()(
           loginStatus: 'idle',
           loginError: null,
           passwordChangeRequired: false,
-          passwordChangeUrl: null,
+          passwordChangeEmail: null,
+          emailNotVerified: false,
         });
       },
 

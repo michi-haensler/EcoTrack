@@ -61,7 +61,7 @@ public class AuthService {
     // ---------------------------------------------------------------------------
 
     @Transactional
-    public AuthDtos.AuthResponse register(AuthDtos.RegisterRequest request) {
+    public AuthDtos.RegisterResponse register(AuthDtos.RegisterRequest request) {
         if (appUserRepository.findByEmailIgnoreCase(request.email()).isPresent()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "EMAIL_EXISTS", "E-Mail ist bereits registriert");
         }
@@ -77,26 +77,27 @@ public class AuthService {
         }
 
         // 1. Benutzer in Keycloak anlegen → ergibt die Keycloak-UUID
+        // createUser() setzt emailVerified=false und sendet Verifikations-E-Mail
         UUID keycloakUserId = null;
         try {
             keycloakUserId = keycloakAdminService.createUser(
                     request.email(), request.password(),
                     request.firstName(), request.lastName(), request.role());
 
-            // 2. Lokalen AppUser mit Keycloak-UUID anlegen (kein Passwort-Hash!)
+            // 2. Lokalen AppUser mit Keycloak-UUID anlegen
             AppUser user = new AppUser();
             user.setUserId(keycloakUserId);
             user.setEmail(request.email().toLowerCase());
             user.setPasswordHash(null);
             user.setRole(request.role());
             user.setStatus(UserStatus.ACTIVE);
-            user.setMustChangePassword(request.role() == Role.LEHRER);
+            user.setMustChangePassword(false);
             user.setFailedLoginAttempts(0);
             AppUser savedUser = appUserRepository.save(user);
 
             // 3. Benutzerprofil erstellen
             final SchoolClass sc = schoolClass;
-            EcoUserProfile profile = profileService.createProfile(
+            profileService.createProfile(
                     savedUser.getUserId(),
                     savedUser.getEmail(),
                     request.firstName(),
@@ -107,14 +108,13 @@ public class AuthService {
                     sc == null ? null : sc.getSchoolId(),
                     sc == null ? null : sc.getSchoolName());
 
-            // 4. Direkt einloggen und Tokens zurückgeben
-            KeycloakTokenService.KeycloakTokenResponse tokens = keycloakTokenService.login(request.email(),
-                    request.password());
-
-            return toAuthResponse(tokens, savedUser, profile);
+            // 4. Kein Auto-Login mehr — User muss zuerst E-Mail verifizieren
+            return new AuthDtos.RegisterResponse(
+                    savedUser.getUserId(),
+                    savedUser.getEmail(),
+                    "Registrierung erfolgreich. Bitte prüfe dein E-Mail-Postfach und bestätige deine E-Mail-Adresse.");
 
         } catch (Exception ex) {
-            // Kompensations-Transaktion: Keycloak-User löschen wenn lokale DB fehlschlägt
             if (keycloakUserId != null) {
                 try {
                     keycloakAdminService.deleteUser(keycloakUserId);
@@ -131,7 +131,27 @@ public class AuthService {
 
     @Transactional
     public AuthDtos.AuthResponse login(AuthDtos.LoginRequest request, Role targetRole) {
-        // 1. Keycloak übernimmt die Passwortprüfung (Single Source of Truth)
+        // 1. Keycloak-Benutzerdaten abrufen für Vorabprüfungen
+        Map<String, Object> kcUser = keycloakAdminService.getUserByEmail(request.email());
+
+        if (kcUser != null) {
+            // E-Mail-Verifikation prüfen (Keycloak ist Source of Truth)
+            Boolean emailVerified = (Boolean) kcUser.get("emailVerified");
+            if (emailVerified == null || !emailVerified) {
+                throw new ApiException(HttpStatus.FORBIDDEN, "EMAIL_NOT_VERIFIED",
+                        "E-Mail-Adresse wurde noch nicht verifiziert. Bitte prüfe dein Postfach.");
+            }
+
+            // Passwort-Änderungszwang prüfen (aus Keycloak requiredActions)
+            @SuppressWarnings("unchecked")
+            List<String> requiredActions = (List<String>) kcUser.getOrDefault("requiredActions", List.of());
+            if (requiredActions.contains("UPDATE_PASSWORD")) {
+                throw new ApiException(HttpStatus.UNAUTHORIZED, "PASSWORD_CHANGE_REQUIRED",
+                        "Das Passwort muss vor dem ersten Login geändert werden");
+            }
+        }
+
+        // 2. Keycloak übernimmt die Passwortprüfung (Single Source of Truth)
         KeycloakTokenService.KeycloakTokenResponse tokens;
         try {
             tokens = keycloakTokenService.login(request.email(), request.password());
@@ -140,20 +160,26 @@ public class AuthService {
                     "Ungültige Login-Daten");
         }
 
-        // 2. Lokalen Benutzer laden — oder per JIT-Provisioning automatisch anlegen
+        // 3. Lokalen Benutzer laden — oder per JIT-Provisioning automatisch anlegen
         AppUser user = appUserRepository.findByEmailIgnoreCase(request.email())
                 .orElseGet(() -> provisionLocalUser(request.email()));
 
-        // 3. Statusprüfungen
-        if (targetRole != null && user.getRole() != targetRole) {
-            throw new ApiException(HttpStatus.FORBIDDEN, "ROLE_MISMATCH", "Falscher Login-Endpunkt für diese Rolle");
+        // 4. Admin-Dashboard: Nur ADMIN und LEHRER erlaubt
+        if (targetRole == Role.ADMIN) {
+            if (user.getRole() == Role.SCHUELER) {
+                throw new ApiException(HttpStatus.FORBIDDEN, "INSUFFICIENT_ROLE",
+                        "Schüler haben keinen Zugang zum Admin-Dashboard. Bitte die Mobile-App verwenden.");
+            }
         }
+        // Mobile-Login: Nur Schüler erlaubt
+        if (targetRole == Role.SCHUELER && user.getRole() != Role.SCHUELER) {
+            throw new ApiException(HttpStatus.FORBIDDEN, "ROLE_MISMATCH",
+                    "Falscher Login-Endpunkt für diese Rolle");
+        }
+
+        // 5. Statusprüfungen
         if (user.getStatus() == UserStatus.DISABLED) {
             throw new ApiException(HttpStatus.FORBIDDEN, "USER_DISABLED", "Benutzer ist deaktiviert");
-        }
-        if (user.isMustChangePassword()) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, "PASSWORD_CHANGE_REQUIRED",
-                    "Das Passwort muss vor dem ersten Login geändert werden");
         }
 
         EcoUserProfile profile = profileService.getByUserId(user.getUserId());
@@ -232,6 +258,34 @@ public class AuthService {
     public void requestPasswordReset(AuthDtos.PasswordResetRequest request) {
         // Keycloak sendet die Reset-E-Mail direkt; kein lokaler Token nötig
         keycloakAdminService.sendPasswordResetEmail(request.email());
+    }
+
+    /**
+     * Ändert das Passwort eines Benutzers.
+     * Verifiziert zuerst das aktuelle Passwort via ROPC, setzt dann das neue
+     * Passwort über die Keycloak Admin API und entfernt UPDATE_PASSWORD.
+     */
+    public AuthDtos.PasswordChangeResponse changePassword(AuthDtos.PasswordChangeRequest request) {
+        // 1. Aktuelles Passwort verifizieren via ROPC
+        try {
+            keycloakTokenService.login(request.email(), request.currentPassword());
+        } catch (ApiException ex) {
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS",
+                    "Das aktuelle Passwort ist falsch");
+        }
+
+        // 2. Keycloak-Benutzer ermitteln
+        Map<String, Object> kcUser = keycloakAdminService.getUserByEmail(request.email());
+        if (kcUser == null) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "USER_NOT_FOUND", "Benutzer nicht gefunden");
+        }
+        UUID keycloakUserId = UUID.fromString((String) kcUser.get("id"));
+
+        // 3. Neues Passwort setzen + UPDATE_PASSWORD entfernen
+        keycloakAdminService.resetUserPassword(keycloakUserId, request.newPassword());
+
+        log.info("Passwort erfolgreich geändert für Benutzer {}", request.email());
+        return new AuthDtos.PasswordChangeResponse("Passwort erfolgreich geändert. Du kannst dich jetzt anmelden.");
     }
 
     // ---------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 package at.htl.ecotrack.administration.security;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -57,17 +58,18 @@ public class KeycloakAdminService {
         String adminToken = obtainAdminToken();
         String usersUrl = adminUsersUrl();
 
-        Map<String, Object> userRepresentation = Map.of(
-                "username", email.toLowerCase(),
-                "email", email.toLowerCase(),
-                "firstName", firstName,
-                "lastName", lastName,
-                "enabled", true,
-                "emailVerified", true,
-                "credentials", List.of(Map.of(
-                        "type", "password",
-                        "value", password,
-                        "temporary", false)));
+        Map<String, Object> userRepresentation = new HashMap<>();
+        userRepresentation.put("username", email.toLowerCase());
+        userRepresentation.put("email", email.toLowerCase());
+        userRepresentation.put("firstName", firstName);
+        userRepresentation.put("lastName", lastName);
+        userRepresentation.put("enabled", true);
+        userRepresentation.put("emailVerified", false);
+        userRepresentation.put("requiredActions", List.of("VERIFY_EMAIL"));
+        userRepresentation.put("credentials", List.of(Map.of(
+                "type", "password",
+                "value", password,
+                "temporary", false)));
 
         try {
             ResponseEntity<Void> response = restClient.post()
@@ -89,6 +91,10 @@ public class KeycloakAdminService {
             UUID keycloakUserId = UUID.fromString(path.substring(path.lastIndexOf('/') + 1));
 
             assignRealmRole(adminToken, keycloakUserId, role);
+
+            // Verifikations-Email senden
+            sendVerificationEmail(adminToken, keycloakUserId);
+
             return keycloakUserId;
 
         } catch (HttpClientErrorException ex) {
@@ -185,6 +191,33 @@ public class KeycloakAdminService {
     }
 
     /**
+     * Schickt eine E-Mail-Verifikationsaufforderung – holt sich selbst ein
+     * Admin-Token.
+     * Wird vom IdentityProvider-Adapter genutzt.
+     */
+    public void sendVerificationEmail(UUID keycloakUserId) {
+        sendVerificationEmail(obtainAdminToken(), keycloakUserId);
+    }
+
+    /**
+     * Schickt eine E-Mail-Verifikationsaufforderung an einen Keycloak-Benutzer.
+     */
+    public void sendVerificationEmail(String adminToken, UUID keycloakUserId) {
+        try {
+            restClient.put()
+                    .uri(adminUsersUrl() + "/" + keycloakUserId + "/execute-actions-email")
+                    .header("Authorization", "Bearer " + adminToken)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(List.of("VERIFY_EMAIL"))
+                    .retrieve()
+                    .toBodilessEntity();
+            log.info("Verifikations-E-Mail gesendet an Keycloak-User {}", keycloakUserId);
+        } catch (HttpClientErrorException ex) {
+            log.warn("Verifikations-E-Mail fehlgeschlagen für {}: {}", keycloakUserId, ex.getMessage());
+        }
+    }
+
+    /**
      * Schickt eine Password-Reset-E-Mail über Keycloak an den Benutzer.
      */
     public void sendPasswordResetEmail(String email) {
@@ -204,6 +237,68 @@ public class KeycloakAdminService {
                     .toBodilessEntity();
         } catch (HttpClientErrorException ex) {
             log.warn("Keycloak Password-Reset-E-Mail fehlgeschlagen für {}: {}", email, ex.getMessage());
+        }
+    }
+
+    /**
+     * Setzt das Passwort eines Benutzers über die Keycloak Admin API und
+     * entfernt die {@code UPDATE_PASSWORD} Required-Action, falls vorhanden.
+     *
+     * @param keycloakUserId Keycloak-UUID des Benutzers
+     * @param newPassword    das neue Passwort
+     */
+    public void resetUserPassword(UUID keycloakUserId, String newPassword) {
+        String adminToken = obtainAdminToken();
+        String userUrl = adminUsersUrl() + "/" + keycloakUserId;
+
+        // 1. Neues Passwort setzen via reset-password Endpoint
+        Map<String, Object> credential = Map.of(
+                "type", "password",
+                "value", newPassword,
+                "temporary", false);
+        try {
+            restClient.put()
+                    .uri(userUrl + "/reset-password")
+                    .header("Authorization", "Bearer " + adminToken)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(credential)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpClientErrorException ex) {
+            log.error("Keycloak Passwort-Reset fehlgeschlagen für {}: {}", keycloakUserId,
+                    ex.getResponseBodyAsString());
+            throw new ApiException(HttpStatus.BAD_GATEWAY, "KEYCLOAK_ERROR",
+                    "Passwort konnte nicht in Keycloak gesetzt werden");
+        }
+
+        // 2. UPDATE_PASSWORD aus requiredActions entfernen
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> userRep = restClient.get()
+                    .uri(userUrl)
+                    .header("Authorization", "Bearer " + adminToken)
+                    .retrieve()
+                    .body(Map.class);
+
+            if (userRep != null) {
+                @SuppressWarnings("unchecked")
+                List<String> actions = (List<String>) userRep.getOrDefault("requiredActions", List.of());
+                List<String> filtered = actions.stream()
+                        .filter(a -> !"UPDATE_PASSWORD".equals(a))
+                        .toList();
+                userRep.put("requiredActions", filtered);
+
+                restClient.put()
+                        .uri(userUrl)
+                        .header("Authorization", "Bearer " + adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(userRep)
+                        .retrieve()
+                        .toBodilessEntity();
+            }
+        } catch (HttpClientErrorException ex) {
+            log.warn("UPDATE_PASSWORD Required-Action konnte nicht entfernt werden für {}: {}",
+                    keycloakUserId, ex.getMessage());
         }
     }
 

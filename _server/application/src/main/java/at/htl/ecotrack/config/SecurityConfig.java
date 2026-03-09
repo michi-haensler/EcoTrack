@@ -30,10 +30,16 @@ public class SecurityConfig {
                                                                 "/api/auth/register",
                                                                 "/api/auth/login",
                                                                 "/api/auth/password/reset-request",
+                                                                "/api/auth/password/change",
                                                                 "/api/v1/auth/mobile/login",
                                                                 "/api/v1/auth/admin/login",
                                                                 "/api/v1/registration",
-                                                                "/api/v1/auth/password/reset-request")
+                                                                "/api/v1/auth/password/reset-request",
+                                                                "/api/v1/auth/password/change",
+                                                                "/api/v2/registration") // Self-Registration (hexagonal)
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/api/v2/registration/email-check") // E-Mail-Verfügbarkeitsprüfung
                                                 .permitAll()
                                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**",
                                                                 "/actuator/health")

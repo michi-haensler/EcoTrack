@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,6 +75,33 @@ class ApiIntegrationTests {
                                         return userId;
                                 });
 
+                // getUserByEmail: gibt KC-Benutzerdaten zurück (emailVerified=true, keine
+                // requiredActions)
+                when(keycloakAdminService.getUserByEmail(anyString()))
+                                .thenAnswer(inv -> {
+                                        String email = ((String) inv.getArgument(0)).toLowerCase();
+                                        UserInfo info = registeredUsers.get(email);
+                                        if (info == null)
+                                                return null;
+                                        return Map.of(
+                                                        "id", info.userId().toString(),
+                                                        "emailVerified", true,
+                                                        "requiredActions", List.of(),
+                                                        "firstName", "Max",
+                                                        "lastName", "Tester");
+                                });
+
+                // getUserRealmRoles: gibt die Rolle des registrierten Users zurück
+                when(keycloakAdminService.getUserRealmRoles(any(UUID.class)))
+                                .thenAnswer(inv -> {
+                                        UUID userId = inv.getArgument(0);
+                                        return registeredUsers.values().stream()
+                                                        .filter(info -> info.userId().equals(userId))
+                                                        .findFirst()
+                                                        .map(info -> List.of(info.role().name()))
+                                                        .orElse(List.of("SCHUELER"));
+                                });
+
                 // login: erzeugt ein gültiges JWT mit den Daten des registrierten Users
                 when(keycloakTokenService.login(anyString(), anyString()))
                                 .thenAnswer(inv -> {
@@ -125,10 +153,13 @@ class ApiIntegrationTests {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(studentPayload))
                                 .andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.accessToken").exists())
+                                .andExpect(jsonPath("$.userId").exists())
                                 .andReturn();
 
-                String studentToken = read(studentResult, "accessToken");
+                // Registration gibt kein Token mehr zurück → JWT direkt erstellen
+                UserInfo studentInfo = registeredUsers.get("student-a@ecotrack.test");
+                String studentToken = testJwtHelper.createJwt(studentInfo.userId(), "student-a@ecotrack.test",
+                                Role.SCHUELER);
 
                 String activityPayload = """
                                 {
@@ -154,6 +185,16 @@ class ApiIntegrationTests {
         @Test
         void teacherLoginRequiresPasswordChange() throws Exception {
                 registerAndExtractToken("teacher-a@ecotrack.test", "LEHRER", null);
+
+                // getUserByEmail überschreiben: requiredActions enthält UPDATE_PASSWORD
+                UserInfo teacherInfo = registeredUsers.get("teacher-a@ecotrack.test");
+                when(keycloakAdminService.getUserByEmail("teacher-a@ecotrack.test"))
+                                .thenReturn(Map.of(
+                                                "id", teacherInfo.userId().toString(),
+                                                "emailVerified", true,
+                                                "requiredActions", List.of("UPDATE_PASSWORD"),
+                                                "firstName", "Max",
+                                                "lastName", "Tester"));
 
                 String loginPayload = """
                                 {
@@ -209,15 +250,17 @@ class ApiIntegrationTests {
                                 }
                                 """.formatted(email, role, classJson);
 
-                MvcResult result = mockMvc.perform(post("/api/auth/register")
+                mockMvc.perform(post("/api/auth/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(payload))
                                 .andExpect(status().isCreated())
-                                .andReturn();
+                                .andExpect(jsonPath("$.userId").exists())
+                                .andExpect(jsonPath("$.email").value(email.toLowerCase()));
 
-                String token = read(result, "accessToken");
-                assertThat(token).isNotBlank();
-                return token;
+                // Registration gibt kein Token mehr zurück → JWT direkt über TestJwtHelper
+                UserInfo info = registeredUsers.get(email.toLowerCase());
+                assertThat(info).isNotNull();
+                return testJwtHelper.createJwt(info.userId(), email, Role.valueOf(role));
         }
 
         private String createClass(String adminToken, String className) throws Exception {

@@ -140,3 +140,24 @@ export async function adminLogout(request: LogoutRequest): Promise<void> {
   await delay(200);
   activeSessions.delete(request.refreshToken);
 }
+
+/**
+ * Simuliert POST /api/v1/auth/password/change
+ */
+export async function changePassword(
+  email: string,
+  currentPassword: string,
+  _newPassword: string,
+): Promise<{ message: string }> {
+  await delay(MOCK_DELAY_MS);
+  const found = MOCK_USERS.find(
+    (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === currentPassword,
+  );
+  if (!found) {
+    const error = new Error('Das aktuelle Passwort ist falsch');
+    (error as Error & { code: string }).code = 'INVALID_CREDENTIALS';
+    throw error;
+  }
+  found.mustChangePassword = false;
+  return { message: 'Passwort erfolgreich geändert. Du kannst dich jetzt anmelden.' };
+}
