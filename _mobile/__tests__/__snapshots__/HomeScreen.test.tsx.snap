@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeScreen should_matchSnapshot_when_rendered 1`] = `
+<RNCSafeAreaView
+  edges={
+    {
+      "bottom": "off",
+      "left": "off",
+      "right": "off",
+      "top": "additive",
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "padding": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        accessibilityLabel="Punkteuebersicht fuer Benutzer demo-user"
+        accessible={true}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#10b981",
+            "borderRadius": 12,
+            "marginBottom": 16,
+            "padding": 24,
+          }
+        }
+      >
+        <Text
+          accessibilityRole="header"
+          style={
+            {
+              "color": "#ffffff",
+              "fontSize": 16,
+              "marginBottom": 4,
+            }
+          }
+        >
+          Deine Punkte
+        </Text>
+        <Text
+          accessibilityRole="text"
+          style={
+            {
+              "color": "#ffffff",
+              "fontSize": 32,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          120
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Aktivitaeten fuer Benutzer demo-user"
+        accessible={true}
+        style={
+          {
+            "backgroundColor": "#6b7280",
+            "borderRadius": 12,
+            "padding": 16,
+          }
+        }
+      >
+        <Text
+          accessibilityRole="header"
+          style={
+            {
+              "color": "#ffffff",
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "marginBottom": 8,
+            }
+          }
+        >
+          Aktivitaeten
+        </Text>
+        <View
+          accessibilityHint="Tippe, um Details zur Aktivitaet anzuzeigen"
+          accessibilityLabel="Aktivitaet Radfahren"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderRadius": 8,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginBottom": 4,
+              "opacity": 1,
+              "padding": 8,
+              "shadowColor": "#000000",
+              "shadowOffset": {
+                "height": 1,
+                "width": 0,
+              },
+              "shadowOpacity": 0.1,
+              "shadowRadius": 2,
+            }
+          }
+          testID="activity-item"
+        >
+          <Text
+            style={
+              {
+                "color": "#111827",
+                "fontSize": 16,
+              }
+            }
+          >
+            Radfahren
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#10b981",
+                "fontSize": 16,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            10
+             Punkte
+          </Text>
+        </View>
+        <View
+          accessibilityHint="Tippe, um Details zur Aktivitaet anzuzeigen"
+          accessibilityLabel="Aktivitaet Laufen"
+          accessibilityRole="button"
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#ffffff",
+              "borderRadius": 8,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginBottom": 4,
+              "opacity": 1,
+              "padding": 8,
+              "shadowColor": "#000000",
+              "shadowOffset": {
+                "height": 1,
+                "width": 0,
+              },
+              "shadowOpacity": 0.1,
+              "shadowRadius": 2,
+            }
+          }
+          testID="activity-item"
+        >
+          <Text
+            style={
+              {
+                "color": "#111827",
+                "fontSize": 16,
+              }
+            }
+          >
+            Laufen
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#10b981",
+                "fontSize": 16,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            15
+             Punkte
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</RNCSafeAreaView>
+`;

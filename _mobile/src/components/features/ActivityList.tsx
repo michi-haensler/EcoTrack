@@ -11,6 +11,9 @@ interface Activity {
 
 interface ActivityListProps {
   userId: string;
+  isLoading?: boolean;
+  error?: string | null;
+  onActivityPress?: (id: string) => void;
 }
 
 const mockActivities: Activity[] = [
@@ -18,16 +21,47 @@ const mockActivities: Activity[] = [
   { id: '2', name: 'Laufen', points: 15 },
 ];
 
-export function ActivityList({ userId }: ActivityListProps) {
+export function ActivityList({
+  userId,
+  isLoading = false,
+  error = null,
+  onActivityPress,
+}: ActivityListProps) {
+  if (isLoading) {
+    return (
+      <View
+        style={styles.container}
+        accessible={true}
+        accessibilityLabel={`Aktivitaeten fuer Benutzer ${userId} werden geladen`}
+      >
+        <Text style={styles.title} accessibilityRole="header">Aktivitaeten</Text>
+        <Text style={styles.stateText} accessibilityRole="text">Aktivitaeten werden geladen...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View
+        style={styles.container}
+        accessible={true}
+        accessibilityLabel={`Fehler bei Aktivitaeten fuer Benutzer ${userId}: ${error}`}
+      >
+        <Text style={styles.title} accessibilityRole="header">Aktivitaeten</Text>
+        <Text style={styles.stateText} accessibilityRole="alert">{error}</Text>
+      </View>
+    );
+  }
+
   return (
     <View
       style={styles.container}
       accessible={true}
-      accessibilityLabel={`Aktivitäten für Benutzer ${userId}`}
+      accessibilityLabel={`Aktivitaeten fuer Benutzer ${userId}`}
     >
-      <Text style={styles.title} accessibilityRole="header">Aktivitäten</Text>
+      <Text style={styles.title} accessibilityRole="header">Aktivitaeten</Text>
       {mockActivities.map(activity => (
-        <ActivityItem key={activity.id} activity={activity} />
+        <ActivityItem key={activity.id} activity={activity} onPress={onActivityPress} />
       ))}
     </View>
   );
@@ -44,5 +78,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: Spacing.sm,
+  },
+  stateText: {
+    color: Colors.background,
+    fontSize: 16,
   },
 });

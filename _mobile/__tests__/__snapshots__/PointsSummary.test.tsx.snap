@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PointsSummary should_matchSnapshot_when_rendered 1`] = `
+<View
+  accessibilityLabel="Punkteuebersicht fuer Benutzer demo-user"
+  accessible={true}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#10b981",
+      "borderRadius": 12,
+      "marginBottom": 16,
+      "padding": 24,
+    }
+  }
+>
+  <Text
+    accessibilityRole="header"
+    style={
+      {
+        "color": "#ffffff",
+        "fontSize": 16,
+        "marginBottom": 4,
+      }
+    }
+  >
+    Deine Punkte
+  </Text>
+  <Text
+    accessibilityRole="text"
+    style={
+      {
+        "color": "#ffffff",
+        "fontSize": 32,
+        "fontWeight": "bold",
+      }
+    }
+  >
+    120
+  </Text>
+</View>
+`;

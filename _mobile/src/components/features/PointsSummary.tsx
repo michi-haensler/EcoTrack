@@ -7,13 +7,13 @@ interface PointsSummaryProps {
 }
 
 export function PointsSummary({ userId }: PointsSummaryProps) {
-  // Dummy points for demo
   const points = 120;
+
   return (
     <View
       style={styles.container}
       accessible={true}
-      accessibilityLabel={`Punkteübersicht, Benutzer ${userId}`}
+      accessibilityLabel={`Punkteuebersicht fuer Benutzer ${userId}`}
     >
       <Text style={styles.label} accessibilityRole="header">Deine Punkte</Text>
       <Text style={styles.points} accessibilityRole="text">{points}</Text>

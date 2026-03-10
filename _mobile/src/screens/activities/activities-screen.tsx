@@ -1,7 +1,10 @@
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ActivityItem } from '../../components/features/ActivityItem';
+import { RootStackParamList } from '../../navigation/types';
 import { Colors } from '../../theme/colors';
 import { Spacing } from '../../theme/spacing';
 
@@ -12,6 +15,7 @@ const mockActivities = [
 
 export function ActivitiesScreen() {
   const [refreshing, setRefreshing] = React.useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -22,11 +26,16 @@ export function ActivitiesScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <FlatList
         data={mockActivities}
-        renderItem={({ item }) => <ActivityItem activity={item} />}
+        renderItem={({ item }) => (
+          <ActivityItem
+            activity={item}
+            onPress={(activityId) => navigation.navigate('ActivityDetail', { activityId })}
+          />
+        )}
         keyExtractor={item => item.id}
         accessible={true}
         accessibilityRole="list"
-        accessibilityLabel="Liste der Aktivitäten"
+        accessibilityLabel="Liste der Aktivitaeten"
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
