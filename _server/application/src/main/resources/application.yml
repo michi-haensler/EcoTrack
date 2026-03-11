@@ -28,3 +28,11 @@ ecotrack:
     baum: 250
     altbaum: 500
     legend: 1000
+  registration:
+    # Erlaubte Schul-E-Mail-Domains für die Selbstregistrierung.
+    # Schüler und Lehrer müssen eine dieser Domains verwenden.
+    # Lehrer-Domains müssen "lehrer." im Subdomain-Teil enthalten.
+    allowed-domains:
+      - ${REGISTRATION_DOMAIN_1:htl-leoben.at}
+      - ${REGISTRATION_DOMAIN_2:schueler.htl-leoben.at}
+      - ${REGISTRATION_DOMAIN_3:lehrer.htl-leoben.at}

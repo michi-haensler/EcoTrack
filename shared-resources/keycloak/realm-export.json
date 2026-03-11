@@ -3,7 +3,7 @@
   "displayName": "EcoTrack - Nachhaltigkeits-App für Schulen",
   "displayNameHtml": "<div class=\"kc-logo-text\"><span>EcoTrack</span></div>",
   "enabled": true,
-  "sslRequired": "external",
+  "sslRequired": "none",
   "registrationAllowed": false,
   "registrationEmailAsUsername": true,
   "resetPasswordAllowed": true,
