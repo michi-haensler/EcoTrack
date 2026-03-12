@@ -1,4 +1,4 @@
-package at.htl.ecotrack.administration.registration.domain;
+package at.htl.ecotrack.administration.registration.infrastructure;
 
 import java.util.UUID;
 

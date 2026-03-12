@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import at.htl.ecotrack.administration.registration.domain.AllowedDomain;
-import at.htl.ecotrack.administration.registration.domain.IdentityProvider;
 import at.htl.ecotrack.administration.registration.domain.RegistrationService;
 import at.htl.ecotrack.administration.registration.domain.UserProfile;
 import at.htl.ecotrack.administration.registration.domain.UserProfileRepository;
+import at.htl.ecotrack.administration.registration.infrastructure.IdentityProvider;
 import at.htl.ecotrack.administration.registration.infrastructure.RegistrationProperties;
 import at.htl.ecotrack.shared.error.ApiException;
 import at.htl.ecotrack.shared.model.Role;

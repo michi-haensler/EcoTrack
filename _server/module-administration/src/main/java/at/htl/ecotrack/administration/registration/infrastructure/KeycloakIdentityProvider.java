@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import at.htl.ecotrack.administration.registration.domain.IdentityProvider;
 import at.htl.ecotrack.administration.security.KeycloakAdminService;
 import at.htl.ecotrack.shared.model.Role;
 
