@@ -2,10 +2,9 @@
 
 **User Story:** US-USR-02-REF  
 **Framework:** React + TypeScript + Vite  
-**State Management:** Zustand  
 **HTTP-Client:** Axios  
 **Styling:** TailwindCSS  
-**Status:** Bereit zur Implementierung ✅
+**Status:** Implementiert ✅
 
 ---
 
