@@ -129,7 +129,7 @@
       "label": "server: run",
       "type": "shell",
       "command": "mvn spring-boot:run",
-      "options": { "cwd": "${workspaceFolder}/_server" },
+      "options": { "cwd": "${workspaceFolder}/_server/application" },
       "isBackground": true,
       "problemMatcher": []
     },
