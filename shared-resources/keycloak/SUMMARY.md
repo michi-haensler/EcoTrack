@@ -18,7 +18,7 @@
 - **Realm Export**: [realm-export.json](./realm-export.json)
   - Realm: `ecotrack`
   - 3 Clients: `ecotrack-backend`, `ecotrack-admin-web`, `ecotrack-mobile`
-  - 3 Rollen: `STUDENT`, `TEACHER`, `ADMIN`
+  - 3 Rollen: `SCHUELER`, `LEHRER`, `ADMIN`
   - Passwort-Policy, Token-Settings, SMTP-Config
 
 ### 4. Docker-Infrastruktur

@@ -1,0 +1,26 @@
+pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
+plugins { id("com.facebook.react.settings") }
+def projectRootPath = System.getenv("REACT_NATIVE_PROJECT_ROOT") ?: file("..").absolutePath
+def projectRoot = new File(projectRootPath)
+def nodeExecutable = System.getenv("NODE_BINARY") ?: "node"
+def reactNativeCli = new File(projectRoot, "node_modules/react-native/cli.js").absolutePath
+def autolinkInputs = files(
+    new File(projectRoot, "package.json"),
+    new File(projectRoot, "package-lock.json"),
+    new File(projectRoot, "yarn.lock"),
+    new File(projectRoot, "app.json"),
+    new File(projectRoot, "react-native.config.js"),
+    new File(projectRoot, "android/app/build.gradle"),
+    new File(projectRoot, "android/app/src/main/AndroidManifest.xml"),
+    new File(projectRoot, "ios/EcoTrackMobile.xcodeproj/project.pbxproj")
+)
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand(
+        [nodeExecutable, reactNativeCli, "config"],
+        projectRoot,
+        autolinkInputs
+    )
+}
+rootProject.name = 'EcoTrackMobile'
+include ':app'
+includeBuild('../node_modules/@react-native/gradle-plugin')

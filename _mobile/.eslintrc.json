@@ -25,6 +25,12 @@
       "rules": {
         "no-undef": "off"
       }
+    },
+    {
+      "files": ["*.js", "scripts/**/*.js"],
+      "rules": {
+        "@typescript-eslint/no-require-imports": "off"
+      }
     }
   ],
   "rules": {

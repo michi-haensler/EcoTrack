@@ -1,0 +1,25 @@
+buildscript {
+    ext {
+        buildToolsVersion = "36.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 36
+        targetSdkVersion = 36
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    }
+}
+
+def reactNativeProjectRoot = System.getenv("REACT_NATIVE_PROJECT_ROOT") ? new File(System.getenv("REACT_NATIVE_PROJECT_ROOT")) : file("..")
+ext.REACT_NATIVE_NODE_MODULES_DIR = new File(reactNativeProjectRoot, "node_modules/react-native").absolutePath
+ext.REACT_NATIVE_WORKLETS_NODE_MODULES_DIR = new File(reactNativeProjectRoot, "node_modules/react-native-worklets").absolutePath
+
+apply plugin: "com.facebook.react.rootproject"

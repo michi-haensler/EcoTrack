@@ -26,9 +26,9 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public AuthDtos.UserPage users(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "20") int size,
-                                   @RequestParam(required = false) Role role) {
+    public AuthDtos.UserPage users(@RequestParam(name = "page", defaultValue = "0") int page,
+                                   @RequestParam(name = "size", defaultValue = "20") int size,
+                                   @RequestParam(name = "role", required = false) Role role) {
         return authService.getUsers(page, size, role);
     }
 

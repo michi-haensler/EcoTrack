@@ -82,14 +82,14 @@
 4. Tab: **Credentials** → **Set Password**:
    - **Password**: `Test1234!`
    - **Temporary**: `OFF`
-5. Tab: **Role Mappings** → **Assign role** → `STUDENT` ✅
+5. Tab: **Role Mappings** → **Assign role** → `SCHUELER` ✅
 
 ### Test-User-Liste
 
 | Username | Password | Rolle | Zweck |
 |----------|----------|-------|-------|
-| `test.student@ecotrack.local` | `Test1234!` | STUDENT | Mobile App Testing |
-| `test.teacher@ecotrack.local` | `Test1234!` | TEACHER | Admin-Web Testing |
+| `test.student@ecotrack.local` | `Test1234!` | SCHUELER | Mobile App Testing |
+| `test.teacher@ecotrack.local` | `Test1234!` | LEHRER | Admin-Web Testing |
 | `test.admin@ecotrack.local` | `Test1234!` | ADMIN | Admin-Funktionen Testing |
 
 ---

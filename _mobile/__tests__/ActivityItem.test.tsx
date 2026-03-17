@@ -5,7 +5,7 @@ import { ActivityItem } from '../src/components/features/ActivityItem';
 describe('ActivityItem', () => {
   it('should_callOnPressWithId_when_itemPressed', () => {
     const onPress = jest.fn();
-    const activity = { id: '1', name: 'Radfahren', points: 10 };
+    const activity = { id: '1', name: 'Radfahren', points: 10, category: 'MOBILITAET' };
 
     const { getByTestId } = render(
       <ActivityItem activity={activity} onPress={onPress} />
@@ -16,10 +16,10 @@ describe('ActivityItem', () => {
     expect(onPress).toHaveBeenCalledWith('1');
   });
 
-  it('should_matchSnapshot_when_rendered', () => {
-    const activity = { id: '1', name: 'Radfahren', points: 10 };
-    const { toJSON } = render(<ActivityItem activity={activity} />);
+  it('should_renderFormattedCategory_when_rendered', () => {
+    const activity = { id: '1', name: 'Radfahren', points: 10, category: 'MOBILITAET' };
+    const { getByText } = render(<ActivityItem activity={activity} />);
 
-    expect(toJSON()).toMatchSnapshot();
+    expect(getByText('Mobilitaet | Heute')).toBeTruthy();
   });
 });

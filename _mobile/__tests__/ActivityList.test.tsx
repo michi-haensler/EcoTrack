@@ -1,14 +1,15 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 import { ActivityList } from '../src/components/features/ActivityList';
+import { mockActivities } from '../src/components/features/activity-types';
 
 describe('ActivityList', () => {
   it('should_renderActivityItems_when_defaultState', () => {
     const { getByText } = render(<ActivityList userId="demo-user" />);
 
-    expect(getByText('Aktivitaeten')).toBeTruthy();
-    expect(getByText('Radfahren')).toBeTruthy();
-    expect(getByText('Laufen')).toBeTruthy();
+    expect(getByText('Letzte Aktionen')).toBeTruthy();
+    expect(getByText(mockActivities[0].name)).toBeTruthy();
+    expect(getByText(mockActivities[1].name)).toBeTruthy();
   });
 
   it('should_renderLoadingState_when_isLoadingTrue', () => {
@@ -25,9 +26,9 @@ describe('ActivityList', () => {
     expect(getByText('Fehler beim Laden')).toBeTruthy();
   });
 
-  it('should_matchSnapshot_when_rendered', () => {
-    const { toJSON } = render(<ActivityList userId="demo-user" />);
+  it('should_renderSubtitle_when_rendered', () => {
+    const { getByText } = render(<ActivityList userId="demo-user" />);
 
-    expect(toJSON()).toMatchSnapshot();
+    expect(getByText('Deine juengsten nachhaltigen Entscheidungen im Ueberblick.')).toBeTruthy();
   });
 });

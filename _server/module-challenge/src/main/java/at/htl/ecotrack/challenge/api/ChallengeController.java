@@ -31,7 +31,7 @@ public class ChallengeController {
 
     @GetMapping
     public List<ChallengeDtos.ChallengeResponse> getMyChallenges(@AuthenticationPrincipal CurrentUser currentUser,
-                                                                 @RequestParam(required = false) ChallengeStatus status) {
+                                                                 @RequestParam(name = "status", required = false) ChallengeStatus status) {
         return challengeService.getMyChallenges(currentUser, status);
     }
 

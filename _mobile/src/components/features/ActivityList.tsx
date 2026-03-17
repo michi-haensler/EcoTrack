@@ -1,86 +1,102 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { AppCard } from '../ui/app-card';
 import { Colors } from '../../theme/colors';
 import { Spacing } from '../../theme/spacing';
 import { ActivityItem } from './ActivityItem';
-
-interface Activity {
-  id: string;
-  name: string;
-  points: number;
-}
+import { ActivitySummary, mockActivities } from './activity-types';
 
 interface ActivityListProps {
   userId: string;
+  activities?: ActivitySummary[];
   isLoading?: boolean;
   error?: string | null;
   onActivityPress?: (id: string) => void;
 }
 
-const mockActivities: Activity[] = [
-  { id: '1', name: 'Radfahren', points: 10 },
-  { id: '2', name: 'Laufen', points: 15 },
-];
-
 export function ActivityList({
   userId,
+  activities = mockActivities,
   isLoading = false,
   error = null,
   onActivityPress,
 }: ActivityListProps) {
   if (isLoading) {
     return (
-      <View
-        style={styles.container}
-        accessible={true}
-        accessibilityLabel={`Aktivitaeten fuer Benutzer ${userId} werden geladen`}
-      >
-        <Text style={styles.title} accessibilityRole="header">Aktivitaeten</Text>
-        <Text style={styles.stateText} accessibilityRole="text">Aktivitaeten werden geladen...</Text>
-      </View>
+      <AppCard>
+        <Text style={styles.title} accessibilityRole="header">
+          Letzte Aktionen
+        </Text>
+        <Text
+          accessibilityLabel={`Aktivitaeten fuer Benutzer ${userId} werden geladen`}
+          style={styles.stateText}
+        >
+          Aktivitaeten werden geladen...
+        </Text>
+      </AppCard>
     );
   }
 
   if (error) {
     return (
-      <View
-        style={styles.container}
-        accessible={true}
-        accessibilityLabel={`Fehler bei Aktivitaeten fuer Benutzer ${userId}: ${error}`}
-      >
-        <Text style={styles.title} accessibilityRole="header">Aktivitaeten</Text>
-        <Text style={styles.stateText} accessibilityRole="alert">{error}</Text>
-      </View>
+      <AppCard>
+        <Text style={styles.title} accessibilityRole="header">
+          Letzte Aktionen
+        </Text>
+        <Text
+          accessibilityLabel={`Fehler bei Aktivitaeten fuer Benutzer ${userId}: ${error}`}
+          accessibilityRole="alert"
+          style={[styles.stateText, styles.errorText]}
+        >
+          {error}
+        </Text>
+      </AppCard>
     );
   }
 
   return (
-    <View
-      style={styles.container}
-      accessible={true}
-      accessibilityLabel={`Aktivitaeten fuer Benutzer ${userId}`}
-    >
-      <Text style={styles.title} accessibilityRole="header">Aktivitaeten</Text>
-      {mockActivities.map(activity => (
-        <ActivityItem key={activity.id} activity={activity} onPress={onActivityPress} />
-      ))}
-    </View>
+    <AppCard accessibilityLabel={`Aktivitaeten fuer Benutzer ${userId}`}>
+      <Text style={styles.title} accessibilityRole="header">
+        Letzte Aktionen
+      </Text>
+      <Text style={styles.subtitle}>
+        Deine juengsten nachhaltigen Entscheidungen im Ueberblick.
+      </Text>
+
+      {activities.length === 0 ? (
+        <Text style={styles.stateText}>Noch keine Aktionen erfasst.</Text>
+      ) : (
+        <View style={styles.list}>
+          {activities.slice(0, 3).map(activity => (
+            <ActivityItem key={activity.id} activity={activity} onPress={onActivityPress} />
+          ))}
+        </View>
+      )}
+    </AppCard>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.secondary,
-    borderRadius: 12,
-    padding: Spacing.md,
-  },
   title: {
-    color: Colors.background,
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: Colors.text,
+    fontSize: 22,
+    fontWeight: '800',
     marginBottom: Spacing.sm,
   },
+  subtitle: {
+    color: Colors.textMuted,
+    fontSize: 14,
+    lineHeight: 21,
+    marginBottom: Spacing.lg,
+  },
+  list: {
+    marginTop: Spacing.xs,
+  },
   stateText: {
-    color: Colors.background,
+    color: Colors.textMuted,
     fontSize: 16,
+    lineHeight: 24,
+  },
+  errorText: {
+    color: Colors.error,
   },
 });

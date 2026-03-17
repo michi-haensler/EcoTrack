@@ -4,15 +4,16 @@ import { PointsSummary } from '../src/components/features/PointsSummary';
 
 describe('PointsSummary', () => {
   it('should_renderPointsValue_when_componentMounted', () => {
-    const { getByText } = render(<PointsSummary userId="demo-user" />);
+    const { getAllByText, getByText } = render(<PointsSummary userId="demo-user" />);
 
     expect(getByText('Deine Punkte')).toBeTruthy();
-    expect(getByText('120')).toBeTruthy();
+    expect(getAllByText('0').length).toBeGreaterThanOrEqual(2);
   });
 
-  it('should_matchSnapshot_when_rendered', () => {
-    const { toJSON } = render(<PointsSummary userId="demo-user" />);
+  it('should_renderLevelInformation_when_rendered', () => {
+    const { getAllByText, getByText } = render(<PointsSummary userId="demo-user" />);
 
-    expect(toJSON()).toMatchSnapshot();
+    expect(getAllByText('Setzling').length).toBeGreaterThanOrEqual(1);
+    expect(getByText('Aktivitaeten')).toBeTruthy();
   });
 });

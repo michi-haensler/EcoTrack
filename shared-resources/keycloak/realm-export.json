@@ -38,17 +38,17 @@
   "roles": {
     "realm": [
       {
-        "name": "STUDENT",
+        "name": "SCHUELER",
         "description": "Standard-Rolle für Schüler:innen - Zugriff auf Mobile App",
         "composite": false,
         "clientRole": false
       },
       {
-        "name": "TEACHER",
+        "name": "LEHRER",
         "description": "Rolle für Lehrkräfte - Zugriff auf Admin-Web",
         "composite": true,
         "composites": {
-          "realm": ["STUDENT"]
+          "realm": ["SCHUELER"]
         },
         "clientRole": false
       },
@@ -57,7 +57,7 @@
         "description": "System-Administrator - Volle Rechte",
         "composite": true,
         "composites": {
-          "realm": ["TEACHER", "STUDENT"]
+          "realm": ["LEHRER", "SCHUELER"]
         },
         "clientRole": false
       }
@@ -75,7 +75,7 @@
       "serviceAccountsEnabled": true,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
-      "directAccessGrantsEnabled": false,
+      "directAccessGrantsEnabled": true,
       "authorizationServicesEnabled": false,
       "redirectUris": [
         "http://localhost:8080/*",

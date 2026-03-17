@@ -29,7 +29,7 @@ public class ScoringController {
     }
 
     @GetMapping("/activities/catalog")
-    public List<ScoringDtos.ActionDefinitionResponse> catalog(@RequestParam(required = false) Category category) {
+    public List<ScoringDtos.ActionDefinitionResponse> catalog(@RequestParam(name = "category", required = false) Category category) {
         return scoringService.getCatalog(category);
     }
 
@@ -41,9 +41,9 @@ public class ScoringController {
 
     @GetMapping("/activities")
     public ScoringDtos.ActivityPageResponse activities(@AuthenticationPrincipal CurrentUser currentUser,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "20") int size,
-                                                       @RequestParam(required = false) Category category) {
+                                                       @RequestParam(name = "page", defaultValue = "0") int page,
+                                                       @RequestParam(name = "size", defaultValue = "20") int size,
+                                                       @RequestParam(name = "category", required = false) Category category) {
         return scoringService.getMyActivities(currentUser, page, size, category);
     }
 
@@ -59,13 +59,13 @@ public class ScoringController {
 
     @GetMapping("/leaderboard/class")
     public ScoringDtos.RankingTableResponse classLeaderboard(@AuthenticationPrincipal CurrentUser currentUser,
-                                                             @RequestParam(required = false) PeriodType period) {
+                                                             @RequestParam(name = "period", required = false) PeriodType period) {
         return scoringService.getClassLeaderboard(currentUser, period);
     }
 
     @GetMapping("/leaderboard/school")
     public ScoringDtos.RankingTableResponse schoolLeaderboard(@AuthenticationPrincipal CurrentUser currentUser,
-                                                              @RequestParam(required = false) PeriodType period) {
+                                                              @RequestParam(name = "period", required = false) PeriodType period) {
         return scoringService.getSchoolLeaderboard(currentUser, period);
     }
 }

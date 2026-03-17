@@ -1,6 +1,13 @@
 export type RootStackParamList = {
+  Welcome: undefined;
+  Login: undefined;
+  Register: undefined;
+  ResetPassword: undefined;
+  EmailStatus: {
+    email: string;
+    mode: 'verify' | 'reset';
+  };
   Main: undefined;
-  Auth: undefined;
   ActivityDetail: { activityId: string };
 };
 

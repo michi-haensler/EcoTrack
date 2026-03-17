@@ -23,9 +23,12 @@ describe('HomeScreen', () => {
     expect(mockNavigate).toHaveBeenCalledWith('ActivityDetail', { activityId: '1' });
   });
 
-  it('should_matchSnapshot_when_rendered', () => {
-    const { toJSON } = render(<HomeScreen />);
+  it('should_renderBackendDrivenSections_when_rendered', () => {
+    const { getAllByText, getByText } = render(<HomeScreen />);
 
-    expect(toJSON()).toMatchSnapshot();
+    expect(getByText('Hallo Alex')).toBeTruthy();
+    expect(getByText('Dein Oeko-Fortschritt')).toBeTruthy();
+    expect(getByText('Aktuelles Level')).toBeTruthy();
+    expect(getAllByText('Jungbaum').length).toBeGreaterThanOrEqual(1);
   });
 });

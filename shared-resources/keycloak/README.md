@@ -134,7 +134,7 @@ curl http://localhost:8180/health/ready
 
 **Checklist:**
 - [ ] Realm Name: `ecotrack`
-- [ ] Rollen: `STUDENT`, `TEACHER`, `ADMIN`
+- [ ] Rollen: `SCHUELER`, `LEHRER`, `ADMIN`
 - [ ] Clients: `ecotrack-backend`, `ecotrack-admin-web`, `ecotrack-mobile`
 - [ ] Client Scopes: `roles`, `profile`, `email`
 
@@ -170,7 +170,7 @@ Service Accounts:       ON ✅
 Authorization:          OFF
 Standard Flow:          ON ✅
 Implicit Flow:          OFF
-Direct Access Grants:   OFF
+Direct Access Grants:   ON
 ```
 
 **Valid Redirect URIs:**
@@ -246,17 +246,17 @@ ecotrack://logout
 
 | Rolle | Beschreibung | Composite Roles |
 |-------|--------------|-----------------|
-| `STUDENT` | Standard-Nutzer (Schüler:innen) | - |
-| `TEACHER` | Lehrkräfte | `STUDENT` |
-| `ADMIN` | System-Administratoren | `TEACHER`, `STUDENT` |
+| `SCHUELER` | Standard-Nutzer (Schüler:innen) | - |
+| `LEHRER` | Lehrkräfte | `SCHUELER` |
+| `ADMIN` | System-Administratoren | `LEHRER`, `SCHUELER` |
 
 **Verifizierung:**
 - Admin Console → Realm Roles
 - Alle 3 Rollen sollten existieren
 
 **Composite Roles prüfen:**
-1. Role: **TEACHER** → Composite Roles Tab
-2. Sollte enthalten: `STUDENT`
+1. Role: **LEHRER** → Composite Roles Tab
+2. Sollte enthalten: `SCHUELER`
 
 ---
 
@@ -283,7 +283,7 @@ ecotrack://logout
 #### 5.3 Rolle zuweisen
 
 1. **Role Mappings** Tab
-2. **Assign role** → `STUDENT` auswählen
+2. **Assign role** → `SCHUELER` auswählen
 3. **Assign**
 
 #### 5.4 Test-User-Set (Empfohlen)
@@ -297,8 +297,8 @@ ecotrack://logout
 
 | Email | Password | Rolle | Zweck |
 |-------|----------|-------|-------|
-| `test.student@ecotrack.local` | `Test1234!` | STUDENT | Mobile App |
-| `test.teacher@ecotrack.local` | `Test1234!` | TEACHER | Admin-Web |
+| `test.student@ecotrack.local` | `Test1234!` | SCHUELER | Mobile App |
+| `test.teacher@ecotrack.local` | `Test1234!` | LEHRER | Admin-Web |
 | `test.admin@ecotrack.local` | `Test1234!` | ADMIN | Admin-Funktionen |
 
 ---
@@ -359,7 +359,8 @@ curl -X POST http://localhost:8180/realms/ecotrack/protocol/openid-connect/token
 curl -X POST http://localhost:8180/realms/ecotrack/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
-  -d "client_id=ecotrack-admin-web" \
+  -d "client_id=ecotrack-backend" \
+  -d "client_secret=YOUR_CLIENT_SECRET" \
   -d "username=test.student@ecotrack.local" \
   -d "password=Test1234!"
 
@@ -383,7 +384,7 @@ echo "YOUR_ACCESS_TOKEN" | cut -d. -f2 | base64 -d | jq
 # {
 #   "sub": "user-id",
 #   "realm_access": {
-#     "roles": ["STUDENT"]
+#     "roles": ["SCHUELER"]
 #   },
 #   "email": "test.student@ecotrack.local"
 # }

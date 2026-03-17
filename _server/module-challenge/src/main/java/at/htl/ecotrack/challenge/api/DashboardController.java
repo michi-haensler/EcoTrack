@@ -26,7 +26,7 @@ public class DashboardController {
     @GetMapping("/class/{classId}")
     public ChallengeDtos.ClassSummaryResponse getClassDashboard(@AuthenticationPrincipal CurrentUser currentUser,
                                                                 @PathVariable UUID classId,
-                                                                @RequestParam(required = false) PeriodType period) {
+                                                                @RequestParam(name = "period", required = false) PeriodType period) {
         return challengeService.getClassDashboard(currentUser, classId, period);
     }
 }

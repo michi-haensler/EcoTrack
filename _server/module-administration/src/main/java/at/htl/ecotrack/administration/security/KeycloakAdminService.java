@@ -25,9 +25,8 @@ import at.htl.ecotrack.shared.model.Role;
  *
  * <p>
  * Verwendet den {@code ecotrack-backend} Service-Account (Client Credentials
- * Grant)
- * um Admin-Tokens zu beziehen. Jede Methode holt sich frisch ein Admin-Token
- * (kurzlebige Gültigkeit, kein lokales Caching nötig für diese Schulgröße).
+ * Grant), um Admin-Tokens zu beziehen. Jede Methode holt sich frisch ein
+ * Admin-Token.
  */
 @Service
 public class KeycloakAdminService {
@@ -91,24 +90,27 @@ public class KeycloakAdminService {
             UUID keycloakUserId = UUID.fromString(path.substring(path.lastIndexOf('/') + 1));
 
             assignRealmRole(adminToken, keycloakUserId, role);
-
-            // Verifikations-Email senden
             sendVerificationEmail(adminToken, keycloakUserId);
 
             return keycloakUserId;
 
         } catch (HttpClientErrorException ex) {
-            log.error("Keycloak Benutzeranlage fehlgeschlagen für {}: {}", email, ex.getResponseBodyAsString());
+            String responseBody = ex.getResponseBodyAsString();
+            log.error("Keycloak Benutzeranlage fehlgeschlagen fuer {}: {}", email, responseBody);
             if (ex.getStatusCode().value() == 409) {
                 throw new ApiException(HttpStatus.BAD_REQUEST, "EMAIL_EXISTS",
                         "E-Mail ist bereits in Keycloak registriert");
+            }
+            if (ex.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "PASSWORD_POLICY_VIOLATION",
+                        "Registrierung abgelehnt. Pruefe vor allem das Passwort: mindestens 8 Zeichen mit Gross- und Kleinbuchstaben, Zahl und Sonderzeichen.");
             }
             throw new ApiException(HttpStatus.BAD_GATEWAY, "KEYCLOAK_ERROR", "Keycloak nicht erreichbar");
         }
     }
 
     /**
-     * Löscht einen Benutzer aus Keycloak (Kompensations-Transaktion bei
+     * Loescht einen Benutzer aus Keycloak (Kompensations-Transaktion bei
      * Registrierungsfehlern).
      */
     public void deleteUser(UUID keycloakUserId) {
@@ -120,12 +122,12 @@ public class KeycloakAdminService {
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException ex) {
-            log.warn("Keycloak Benutzerlöschung fehlgeschlagen für {}: {}", keycloakUserId, ex.getMessage());
+            log.warn("Keycloak Benutzerloeschung fehlgeschlagen fuer {}: {}", keycloakUserId, ex.getMessage());
         }
     }
 
     /**
-     * Löscht alle aktiven Sessions eines Benutzers in Keycloak (Logout-All).
+     * Loescht alle aktiven Sessions eines Benutzers in Keycloak (Logout-All).
      */
     public void logoutAllSessions(UUID keycloakUserId) {
         String adminToken = obtainAdminToken();
@@ -136,16 +138,15 @@ public class KeycloakAdminService {
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException ex) {
-            log.warn("Keycloak Logout-All fehlgeschlagen für {}: {}", keycloakUserId, ex.getMessage());
+            log.warn("Keycloak Logout-All fehlgeschlagen fuer {}: {}", keycloakUserId, ex.getMessage());
         }
     }
 
     /**
-     * Gibt die vollständigen Keycloak-Benutzerdaten für eine E-Mail zurück.
+     * Gibt die vollstaendigen Keycloak-Benutzerdaten fuer eine E-Mail zurueck.
      *
-     * @return Map mit Keycloak-Feldern (id, firstName, lastName, email, enabled,
-     *         requiredActions, …)
-     *         oder {@code null} wenn kein Benutzer existiert
+     * @return Map mit Keycloak-Feldern oder {@code null}, wenn kein Benutzer
+     *         existiert
      */
     @SuppressWarnings("unchecked")
     public Map<String, Object> getUserByEmail(String email) {
@@ -157,17 +158,18 @@ public class KeycloakAdminService {
                     .header("Authorization", "Bearer " + adminToken)
                     .retrieve()
                     .body(List.class);
-            if (users == null || users.isEmpty())
+            if (users == null || users.isEmpty()) {
                 return null;
+            }
             return users.get(0);
         } catch (Exception ex) {
-            log.warn("Keycloak User-Suche fehlgeschlagen für {}: {}", email, ex.getMessage());
+            log.warn("Keycloak User-Suche fehlgeschlagen fuer {}: {}", email, ex.getMessage());
             return null;
         }
     }
 
     /**
-     * Gibt die Realm-Rollen eines Keycloak-Benutzers zurück.
+     * Gibt die Realm-Rollen eines Keycloak-Benutzers zurueck.
      */
     @SuppressWarnings("unchecked")
     public List<String> getUserRealmRoles(UUID keycloakUserId) {
@@ -179,21 +181,21 @@ public class KeycloakAdminService {
                     .header("Authorization", "Bearer " + adminToken)
                     .retrieve()
                     .body(List.class);
-            if (roles == null)
+            if (roles == null) {
                 return List.of();
+            }
             return roles.stream()
                     .map(r -> (String) r.get("name"))
                     .toList();
         } catch (Exception ex) {
-            log.warn("Keycloak Rollen-Abfrage fehlgeschlagen für {}: {}", keycloakUserId, ex.getMessage());
+            log.warn("Keycloak Rollen-Abfrage fehlgeschlagen fuer {}: {}", keycloakUserId, ex.getMessage());
             return List.of();
         }
     }
 
     /**
-     * Schickt eine E-Mail-Verifikationsaufforderung – holt sich selbst ein
+     * Schickt eine E-Mail-Verifikationsaufforderung und holt sich selbst ein
      * Admin-Token.
-     * Wird vom IdentityProvider-Adapter genutzt.
      */
     public void sendVerificationEmail(UUID keycloakUserId) {
         sendVerificationEmail(obtainAdminToken(), keycloakUserId);
@@ -213,18 +215,17 @@ public class KeycloakAdminService {
                     .toBodilessEntity();
             log.info("Verifikations-E-Mail gesendet an Keycloak-User {}", keycloakUserId);
         } catch (HttpClientErrorException ex) {
-            log.warn("Verifikations-E-Mail fehlgeschlagen für {}: {}", keycloakUserId, ex.getMessage());
+            log.warn("Verifikations-E-Mail fehlgeschlagen fuer {}: {}", keycloakUserId, ex.getMessage());
         }
     }
 
     /**
-     * Schickt eine Password-Reset-E-Mail über Keycloak an den Benutzer.
+     * Schickt eine Password-Reset-E-Mail ueber Keycloak an den Benutzer.
      */
     public void sendPasswordResetEmail(String email) {
         String adminToken = obtainAdminToken();
         UUID userId = findUserIdByEmail(adminToken, email);
         if (userId == null) {
-            // E-Mail nicht in Keycloak gefunden – still ignorieren (Security best practice)
             return;
         }
         try {
@@ -236,22 +237,18 @@ public class KeycloakAdminService {
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException ex) {
-            log.warn("Keycloak Password-Reset-E-Mail fehlgeschlagen für {}: {}", email, ex.getMessage());
+            log.warn("Keycloak Password-Reset-E-Mail fehlgeschlagen fuer {}: {}", email, ex.getMessage());
         }
     }
 
     /**
-     * Setzt das Passwort eines Benutzers über die Keycloak Admin API und
-     * entfernt die {@code UPDATE_PASSWORD} Required-Action, falls vorhanden.
-     *
-     * @param keycloakUserId Keycloak-UUID des Benutzers
-     * @param newPassword    das neue Passwort
+     * Setzt das Passwort eines Benutzers ueber die Keycloak Admin API und entfernt
+     * die {@code UPDATE_PASSWORD} Required-Action, falls vorhanden.
      */
     public void resetUserPassword(UUID keycloakUserId, String newPassword) {
         String adminToken = obtainAdminToken();
         String userUrl = adminUsersUrl() + "/" + keycloakUserId;
 
-        // 1. Neues Passwort setzen via reset-password Endpoint
         Map<String, Object> credential = Map.of(
                 "type", "password",
                 "value", newPassword,
@@ -265,13 +262,12 @@ public class KeycloakAdminService {
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException ex) {
-            log.error("Keycloak Passwort-Reset fehlgeschlagen für {}: {}", keycloakUserId,
+            log.error("Keycloak Passwort-Reset fehlgeschlagen fuer {}: {}", keycloakUserId,
                     ex.getResponseBodyAsString());
             throw new ApiException(HttpStatus.BAD_GATEWAY, "KEYCLOAK_ERROR",
                     "Passwort konnte nicht in Keycloak gesetzt werden");
         }
 
-        // 2. UPDATE_PASSWORD aus requiredActions entfernen
         try {
             @SuppressWarnings("unchecked")
             Map<String, Object> userRep = restClient.get()
@@ -297,7 +293,7 @@ public class KeycloakAdminService {
                         .toBodilessEntity();
             }
         } catch (HttpClientErrorException ex) {
-            log.warn("UPDATE_PASSWORD Required-Action konnte nicht entfernt werden für {}: {}",
+            log.warn("UPDATE_PASSWORD Required-Action konnte nicht entfernt werden fuer {}: {}",
                     keycloakUserId, ex.getMessage());
         }
     }
@@ -337,7 +333,7 @@ public class KeycloakAdminService {
     // ---------------------------------------------------------------------------
 
     /**
-     * Bezieht einen Admin-Token über den Client-Credentials-Flow.
+     * Bezieht einen Admin-Token ueber den Client-Credentials-Flow.
      */
     private String obtainAdminToken() {
         String tokenUrl = props.serverUrl() + "/realms/" + props.realm() + "/protocol/openid-connect/token";
@@ -361,7 +357,12 @@ public class KeycloakAdminService {
             }
             return (String) response.get("access_token");
         } catch (HttpClientErrorException ex) {
+            String responseBody = ex.getResponseBodyAsString();
             log.error("Keycloak Admin-Token-Fehler: {}", ex.getMessage());
+            if (responseBody != null && responseBody.contains("invalid_client_credentials")) {
+                throw new ApiException(HttpStatus.BAD_GATEWAY, "KEYCLOAK_CONFIG_ERROR",
+                        "Keycloak Client-ID oder Client-Secret ist falsch konfiguriert");
+            }
             throw new ApiException(HttpStatus.BAD_GATEWAY, "KEYCLOAK_ERROR", "Keycloak Admin nicht erreichbar");
         }
     }
@@ -375,11 +376,12 @@ public class KeycloakAdminService {
                     .header("Authorization", "Bearer " + adminToken)
                     .retrieve()
                     .body(List.class);
-            if (users == null || users.isEmpty())
+            if (users == null || users.isEmpty()) {
                 return null;
+            }
             return UUID.fromString((String) users.get(0).get("id"));
         } catch (Exception ex) {
-            log.warn("Keycloak User-Suche fehlgeschlagen für {}: {}", email, ex.getMessage());
+            log.warn("Keycloak User-Suche fehlgeschlagen fuer {}: {}", email, ex.getMessage());
             return null;
         }
     }
