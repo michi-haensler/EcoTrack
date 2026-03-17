@@ -6,7 +6,10 @@ coverage/
 # React Native
 android/app/build/
 android/.gradle/
+android/.gradle-local/
+android/app/.cxx/
 android/local.properties
+/.gradle-user/
 ios/Pods/
 ios/build/
 .expo/
