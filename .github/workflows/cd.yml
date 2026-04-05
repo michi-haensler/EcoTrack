@@ -69,7 +69,7 @@ jobs:
       # Backend Image
       - name: Extract Backend metadata
         id: meta-backend
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend
           tags: |
@@ -91,7 +91,7 @@ jobs:
       # Admin-Web Image
       - name: Extract Admin-Web metadata
         id: meta-admin-web
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/admin-web
           tags: |
